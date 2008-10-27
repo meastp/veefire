@@ -1,0 +1,15 @@
+# TODO:
+- Fix file structure.
+    - database path as a property
+    - apis and backends in a bin/ folder
+
+Fix editor. -> returns None instead of False
+            -> fix imports.
+
+Make main gtk program.
+- Check date modified on update?
+
+Make cli / daemon interface. Could be used in headless torrent server setup.
+
+Make setup file for Linux, Windows, Mac
+Test.

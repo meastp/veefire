@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<!--Generated with glade3 3.4.5 on Thu Oct  9 21:55:32 2008 -->
+<glade-interface>
+  <widget class="GtkWindow" id="MainWindow">
+    <property name="visible">True</property>
+    <signal name="destroy" handler="on_MainWindow_destroy"/>
+    <child>
+      <widget class="GtkVBox" id="vbox1">
+        <property name="visible">True</property>
+        <child>
+          <widget class="GtkToolbar" id="mainToolbar">
+            <property name="visible">True</property>
+            <child>
+              <widget class="GtkToolButton" id="mainRevertButton">
+                <property name="visible">True</property>
+                <property name="stock_id">gtk-revert-to-saved</property>
+                <signal name="clicked" handler="on_mainRevertButton_clicked"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="mainRenameButton">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Rename</property>
+                <property name="stock_id">gtk-save</property>
+                <signal name="clicked" handler="on_mainRenameButton_clicked"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkSeparatorToolItem" id="toolbutton1">
+                <property name="visible">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="mainPropertiesButton">
+                <property name="visible">True</property>
+                <property name="stock_id">gtk-properties</property>
+                <signal name="clicked" handler="on_mainPropertiesButton_clicked"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkSeparatorToolItem" id="toolbutton2">
+                <property name="visible">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="mainAboutButton">
+                <property name="visible">True</property>
+                <property name="stock_id">gtk-about</property>
+                <signal name="clicked" handler="on_mainAboutButton_clicked"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkNotebook" id="notebook1">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <child>
+              <widget class="GtkVBox" id="vbox2">
+                <property name="visible">True</property>
+                <child>
+                  <widget class="GtkToolbar" id="previewToolbar">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkToolButton" id="previewUpdateButton">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Update</property>
+                        <property name="stock_id">gtk-refresh</property>
+                        <signal name="clicked" handler="on_previewUpdateButton_clicked"/>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkToolButton" id="previewFolderButton">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Select Folder</property>
+                        <property name="stock_id">gtk-open</property>
+                        <signal name="clicked" handler="on_previewFolderButton_clicked"/>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                      </packing>
+                    </child>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkTreeView" id="previewTree">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="headers_clickable">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="Preview">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Preview</property>
+              </widget>
+              <packing>
+                <property name="type">tab</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkVBox" id="vbox3">
+                <property name="visible">True</property>
+                <child>
+                  <widget class="GtkToolbar" id="showsToolbar">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkToolButton" id="showsEditButton">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Edit Shows</property>
+                        <property name="stock_id">gtk-edit</property>
+                        <signal name="clicked" handler="on_showsEditButton_clicked"/>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkToolButton" id="showsUpdateButton">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Update Database</property>
+                        <property name="stock_id">gtk-refresh</property>
+                        <signal name="clicked" handler="on_showsUpdateButton_clicked"/>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                      </packing>
+                    </child>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkTreeView" id="showsTree">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="headers_clickable">True</property>
+                  </widget>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </widget>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="Shows">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Shows</property>
+              </widget>
+              <packing>
+                <property name="type">tab</property>
+                <property name="position">1</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="GtkWindow" id="PropertiesWindow">
+    <child>
+      <placeholder/>
+    </child>
+  </widget>
+  <widget class="GtkAboutDialog" id="AboutWindow">
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">About Glade</property>
+    <property name="resizable">False</property>
+    <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
+    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="has_separator">False</property>
+    <property name="program_name">veefire</property>
+    <property name="version">0.5</property>
+    <child internal-child="vbox">
+      <widget class="GtkVBox" id="dialog-vbox1">
+        <property name="visible">True</property>
+        <property name="spacing">2</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child internal-child="action_area">
+          <widget class="GtkHButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="layout_style">GTK_BUTTONBOX_END</property>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">GTK_PACK_END</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</glade-interface>
