@@ -29,7 +29,6 @@ class imdbtvbackend :
     '''
     Backend to fetch data from imdb.com's tv section ( imdbtv ).
     '''
-    #TODO: Unit tests to determine if imdb has changed their source.
     def __init__ ( self ) :
         pass
     
@@ -38,7 +37,6 @@ class imdbtvbackend :
         Download a Show's Episodes from imdbtv and return a dictionary with { Show : content, Show2 : content2 }.
         downloadShowList( [ Show, Show1, Show2 ] )
         '''
-        #TODO: Multiple connections at once. Make more effective.
         conn = httplib.HTTPConnection("www.imdb.com")
         #totalbytes = 0
         gzippedfiles = [ ]
@@ -68,14 +66,10 @@ class imdbtvbackend :
         '''
         updateDB = Database()
         #TODO: Test for changes in code.
-        #TODO: Test for correct info. Perhaps in addEpisode method instead.
         for Show, content in showandcontentlist.items() :
-            
-            
             seasons = BeautifulSoup.SoupStrainer('div', { "class" : re.compile("season-filter-all filter-season-[0-9]+") })
             
             all = [ tag for tag in BeautifulSoup.BeautifulSoup( content, parseOnlyThese=seasons)]
-            
             
             for i in xrange( 0, len(all)) :
                 ## Remove rubbish from the content.
@@ -113,7 +107,7 @@ class imdbtvregexes :
         Remove sorrounding html/xml tags from a string.
         removeTags( string )
         '''
-        #FIXME: Will fail if there are nested tags.
+        #FIXME: WILL FAIL ON NESTED TAGS.
         return self.removetags.match( html ).groups()[0]
         
     def extractAirDate( self, html ) :

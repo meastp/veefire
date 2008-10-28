@@ -87,7 +87,6 @@ class Folder :
         Get Possible show matches for every FileName.
         """
         for FileName in self.fileNames :
-            #FIXME: Error check.
             FileName.getMatchingShows()
         return self.fileNames
         
@@ -108,12 +107,12 @@ class FileName :
         """
         Initialize filename, regexes and styles.
         """
-        #TODO: Remove invalidphrases from fileName
+        #TODO: (optional) Remove invalidphrases from fileName (from invalidphrases)
         self.fileName = fileName
         self.database = Database
         
         ## Regexes
-        #FIXME: Integrate with getpattern() so you don't have to modify two places.
+        #FIXME: Integrate with getpattern() so you don't have to add a new pattern two places.
         self.seepattern1 = re.compile( r'[sS][0]*([1-9]+)[eE][0]*([1-9]+)' )
         self.pattern1 = r'[sS][0]*([1-9]+)[eE][0]*([1-9]+)'
         self.seepattern2 = re.compile( r'[0]*([1-9]+)[xX][0]*([1-9]+)' )
@@ -147,7 +146,7 @@ class FileName :
                 if rawShowName.lower() == Alias.name :
                     self.PossibleShowMatches.append( copy.deepcopy( Show ) )
         
-        #FIXME: Use a function to resolve here. Needs to be manual and overridden.
+        #FIXME: Use a function to resolve the conflicts here. Needs to be abstract and overridden.
         if len( self.PossibleShowMatches ) == 0 :
             return None
         
@@ -178,7 +177,7 @@ class FileName :
         Retrieves Show details.
         <Show> : The chosen show from getMatchingShows().
         """
-        #FIXME: Show should not be a list.
+        #FIXME: Show should not be a list (but resolved after self.getMatchingShows() ).
         self.fileSystem = Filesystems().getFilesystem( Show.filesystem )
         
         self.showName = Show.name
@@ -205,7 +204,6 @@ class FileName :
         """
         Replace invalid characters.
         """
-        
         self.showName = self.fileSystem.validateString( self.showName )
         self.episodeTitle = self.fileSystem.validateString( self.episodeTitle )
         self.episodeAirDate = self.fileSystem.validateString( self.episodeAirDate )

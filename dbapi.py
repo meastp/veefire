@@ -21,8 +21,6 @@ import xml.etree.ElementTree as ET
 import os
 import sys
 
-#TODO: Change filesystem property from each show to the whole database?
-
 class Database :
     """
     A Database. Contains Shows.
@@ -45,7 +43,6 @@ class Database :
         Load shows from the 'database'.
         """
         #FIXME: Catch the right exeption. ( when database directory is empty )
-        #FIXME: Error check for Database methods( addShow, Season etc. )
         try :
             for afile in os.listdir( self.dbDir ) :
                 ## We don't want to include temporary files.
@@ -374,8 +371,6 @@ class Filesystem :
         """
         Return valid string.
         """
-        
-        #FIXME: Is this check necessary?
         if String == None :
             return None
         
@@ -384,8 +379,7 @@ class Filesystem :
             invalidCharDecoded = invalidChar.encode( 'utf-8')
             if invalidCharDecoded in String :
                 String = String.replace( invalidCharDecoded, InvChar.replacement )
-            
-                
+        
         return String
 
 class InvChar :

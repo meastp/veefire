@@ -25,12 +25,15 @@ import copy
 
 class Backends :
     """
-    Methods for retrieving backends.
+    Common methods for backends.
     """
     def __init__ ( self ) :
         pass
     
     def getBackends ( self ) :
+        """
+        Return registered backends.
+        """
         backends = [ ]
         for file in os.listdir( sys.path[0] ) :
             print file
@@ -43,18 +46,15 @@ class Backend :
     """
     Common methods to interface with the backends.
     """
-    #TODO: Test update and merge functions extensively.
-    #FIXME: Format names before comparing. Error on / in title.
-    #FIXME: Make the resolveConflict function abstract. It will have to be overloaded for use in interfaces.
     def __init__( self ) :
         
         self.currentDB = Database()
         self.currentDB.loadDB()
         
-        
         self.updateDB = Database()
     
     def addNewShow ( self, Show ) :
+    
         return self.currentDB.addShow( Show )
     
     def updateDatabase ( self ) :

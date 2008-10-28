@@ -3,7 +3,7 @@
     - database path as a property
     - apis and backends in a bin/ folder
 
-Fix editor. -> returns None instead of False
+Fix editor. -> dbfunctions returns None instead of False
             -> fix imports.
 
 Make main gtk program.
