@@ -76,35 +76,34 @@ class Database :
         except :
             self.database = [ ]
 
-    def addShow ( self, Show ) :
+    def addShow ( self, InputShow ) :
         """
         Add a Show.
         """
-        result = self.getShow( Show.name )
-        if result == None : 
-            self.database.append(Show)
-            return Show
-        else :
+        if self.getShow( InputShow ) != None :
             return None
+        else : 
+            self.database.append( InputShow )
+            return InputShow
         
-    def getShow ( self, name ) :
+    def getShow ( self, InputShow ) :
         """
         Return a Show.
         """
         for Show in self.database :
-            if name == Show.name :
+            if InputShow.name == Show.name :
                 return Show
         return None
         
-    def removeShow ( self, name ) :
+    def removeShow ( self, InputShow ) :
         """
         Remove a Show.
         """
-        for Show in self.database :
-            if name == Show.name :
-                self.database.remove( Show )
-                return Show
-        return None
+        if self.getShow( InputShow ) == None :
+            return None
+        else : 
+            self.database.remove( InputShow )
+            return InputShow
     
     def printDb ( self ) :
         """
@@ -186,70 +185,76 @@ class Show :
         self.url = url
         self.alias = []
         self.seasons = []
-    def addAlias ( self, Alias ) :
+    def addAlias ( self, InputAlias ) :
         """
         Add an alias.
         """
-        self.alias.append( Alias )
-        return Alias
+        if self.getAlias( InputAlias ) != None :
+            return None
+        else : 
+            self.alias.append( InputAlias )
+            return InputAlias
         
-    def getAlias ( self, Alias ) :
+    def getAlias ( self, InputAlias ) :
         """
         Return an Alias
         """
-        Alias.name = Alias.name.lower()
-        for AliasItem in self.alias :
-            if AliasItem.name == Alias.name :
-                return AliasItem
+        ## Aliases are lowercase.
+        InputAlias.name = InputAlias.name.lower()
+        for Alias in self.alias :
+            if Alias.name == InputAlias.name :
+                return Alias
         return None
         
-    def removeAlias ( self, Alias ) :
+    def removeAlias ( self, InputAlias ) :
         """
         Remove an Alias
         """
-        aliasItem = self.getAlias( Alias )
-        if aliasItem != None :
-            self.alias.remove( aliasItem )
-            return Alias
-        return None
+        if self.getAlias( InputAlias ) == None :
+            return None
+        else : 
+            self.alias.remove( InputAlias )
+            return InputAlias
         
-    def addSeason ( self, Season ) :
+    def addSeason ( self, InputSeason ) :
         """
         Add a Season to the Show.
         """
-        result = self.getSeason( Season.name )
+        if self.getSeason( InputSeason ) != None :
+            return None
+        else : 
+            self.seasons.append( InputSeason )
+            return InputSeason
         
-        if result == None :
-            self.seasons.append( Season )
-            return self.getSeason( Season.name )
-        else :
-            return result
-        
-    def addEpisode ( self, Episode, SeasonNr ) :
-        """
-        Add an Episode to a Season.
-        """
-        result = self.addSeason( Season(SeasonNr) )
-        return result.addEpisode( Episode )
-        
-    def getSeason ( self, seasonNr ) :
+    def getSeason ( self, InputSeason ) :
         """
         Return a Season.
         """
         for Season in self.seasons :
-            if seasonNr == Season.name :
-                return Season
+            if InputSeason.name == Season.name :
+                return InputSeason
         return None
         
-    def removeSeason ( self, seasonName ) :
+    def removeSeason ( self, InputSeason ) :
         """
         Remove a Season.
         """
-        for Season in self.seasons :
-            if episodeName == Season.name :
-                self.seasons.remove(Season)
-                return Season
-        return None
+        if self.getSeason( InputSeason ) == None :
+            return None
+        else : 
+            self.seasons.remove( InputSeason )
+            return InputSeason
+    
+    def addEpisode ( self, InputEpisode, InputSeason ) :
+        """
+        Add an Episode to a Season.
+        """
+        Season = self.getSeason( InputSeason )
+        if Season != None :
+            return Season.addEpisode( InputEpisode )
+        else :
+            InputSeason.addEpisode( InputEpisode )
+            return self.addSeason( InputSeason )
     
     def clearEpisodes ( self ) :
         """
@@ -270,38 +275,38 @@ class Season :
     """
     A Season. Contains Episodes.
     """
-    def __init__ ( self, seasonName ) :
-        self.name = seasonName
+    def __init__ ( self, SeasonName ) :
+        self.name = SeasonName
         self.episodes = []
         
-    def addEpisode ( self, Episode ) :
+    def addEpisode ( self, InputEpisode ) :
         """
         Add an Episode.
         """
-        if self.getEpisode(Episode.name) != None :
+        if self.getEpisode( InputEpisode ) != None :
             return None
         else : 
-            self.episodes.append( Episode )
-            return Episode
+            self.episodes.append( InputEpisode )
+            return InputEpisode
         
-    def getEpisode ( self, episodeName ) :
+    def getEpisode ( self, InputEpisode ) :
         """
-        Return an Episode determined by episode number (string).
+        Return an Episode.
         """
         for Episode in self.episodes :
-            if episodeName == Episode.name :
-                return Episode
+            if InputEpisode.name == Episode.name :
+                return InputEpisode
         return None
         
-    def removeEpisode ( self, episodeName ) :
+    def removeEpisode ( self, InputEpisode ) :
         """
-        Remove an episode from the Season determined by episode number (string).
+        Remove an Episode.
         """
-        for Episode in self.episodes :
-            if episodeName == Episode.name :
-                self.episodes.remove(Episode)
-                return Episode
-        return None
+        if self.getEpisode( InputEpisode ) == None :
+            return None
+        else : 
+            self.episodes.remove( InputEpisode )
+            return InputEpisode
 
 class Episode :
     """
