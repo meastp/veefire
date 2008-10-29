@@ -87,7 +87,7 @@ class Backend :
             
             ## Populate the updateDB
             for Show in DB.database :
-                show = self.updateDB.getShow( Show.name )
+                show = self.updateDB.getShow( Show )
                 for Season in Show.seasons :
                     show.addSeason( Season )
         
@@ -102,7 +102,7 @@ class Backend :
         for Show in self.updateDB.database :
 #            print 'Show: ' + Show.name + str(Show)
 #            Show.printShow()
-            show = self.currentDB.getShow( Show.name )
+            show = self.currentDB.getShow( Show )
 #            print 'show: ' + show.name + str(show)
 #            show.printShow()
             if show == None :
@@ -123,7 +123,7 @@ class Backend :
         """
         for Season in newShow.seasons :
 #            print '   Season: ' + Season.name + str(Season)
-            season = currentShow.getSeason( Season.name )
+            season = currentShow.getSeason( Season )
 #            if season != None :
 #                print '   season: ' + season.name + str(season)
             if season == None :
@@ -143,7 +143,7 @@ class Backend :
         
         for Episode in newSeason.episodes :
 #            print '      Episode: ' + Episode.name + str(Episode)
-            episode = currentSeason.getEpisode( Episode.name )
+            episode = currentSeason.getEpisode( Episode )
 #            if episode != None :
 #                print '      episode :' + episode.name + str(episode)
             if episode == None :

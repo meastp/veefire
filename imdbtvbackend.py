@@ -83,7 +83,7 @@ class imdbtvbackend :
                     ## Extract info in every episode/item, and add to one tuple
                     merge = regexp.extractEpSeTitle( str(item.find('h3')) ) + regexp.extractAirDate( str( item.find('strong') ) )
                     if ( len(merge) == 4 ) : ## If merge is proper
-                        Show.addEpisode( Episode( merge[1], merge[2], merge[3] ), merge[0] )
+                        Show.addEpisode( Episode( merge[1], merge[2], merge[3] ), Season( merge[0] ) )
             updateDB.addShow( Show )
         
         ## showandcontentlist is mutable, so not neccessary to return it.

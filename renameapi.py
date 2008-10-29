@@ -35,11 +35,34 @@ class Rename :
         """
         self.folders = [ ]
         
-    def addFolder(self, path, shows=None) :
+    def addFolder(self, InputFolder) :
         """
-        Add folder contents.
+        Add a Folder.
         """
-        self.folders.append( Folder(path, shows) )
+        if self.getFolder( InputFolder ) != None :
+            return None
+        else : 
+            self.folders.append( InputFolder )
+            return InputFolder
+        
+    def getFolder ( self, InputFolder ) :
+        """
+        Return a Folder.
+        """
+        for Folder in self.folders :
+            if InputFolder.path == Folder.path :
+                return Folder
+        return None
+        
+    def removeFolder ( self, InputFolder ) :
+        """
+        Remove a Folder.
+        """
+        if self.getFolder( InputFolder ) == None :
+            return None
+        else : 
+            self.folders.remove( InputFolder )
+            return InputFolder
         
     def getMatchingShows(self) :
         """
@@ -178,14 +201,14 @@ class FileName :
         <Show> : The chosen show from getMatchingShows().
         """
         #FIXME: Show should not be a list (but resolved after self.getMatchingShows() ).
-        self.fileSystem = Filesystems().getFilesystem( Show.filesystem )
+        self.fileSystem = Filesystems().getFilesystem( Filesystem( Show.filesystem ) )
         
         self.showName = Show.name
         self.seasonNumber = self.getSeason()
         self.episodeNumber = self.getEpisode()
         
-        Season = Show.getSeason( self.seasonNumber )
-        Episode = Season.getEpisode( self.episodeNumber )
+        Season = Show.getSeason( Season( self.seasonNumber ) )
+        Episode = Season.getEpisode( Episode( self.episodeNumber , 'title', 'airdate' )
         
         ## Episode does not exist.
         if Episode == None :
@@ -261,8 +284,8 @@ class FileName :
 if __name__ == '__main__':
     
     me = Rename()
-    me.addFolder( '/home/meastp/test')
-    me.addFolder( '/home/meastp/test/backup' )
+    me.addFolder( Folder('/home/meastp/test'))
+    me.addFolder( Folder('/home/meastp/test/backup'))
     ms = me.getMatchingShows()
     for Folder in ms :
         print Folder.path

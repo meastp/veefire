@@ -49,9 +49,10 @@ class Database :
                 if afile[-1] == '~' :
                     continue
                 
+                show = Show( properties.attrib['name'], properties.attrib['duration'], properties.attrib['filesystem'], properties.attrib['backend'], properties.attrib['url'] )
                 ## Not very elegant? Omits Shows not in self.shows, if not None.
                 if self.shows != None :
-                    if self.shows.getShow( properties.attrib['name'] ) == None :
+                    if self.shows.getShow( show ) == None :
                         continue
                 
                 files = os.path.join( self.dbDir , afile )
@@ -59,7 +60,6 @@ class Database :
                 ## Root XML Tag
                 root = ET.parse( files ).getroot()
                 properties = root.find('showproperties')
-                show = Show( properties.attrib['name'], properties.attrib['duration'], properties.attrib['filesystem'], properties.attrib['backend'], properties.attrib['url'] )
                 
                 ## Aliases
                 for showname in root.find('fileproperties').findall('alias') :
@@ -72,7 +72,7 @@ class Database :
                         newSeason.addEpisode( Episode( episode.attrib["number"], episode.attrib["title"], episode.attrib["airdate"] ,episode.attrib["arc"] ) )
                     show.addSeason( newSeason )
                 
-                self.database.append(show)
+                self.addShow(show)
         except :
             self.database = [ ]
 
@@ -232,7 +232,7 @@ class Show :
         """
         for Season in self.seasons :
             if InputSeason.name == Season.name :
-                return InputSeason
+                return Season
         return None
         
     def removeSeason ( self, InputSeason ) :
@@ -295,7 +295,7 @@ class Season :
         """
         for Episode in self.episodes :
             if InputEpisode.name == Episode.name :
-                return InputEpisode
+                return Episode
         return None
         
     def removeEpisode ( self, InputEpisode ) :
@@ -348,15 +348,34 @@ class Filesystems :
         
         return filesystems
     
-    def getFilesystem( self, name ) :
+    def addFilesystem ( self, InputFilesystem) :
         """
-        Return Filesystem.
+        Add a Filesystem.
+        """
+        if self.getChar( InputFilesystem ) != None :
+            return None
+        else : 
+            self.chars.append( InputFilesystem )
+            return InputFilesystem
+    
+    def getFilesystem( self, InputFilesystem ) :
+        """
+        Return a Filesystem.
         """
         for Filesystem in self.filesystems :
-            if name == Filesystem.name :
+            if InputFilesystem.name == Filesystem.name :
                 return Filesystem
-        
         return None
+    
+    def removeFilesystem ( self, InputFilesystem) :
+        """
+        Remove a Filesystem.
+        """
+        if self.getChar( InputFilesystem ) == None :
+            return None
+        else : 
+            self.chars.remove( InputFilesystem )
+            return InputFilesystem
 
 class Filesystem :
     """
@@ -370,7 +389,30 @@ class Filesystem :
         """
         Add an invalid character.
         """
-        self.chars.append( InvChar )
+        if self.getChar( InvChar ) != None :
+            return None
+        else : 
+            self.chars.append( InvChar )
+            return InvChar
+        
+    def getChar ( self, InvChar ) :
+        """
+        Return an invalid character.
+        """
+        for Char in self.chars :
+            if InvChar.name == Char.name :
+                return Char
+        return None
+        
+    def removeChar ( self, InvChar) :
+        """
+        Remove an invalid character.
+        """
+        if self.getChar( InvChar ) == None :
+            return None
+        else : 
+            self.chars.remove( InvChar )
+            return InvChar
         
     def validateString( self, String ) :
         """
