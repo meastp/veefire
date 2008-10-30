@@ -400,7 +400,7 @@ class Filesystem :
         Return an invalid character.
         """
         for Char in self.chars :
-            if InvChar.name == Char.name :
+            if InvChar.char == Char.char and InvChar.replacement == Char.replacement :
                 return Char
         return None
         
