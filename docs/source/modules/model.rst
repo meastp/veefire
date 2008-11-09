@@ -26,6 +26,9 @@
 ..  autoclass::     InvChar
                     :members:
 
+.. include::
+    ../examples/apidbapi.rst
+
 :mod:`api.renameapi` -- File, Folder and Rename
 ================================================
 
@@ -39,6 +42,9 @@
 ..  autoclass::     Rename
                     :members:
 
+.. include::
+    ../examples/apirenameapi.rst
+
 :mod:`api.backendapi` -- Backends and BackendInterface
 ==========================================================
 
@@ -49,12 +55,18 @@
 ..  autoclass::     BackendInterface
                     :members:
 
+.. include::
+    ../examples/apibackendapi.rst
+
 :mod:`backends.base` -- Backend Superclass
 ==========================================================
 
 ..  automodule:: backends.base
 ..  autoclass::     BaseBackend
                     :members:
+
+.. include::
+    ../examples/backendsbase.rst
 
 :mod:`backends.imdbtv` -- Backend to imdb.com's tv section
 ============================================================
@@ -65,3 +77,6 @@
 
 ..  autoclass::     Regexes
                     :members:
+
+.. include::
+    ../examples/backendsimdbtv.rst

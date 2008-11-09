@@ -1,3 +1,5 @@
+.. _database-xml-file:
+
 Show Database
 =====================
 

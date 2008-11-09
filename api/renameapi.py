@@ -15,38 +15,13 @@
 #    GNU General Public License for more details.
 
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with veefire.  If not, see <http://www.gnu.org/licenses/>.
 
 '''
 .. moduleauthor:: Mats Taraldsvik <mats.taraldsvik@gmail.com>
 
 Contains classes for renaming files, using :mod:`backends`.
 
-**Example:**
-    
-    Generate previews for every file name
-    
-    .. warning::
-        Remember that FileName.setCorrectShow() needs to be overloaded.
-    
-
-.. code-block:: python
-    :linenos:
-    
-    me = Rename()
-    me.addFolder( Folder('a/test/folder/path/with/files'))
-    me.addFolder( Folder('a/test/folder/path/with/files/subfolder'))
-    ms = me.getMatchingShows()
-    for Folder in ms :
-        print Folder.path
-        for FileName in Folder.fileNames :
-            print '  ' + str(FileName.PossibleShowMatches) + '  ' + str( FileName.PossibleShowMatches[0].name )
-    pv = me.generatePreviews()
-    for Folder in pv :
-        for item in Folder :
-            print item
-        for FileName in Folder.fileNames :
-            print '  ' + FileName.generatedFileName
 '''
 
 from dbapi import Database, Show, Season, Episode, Alias, Filesystems, Filesystem, InvChar
@@ -61,8 +36,17 @@ class Rename :
     """
     Rename files. Contains Folders.
     """
-    def __init__(self) :
+    def __init__(self, dbDir, filesystemDir) :
+        '''
+        :param dbDir: Path to database directory
+        :type dbDir: string or None
+        :param filesystemDir: Path to filesystems.xml
+        :type filesystemDir: string
+        '''
         self.folders = [ ]
+        
+        self.filesystemDir = filesystemDir
+        self.dbDir = dbDir
         
     def addFolder(self, InputFolder) :
         """
@@ -75,7 +59,9 @@ class Rename :
         """
         if self.getFolder( InputFolder ) != None :
             return None
-        else : 
+        else :
+            InputFolder.dbDir = self.dbDir
+            InputFolder.loadFiles()
             self.folders.append( InputFolder )
             return InputFolder
         
@@ -128,25 +114,29 @@ class Rename :
         """
         tfolders = []
         for Folder in self.folders :
-            tfolders.append(Folder.generatePreviews())
+            tfolders.append(Folder.generatePreviews(self.filesystemDir))
         return tfolders
 
 class Folder :
     """
     A Folder. Contains FileNames.
     """
-    def __init__ (self, path, shows=None) :
+    def __init__ (self, path, dbDir=None, shows=None) :
         """
-        Initialize folder.
         :param path: folder path to search in
         :type path: string
+        :param dbDir: Path to database directory
+        :type dbDir: string or None
         :param shows: limit shows to search through by passing a list of Show objects
         :type shows: list or none
         """
+        self.dbDir = dbDir
+        self.shows = shows
         self.path = path
         
+    def loadFiles( self ) :
         ## Load Databse (optionally with limits.)
-        self.database = Database( shows )
+        self.database = Database( self.dbDir , self.shows )
         self.database.loadDB()
         
         ## Add FileNames to folder.
@@ -168,16 +158,18 @@ class Folder :
             FileName.getMatchingShows()
         return self.fileNames
         
-    def generatePreviews(self) :
+    def generatePreviews(self, filesystemDir) :
         """
         Generate previews for every FileName.
         
+        :param filesystemDir: Path to filesystems.xml
+        :type filesystemDir: string
         :returns: list of tuples (oldname, newname) for every FileName
         :rtype: list
         """
         previews = []
         for FileName in self.fileNames :
-            previews.append(FileName.generatePreview())
+            previews.append(FileName.generatePreview(filesystemDir))
         return previews
 
 class FileName :
@@ -204,6 +196,8 @@ class FileName :
         self.seepattern2 = re.compile( r'[0]*([1-9]+)[xX][0]*([1-9]+)' )
         self.pattern2 = r'[0]*([1-9]+)[xX][0]*([1-9]+)'
         
+        self.generatedFileName = None
+        
         ##Styles
         #TODO: Support multiple Styles.
         
@@ -227,7 +221,7 @@ class FileName :
         if rawShowName == None :
             return None
         
-        print rawShowName
+        #print rawShowName
         
         ## Search through Shows and try to match Aliases
         ## PossibleShowMatches could have multiple Show matches.
@@ -239,11 +233,12 @@ class FileName :
         
         #FIXME: Use a function to resolve the conflicts here. Needs to be abstract and overridden.
         if len( PossibleShowMatches ) == 0 :
-            return None
+            self.CorrectShow = None
+            return
         
-        CorrectShow = self.setCorrectShow( PossibleShowMatches )
+        self.CorrectShow = self.setCorrectShow( PossibleShowMatches )
         
-        return CorrectShow
+        return self.CorrectShow
         
     def setCorrectShow(self, Shows ) :
         """
@@ -260,46 +255,54 @@ class FileName :
         
         raise NotImplemented
         
-    def generatePreview(self) :
+    def generatePreview(self, filesystemDir) :
         """
         Return current file name and new file name in a tuple.
         
+        :param filesystemDir: Path to filesystems.xml
+        :type filesystemDir: string
         :returns: tuple (oldname, newname)
         :rtype: tuple
         """
         ## Episode does not exist.
-        if self.getShowDetails( self.Show ) == None :
+        if self.getShowDetails( filesystemDir, self.CorrectShow ) == None :
             return self.fileName , None
             
         self.replaceInvalidCharacters()
-        self.generatedFileName = self.generateFileName()
+        self.generatedFileName = self.generateFileName(filesystemDir)
         
         return self.fileName, self.generatedFileName
     
-    def getShowDetails (self, Show) :
+    def getShowDetails (self, filesystemDir, Show) :
         """
         Retrieves Show details.
         
+        :param filesystemDir: Path to filesystems.xml
+        :type filesystemDir: string
         :param Show: Show object to add file name details to.
         :type Show: :class:`api.dbapi.Show`
         """
+        
+        if Show == None :
+            return None
+        
         #FIXME: Show should not be a list (but resolved after self.getMatchingShows() ).
-        self.fileSystem = Filesystems().getFilesystem( Filesystem( Show.filesystem ) )
+        self.fileSystem = Filesystems(filesystemDir).getFilesystem( Filesystem( Show.filesystem ) )
         
         self.showName = Show.name
         self.seasonNumber = self.getSeason()
         self.episodeNumber = self.getEpisode()
         
-        Season = Show.getSeason( Season( self.seasonNumber ) )
-        Episode = Season.getEpisode( Episode( self.episodeNumber , 'title', 'airdate' ))
+        NewSeason = Show.getSeason( Season( self.seasonNumber ) )
+        NewEpisode = NewSeason.getEpisode( Episode( self.episodeNumber , 'title', 'airdate' ))
         
         ## Episode does not exist.
-        if Episode == None :
+        if NewEpisode == None :
             return None
         
-        self.episodeTitle = Episode.title
-        self.episodeAirDate = Episode.airdate
-        self.episodeArc = Episode.arc
+        self.episodeTitle = NewEpisode.title
+        self.episodeAirDate = NewEpisode.airdate
+        self.episodeArc = NewEpisode.arc
         
         #FIXME: Proper regex function to get file suffix.
         self.fileSuffix = self.fileName[-4:]

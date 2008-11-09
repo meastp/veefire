@@ -15,37 +15,13 @@
 #    GNU General Public License for more details.
 
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with veefire.  If not, see <http://www.gnu.org/licenses/>.
 
 '''
 .. moduleauthor:: Mats Taraldsvik <mats.taraldsvik@gmail.com>
 
 Contains classes for the show database and filesystems.
 
-**Example:**
-    
-    Load the current database files into Python objects, and print a nice formatted overview of it.
-    
-
-.. code-block:: python
-    :linenos:
-    
-    db = Database()
-    db.loadDB()
-    db.printDb()
-
-
-**Example:**
-    
-    Get Filesystem object by name.
-    
-
-.. code-block:: python
-    :linenos:
-    
-    fs = Filesystems()
-    Filesystem = fs.getFilesystem( "ext3" )
-    print Filesystem
 '''
 
 import xml.etree.ElementTree as ET
@@ -67,48 +43,46 @@ class Database :
         
         self.shows = shows
         
-        if dbDir == None :
-            self.dbDir = os.path.join( os.path.dirname( __file__ ) , 'database' )
-        else :
-            self.dbDir = dbDir
+        self.dbDir = dbDir
         
     def loadDB ( self ) :
         """
         Load shows from the 'database' directory.
         """
         #FIXME: Catch the right exeption. ( when database directory is empty )
-        try :
-            for afile in os.listdir( self.dbDir ) :
-                ## We don't want to include temporary files.
-                if afile[-1] == '~' :
+        for afile in os.listdir( self.dbDir ) :
+            ## We don't want to include temporary files.
+            if afile[-1] == '~' :
+                continue
+            
+            files = os.path.join( self.dbDir , afile )
+            
+            ## Root XML Tag
+            root = ET.parse( files ).getroot()
+            properties = root.find('showproperties')
+            
+            
+            
+            show = Show( properties.attrib['name'], properties.attrib['duration'], properties.attrib['filesystem'], properties.attrib['backend'], properties.attrib['url'] )
+            ## Not very elegant? Omits Shows not in self.shows, if not None.
+            if self.shows != None :
+                if self.shows.getShow( show ) == None :
                     continue
-                
-                show = Show( properties.attrib['name'], properties.attrib['duration'], properties.attrib['filesystem'], properties.attrib['backend'], properties.attrib['url'] )
-                ## Not very elegant? Omits Shows not in self.shows, if not None.
-                if self.shows != None :
-                    if self.shows.getShow( show ) == None :
-                        continue
-                
-                files = os.path.join( self.dbDir , afile )
-                
-                ## Root XML Tag
-                root = ET.parse( files ).getroot()
-                properties = root.find('showproperties')
-                
-                ## Aliases
-                for showname in root.find('fileproperties').findall('alias') :
-                    show.addAlias( Alias( showname.attrib['value'] ) )
-                
-                ## Seasons and Episodes
-                for season in root.findall('season') :
-                    newSeason = Season( season.attrib['number'] )
-                    for episode in season.findall('episode') :
-                        newSeason.addEpisode( Episode( episode.attrib["number"], episode.attrib["title"], episode.attrib["airdate"] ,episode.attrib["arc"] ) )
-                    show.addSeason( newSeason )
-                
-                self.addShow(show)
-        except :
-            self.database = [ ]
+            
+            
+            
+            ## Aliases
+            for showname in root.find('fileproperties').findall('alias') :
+                show.addAlias( Alias( showname.attrib['value'] ) )
+            
+            ## Seasons and Episodes
+            for season in root.findall('season') :
+                newSeason = Season( season.attrib['number'] )
+                for episode in season.findall('episode') :
+                    newSeason.addEpisode( Episode( episode.attrib["number"], episode.attrib["title"], episode.attrib["airdate"] ,episode.attrib["arc"] ) )
+                show.addSeason( newSeason )
+            
+            self.addShow(show)
 
     def addShow ( self, InputShow ) :
         """
@@ -462,8 +436,15 @@ class Filesystems :
     """
     Filesystems. Methods for Filesystem.
     """
-    def __init__ ( self ) :
+    def __init__ ( self, filesystemsDir=None ) :
+        """
+        :param filesystemDir: Path to filesystems.xml
+        :type filesystemDir: string
+        """
+        
+        self.filesystemsDir = filesystemsDir
         self.filesystems = self.loadFilesystems()
+        
         
     def loadFilesystems ( self ) :
         """
@@ -473,7 +454,7 @@ class Filesystems :
         :rtype: list
         """
         filesystems = [ ]
-        root = ET.parse( os.path.join( os.path.dirname( __file__ ) , 'filetypes.xml' ) ).getroot()
+        root = ET.parse( os.path.abspath(self.filesystemsDir )).getroot()
         
         for filetype in root.findall('filetype') :
             system = Filesystem( filetype.attrib['name'] )

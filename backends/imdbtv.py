@@ -15,42 +15,12 @@
 #    GNU General Public License for more details.
 
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with veefire.  If not, see <http://www.gnu.org/licenses/>.
 
 '''
 .. moduleauthor:: Mats Taraldsvik <mats.taraldsvik@gmail.com>
 
 Contains the backend class for imdbtv's tv section
-
-**Example:**::
-
-    Update shows against imdbtv.
-
-.. code-block:: python
-    :linenos:
-    
-    Showlist = [ Show( "Black Books", "30", "ext3" , "imdbtvbackend", "tt0262150" ) ,
-                 Show( "The IT Crowd", "30", "ext3" , "imdbtvbackend", "tt0487831" ) ,
-                 Show( "Life on Mars", "60", "ext3" , "imdbtvbackend", "tt0478942" ) ]
-    
-    backend = Backend()
-    
-    DB = backend.updateShows( Showlist )
-    
-    DB.printDb()
-    
-    
-.. note::
-    The url should be the part after "/title/" in the url.
-    
-    | 
-    | *http://www.imdb.com/title/tt0262150/episodes*
-    | 
-    | relative url is:
-    | 
-    | *tt0262150*
-    
-    
 
 '''
 

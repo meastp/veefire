@@ -1,3 +1,5 @@
+.. _filetypes-xml:
+
 Filesystems in veefire
 ========================
 

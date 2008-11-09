@@ -15,36 +15,13 @@
 #    GNU General Public License for more details.
 
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with veefire.  If not, see <http://www.gnu.org/licenses/>.
 
 '''
 .. moduleauthor:: Mats Taraldsvik <mats.taraldsvik@gmail.com>
 
 Contains classes for interfacing with the backends.
 
-**Example:**
-    
-    Update the Database, using the backends to retrieve information.
-    
-
-.. code-block:: python
-    :linenos:
-    
-    testSession = BackendInterface()
-    #testSession.addNewShow( Show() )
-    testSession.updateDatabase()
-
-**Example:**
-    
-    Get backend names.
-    
-
-.. code-block:: python
-    :linenos:
-    
-    testSession2 = Backend()
-    testSession2.getBackends()
-    [ "imdbtv" , "name2", "name3" ]
 '''
 
 from dbapi import Database, Show, Filesystem
@@ -60,30 +37,39 @@ class Backends :
     def __init__ ( self ) :
         pass
     
-    def getBackends ( self ) :
+    def getBackends ( self, BackendDir ) :
         """
         Get registered backends.
         
+        :param BackendDir: Directory the backends are located.
+        :type BackendDir: string
         :returns: list of backends as string
         :rtype: list
         """
         backends = [ ]
-        for file in os.listdir( sys.path[0] ) :
-            print file
-            if "backend.py" in file :
-                if file != "backendapi.py" and file != "__init__.py" and file != "base.py" and ".pyc" not in file:
-                    backends.append( file.split( '.', 1)[0] )
+        for file in os.listdir( BackendDir ) :
+            if file != "backendapi.py" and file != "__init__.py" and file != "base.py" and "~" not in file and file.split( '.', 1)[0] not in backends and ".pyc" not in file:
+                backends.append( file.split( '.', 1)[0] + "backend" )
         return backends
 
 class BackendInterface :
     """
     Common methods to interface with the backends.
     """
-    def __init__( self ) :
-        self.currentDB = Database()
+    def __init__( self, dbDir=None, shows=None ) :
+        '''
+        :param dbDir: Path to database directory
+        :type dbDir: string or None
+        :param shows: list of valid Shows in this database
+        :type shows: list or None
+        '''
+        self.dbDir = dbDir
+        self.shows = shows
+        
+        self.currentDB = Database(self.dbDir, self.shows)
         self.currentDB.loadDB()
         
-        self.updateDB = Database()
+        self.updateDB = Database(self.dbDir)
     
     def addNewShow ( self, Show ) :
         """
@@ -103,7 +89,7 @@ class BackendInterface :
         """
         self.fillUpdateDB()
         
-        self.mergeDB.write()
+        self.mergeDB.write(True)
     
     def fillUpdateDB( self ) :
         """
@@ -145,7 +131,7 @@ class BackendInterface :
         
         :rtype: None
         """
-        self.mergeDB = Database()
+        self.mergeDB = Database(self.dbDir)
         
         for Show in self.updateDB.database :
 #            print 'Show: ' + Show.name + str(Show)
@@ -268,7 +254,7 @@ class BackendInterface :
 #        print '          conflict: ' + str(firstEpisode) + ':' + firstEpisode.title + ' vs. ' + str(secondEpisode) + ':' + secondEpisode.title
 #        return secondEpisode
         
-        raise NotImplemented
+        raise NotImplementedError
         
 if __name__ == '__main__':
     testSession = BackendInterface()
