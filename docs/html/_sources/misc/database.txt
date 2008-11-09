@@ -1,0 +1,58 @@
+Show Database
+=====================
+
+The Show database is in xml format, with one file per show. It is retrieved into Python and converted to :mod:`api.dbapi` objects
+with :mod:`xml.etree.ElementTree` in :class:`api.dbapi.Database`.
+
+**Structure - the Database logic:**
+
+
+ | *<tvshow>* *root*
+ | *<showproperties>* :class:`api.dbapi.Show` ( name, backend, relative url, filesystem, duration )
+ | *<fileproperties>* 
+ |       *<alias>* :class:`api.dbapi.Alias` ( value )
+ | *<season>* :class:`api.dbapi.Season` ( number )
+ |       *<episode>* :class:`api.dbapi.Episode` ( number, title, airdate, arc )
+
+**Example:**
+
+.. code-block:: xml
+    
+    <?xml version="1.0" encoding="UTF-8"?>
+    <tvshow> 
+      <showproperties backend="imdbtvbackend" duration="30" filesystem="ext3" name="Black Books" url="tt0262150"/>
+      <fileproperties>
+        <alias value="black.books"/>
+        <alias value="bb"/>
+      </fileproperties>
+      <season number="1">
+        <episode airdate="29 September 2000" arc="none" number="1" title="Cooking the Books"/>
+        <episode airdate="6 October 2000" arc="none" number="2" title="Manny's First Day"/>
+        <episode airdate="13 October 2000" arc="none" number="3" title="The Grapes of Wrath"/>
+        <episode airdate="20 October 2000" arc="none" number="4" title="The Blackout"/>
+        <episode airdate="27 October 2000" arc="none" number="5" title="The Big Lock-Out"/>
+        <episode airdate="3 November 2000" arc="none" number="6" title="He's Leaving Home"/>
+      </season>
+      <season number="2">
+        <episode airdate="1 March 2002" arc="none" number="1" title="The Entertainer"/>
+        <episode airdate="8 March 2002" arc="none" number="2" title="Fever"/>
+        <episode airdate="15 March 2002" arc="none" number="3" title="The Fixer"/>
+        <episode airdate="22 March 2002" arc="none" number="4" title="Blood"/>
+        <episode airdate="29 March 2002" arc="none" number="5" title="Hello Sun"/>
+        <episode airdate="5 April 2002" arc="none" number="6" title="A Nice Change"/>
+      </season>
+      <season number="3">
+        <episode airdate="11 March 2004" arc="none" number="1" title="Manny Come Home"/>
+        <episode airdate="18 March 2004" arc="none" number="2" title="Elephants and Hens"/>
+        <episode airdate="25 March 2004" arc="none" number="3" title="Moo-Ma and Moo-Pa"/>
+        <episode airdate="1 April 2004" arc="none" number="4" title="A Little Flutter"/>
+        <episode airdate="8 April 2004" arc="none" number="5" title="The Travel Writer"/>
+        <episode airdate="15 April 2004" arc="none" number="6" title="Party"/>
+      </season>
+    </tvshow>
+    
+.. note::
+    The relative url depends on the backend used. In the example, it is :mod:`backends.imdbtv`
+    
+.. note::
+    episode.arc and show.duration is not implemented yet.

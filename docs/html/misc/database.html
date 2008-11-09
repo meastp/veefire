@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Show Database &mdash; veefire v1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+          URL_ROOT:    '../',
+          VERSION:     '1.0',
+          COLLAPSE_MODINDEX: false,
+          FILE_SUFFIX: ''
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/interface.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="contents" title="Global table of contents" href="../contents.html" />
+    <link rel="index" title="Global index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="veefire v1.0 documentation" href="../index.html" />
+    <link rel="next" title="Filesystems in veefire" href="filesystems.html" />
+    <link rel="prev" title="api.dbapi &#8211; Database and Filesystem" href="../modules/model.html" />
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="filesystems.html" title="Filesystems in veefire"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../modules/model.html" title="api.dbapi &#8211; Database and Filesystem"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">veefire v1.0 documentation</a> &raquo;</li>
+      </ul>
+    </div>
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  
+  <div class="section">
+<h1 id="show-database">Show Database<a class="headerlink" href="#show-database" title="Permalink to this headline">¶</a></h1>
+<p>The Show database is in xml format, with one file per show. It is retrieved into Python and converted to <a title="" class="reference" href="../modules/model.html#module-api.dbapi"><tt class="xref docutils literal"><span class="pre">api.dbapi</span></tt></a> objects
+with <tt class="xref docutils literal"><span class="pre">xml.etree.ElementTree</span></tt> in <a title="api.dbapi.Database" class="reference" href="../modules/model.html#api.dbapi.Database"><tt class="xref docutils literal"><span class="pre">api.dbapi.Database</span></tt></a>.</p>
+<p><strong>Structure - the Database logic:</strong></p>
+<blockquote>
+<div class="line-block">
+<div class="line"><em>&lt;tvshow&gt;</em> <em>root</em></div>
+<div class="line"><em>&lt;showproperties&gt;</em> <a title="api.dbapi.Show" class="reference" href="../modules/model.html#api.dbapi.Show"><tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt></a> ( name, backend, relative url, filesystem, duration )</div>
+<div class="line"><em>&lt;fileproperties&gt;</em></div>
+<div class="line-block">
+<div class="line"><em>&lt;alias&gt;</em> <a title="api.dbapi.Alias" class="reference" href="../modules/model.html#api.dbapi.Alias"><tt class="xref docutils literal"><span class="pre">api.dbapi.Alias</span></tt></a> ( value )</div>
+</div>
+<div class="line"><em>&lt;season&gt;</em> <a title="api.dbapi.Season" class="reference" href="../modules/model.html#api.dbapi.Season"><tt class="xref docutils literal"><span class="pre">api.dbapi.Season</span></tt></a> ( number )</div>
+<div class="line-block">
+<div class="line"><em>&lt;episode&gt;</em> <a title="api.dbapi.Episode" class="reference" href="../modules/model.html#api.dbapi.Episode"><tt class="xref docutils literal"><span class="pre">api.dbapi.Episode</span></tt></a> ( number, title, airdate, arc )</div>
+</div>
+</div>
+</blockquote>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;tvshow&gt;</span>
+  <span class="nt">&lt;showproperties</span> <span class="na">backend=</span><span class="s">&quot;imdbtvbackend&quot;</span> <span class="na">duration=</span><span class="s">&quot;30&quot;</span> <span class="na">filesystem=</span><span class="s">&quot;ext3&quot;</span> <span class="na">name=</span><span class="s">&quot;Black Books&quot;</span> <span class="na">url=</span><span class="s">&quot;tt0262150&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;fileproperties&gt;</span>
+    <span class="nt">&lt;alias</span> <span class="na">value=</span><span class="s">&quot;black.books&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;alias</span> <span class="na">value=</span><span class="s">&quot;bb&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/fileproperties&gt;</span>
+  <span class="nt">&lt;season</span> <span class="na">number=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;29 September 2000&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;1&quot;</span> <span class="na">title=</span><span class="s">&quot;Cooking the Books&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;6 October 2000&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;2&quot;</span> <span class="na">title=</span><span class="s">&quot;Manny&#39;s First Day&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;13 October 2000&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;3&quot;</span> <span class="na">title=</span><span class="s">&quot;The Grapes of Wrath&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;20 October 2000&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;4&quot;</span> <span class="na">title=</span><span class="s">&quot;The Blackout&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;27 October 2000&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;5&quot;</span> <span class="na">title=</span><span class="s">&quot;The Big Lock-Out&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;3 November 2000&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;6&quot;</span> <span class="na">title=</span><span class="s">&quot;He&#39;s Leaving Home&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/season&gt;</span>
+  <span class="nt">&lt;season</span> <span class="na">number=</span><span class="s">&quot;2&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;1 March 2002&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;1&quot;</span> <span class="na">title=</span><span class="s">&quot;The Entertainer&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;8 March 2002&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;2&quot;</span> <span class="na">title=</span><span class="s">&quot;Fever&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;15 March 2002&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;3&quot;</span> <span class="na">title=</span><span class="s">&quot;The Fixer&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;22 March 2002&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;4&quot;</span> <span class="na">title=</span><span class="s">&quot;Blood&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;29 March 2002&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;5&quot;</span> <span class="na">title=</span><span class="s">&quot;Hello Sun&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;5 April 2002&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;6&quot;</span> <span class="na">title=</span><span class="s">&quot;A Nice Change&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/season&gt;</span>
+  <span class="nt">&lt;season</span> <span class="na">number=</span><span class="s">&quot;3&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;11 March 2004&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;1&quot;</span> <span class="na">title=</span><span class="s">&quot;Manny Come Home&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;18 March 2004&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;2&quot;</span> <span class="na">title=</span><span class="s">&quot;Elephants and Hens&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;25 March 2004&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;3&quot;</span> <span class="na">title=</span><span class="s">&quot;Moo-Ma and Moo-Pa&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;1 April 2004&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;4&quot;</span> <span class="na">title=</span><span class="s">&quot;A Little Flutter&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;8 April 2004&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;5&quot;</span> <span class="na">title=</span><span class="s">&quot;The Travel Writer&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;episode</span> <span class="na">airdate=</span><span class="s">&quot;15 April 2004&quot;</span> <span class="na">arc=</span><span class="s">&quot;none&quot;</span> <span class="na">number=</span><span class="s">&quot;6&quot;</span> <span class="na">title=</span><span class="s">&quot;Party&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/season&gt;</span>
+<span class="nt">&lt;/tvshow&gt;</span>
+</pre></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The relative url depends on the backend used. In the example, it is <a title="" class="reference" href="../modules/model.html#module-backends.imdbtv"><tt class="xref docutils literal"><span class="pre">backends.imdbtv</span></tt></a></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">episode.arc and show.duration is not implemented yet.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="../modules/model.html" title="previous chapter"><tt class="docutils literal docutils literal"><span class="pre">api.dbapi</span></tt> &#8211; Database and Filesystem</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="filesystems.html" title="next chapter">Filesystems in veefire</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/misc/database.txt">Show Source</a></li>
+            </ul>
+            <h3>Quick search</h3>
+            <form class="search" action="../search.html" method="get">
+              <input type="text" name="q" size="18" /> <input type="submit" value="Go" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="filesystems.html" title="Filesystems in veefire"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../modules/model.html" title="api.dbapi &#8211; Database and Filesystem"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">veefire v1.0 documentation</a> &raquo;</li>
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2008, Mats Taraldsvik.
+      Last updated on Nov 09, 2008.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+    </div>
+  </body>
+</html>
