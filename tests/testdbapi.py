@@ -19,9 +19,62 @@
 
 import nose
 
-from api.dbapi import Filesystem, InvChar
+from api.dbapi import Filesystem, Filesystems, InvChar
+from api.dbapi import Show, Season, Episode
 
-## Unit Tests for the dbapi.
+class testSeason :
+    """
+    Test Season Class
+    """
+    def __init__(self) :
+        self.season = Season("100")
+        
+    def testAddEpisode(self) :
+        Episode1 = Episode( "2", "What A Title", "6 November, 2008" )
+        Episode2 = Episode( "333", "For A TV Show", "18 November, 2008" )
+        Episode3 = Episode( "4", "What A Title", "6 November, 2008")
+        assert self.season.addEpisode( Episode1 ) == Episode1
+        assert self.season.addEpisode( Episode1 ) == None
+        assert self.season.addEpisode( Episode2 ) == Episode2
+        assert self.season.addEpisode( Episode3 ) == Episode3
+        
+    def testGetEpisode(self) :
+        Episode1 = Episode( "2", "What A Title", "6 November, 2008" )
+        Episode2 = Episode( "333", "For A TV Show", "18 November, 2008" )
+        Episode3 = Episode( "4", "What A Title", "6 November, 2008")
+        self.season.addEpisode( Episode1 ) == Episode1
+        self.season.addEpisode( Episode2 ) == Episode2
+        assert self.season.getEpisode( Episode1 ) == Episode1
+        assert self.season.getEpisode( Episode3 ) == None
+        assert self.season.getEpisode( Episode( "2", "What A Title", "6 November, 2008" ) ) == Episode1
+        
+    def testRemoveEpisode(self) :
+        Episode1 = Episode( "2", "What A Title", "6 November, 2008" )
+        Episode2 = Episode( "333", "For A TV Show", "18 November, 2008" )
+        Episode3 = Episode( "4", "What A Title", "6 November, 2008")
+        self.season.addEpisode( Episode1 ) == Episode1
+        self.season.addEpisode( Episode2 ) == Episode2
+        assert self.season.removeEpisode( Episode1 ) == Episode1
+        assert self.season.removeEpisode( Episode1 ) == None
+        assert self.season.removeEpisode( Episode( "2", "What A Title", "6 November, 2008" ) ) == None
+        assert self.season.removeEpisode( Episode2 ) == Episode2
+        assert self.season.removeEpisode( Episode( "333", "For A TV Show", "18 November, 2008" ) ) == None
+
+#class testFilesystems :
+#    """
+#    Test Filesystems Class.
+#    """
+#    def __init__( self ) :
+#        self.fileystems = Filesystems() # Filesystem dir is None
+#        
+#    def testAddFilesystem( self ) :
+#        Filesystem1 = Filesystem('FS1')
+#        Filesystem2 = Filesystem('FS2')
+#        Filesystem3 = Filesystem('FS1')
+#        assert self.filesystems.addFilesystem( Filesystem1 ) == Filesystem1
+#        assert self.filesystems.addFilesystem( Filesystem1 ) == None
+#        assert self.filesystems.addFilesystem( Filesystem2 ) == Filesystem2
+#        assert self.filesystems.addFilesystem( Filesystem3 ) == None
 
 class testFilesystem :
     """
