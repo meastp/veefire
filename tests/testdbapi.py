@@ -21,6 +21,93 @@ import nose
 
 from api.dbapi import Filesystem, Filesystems, InvChar
 from api.dbapi import Show, Season, Episode
+from api.dbapi import Alias
+
+class testShow :
+    """
+    Test Show Class
+    """
+    def __init__(self) :
+        self.show = Show( "Test Show", "60", Filesystem("FileSystem"), "dummybackend", "dummyurl" )
+        
+    def testAddAlias(self) :
+        Alias1 = Alias("firstalias")
+        Alias2 = Alias("secondalias")
+        Alias3 = Alias("thirdalias")
+        assert self.show.addAlias( Alias1 ) == Alias1
+        assert self.show.addAlias( Alias1 ) == None
+        assert self.show.addAlias( Alias2 ) == Alias2
+        assert self.show.addAlias( Alias("secondalias")) == None
+        assert self.show.addAlias( Alias3 ) == Alias3
+        
+    def testGetAlias(self) :
+        Alias1 = Alias("firstalias")
+        Alias2 = Alias("secondalias")
+        Alias3 = Alias("thirdalias")
+        self.show.addAlias( Alias1 )
+        self.show.addAlias( Alias2 )
+        assert self.show.getAlias( Alias1 ) == Alias1
+        assert self.show.getAlias( Alias3 ) == None
+        assert self.show.getAlias( Alias("secondalias") ) == Alias2
+        assert self.show.getAlias( Alias("thirdalias") ) == None
+        
+    def testRemoveAlias(self) :
+        Alias1 = Alias("firstalias")
+        Alias2 = Alias("secondalias")
+        Alias3 = Alias("thirdalias")
+        self.show.addAlias( Alias1 )
+        self.show.addAlias( Alias2 )
+        assert self.show.removeAlias( Alias1 ) == Alias1
+        assert self.show.removeAlias( Alias1 ) == None
+        assert self.show.removeAlias( Alias("thirdalias") ) == None
+        assert self.show.removeAlias( Alias("secondalias") ) == Alias2
+        
+    def testAddSeason(self) :
+        Season1 = Season("1")
+        Season2 = Season("2")
+        Season3 = Season("3")
+        assert self.show.addSeason( Season1 ) == Season1
+        assert self.show.addSeason( Season1 ) == None
+        assert self.show.addSeason( Season2 ) == Season2
+        assert self.show.addSeason( Season("2") ) == None
+        assert self.show.addSeason( Season3 ) == Season3
+        
+    def testGetSeason(self) :
+        Season1 = Season("1")
+        Season2 = Season("2")
+        Season3 = Season("3")
+        self.show.addSeason( Season1 )
+        self.show.addSeason( Season2 )
+        assert self.show.getSeason( Season1 ) == Season1
+        assert self.show.getSeason( Season3 ) == None
+        assert self.show.getSeason( Season("2") ) == Season2
+        assert self.show.getSeason( Season("3") ) == None
+        
+    def testRemoveSeason(self) :
+        Season1 = Season("1")
+        Season2 = Season("2")
+        Season3 = Season("3")
+        self.show.addSeason( Season1 )
+        self.show.addSeason( Season2 )
+        assert self.show.removeSeason( Season1 ) == Season1
+        assert self.show.removeSeason( Season1 ) == None
+        assert self.show.removeSeason( Season("3") ) == None
+        assert self.show.removeSeason( Season("2") ) == Season2
+        
+    def testAddEpisode(self) :
+        Episode1 = Episode( "2", "What A Title", "6 November, 2008" )
+        Episode2 = Episode( "333", "For A TV Show", "18 November, 2008" )
+        Episode3 = Episode( "4", "What A Title", "6 November, 2008")
+        Season1 = Season("1")
+        Season2 = Season("2")
+        self.show.addSeason( Season1 )
+        assert self.show.addEpisode( Episode1, Season1 ) == Episode1
+        assert self.show.addEpisode( Episode2, Season("1") ) == Episode2
+        assert self.show.addEpisode( Episode1, Season("1") ) == None
+        assert self.show.addEpisode( Episode1, Season2 ) == Season2
+        assert self.show.addEpisode( Episode2, Season("2") ) == Episode2
+        assert self.show.addEpisode( Episode2, Season2 ) == None
+        assert self.show.addEpisode( Episode3, Season2 ) == Episode3
 
 class testSeason :
     """
@@ -42,8 +129,8 @@ class testSeason :
         Episode1 = Episode( "2", "What A Title", "6 November, 2008" )
         Episode2 = Episode( "333", "For A TV Show", "18 November, 2008" )
         Episode3 = Episode( "4", "What A Title", "6 November, 2008")
-        self.season.addEpisode( Episode1 ) == Episode1
-        self.season.addEpisode( Episode2 ) == Episode2
+        self.season.addEpisode( Episode1 )
+        self.season.addEpisode( Episode2 )
         assert self.season.getEpisode( Episode1 ) == Episode1
         assert self.season.getEpisode( Episode3 ) == None
         assert self.season.getEpisode( Episode( "2", "What A Title", "6 November, 2008" ) ) == Episode1
@@ -52,13 +139,12 @@ class testSeason :
         Episode1 = Episode( "2", "What A Title", "6 November, 2008" )
         Episode2 = Episode( "333", "For A TV Show", "18 November, 2008" )
         Episode3 = Episode( "4", "What A Title", "6 November, 2008")
-        self.season.addEpisode( Episode1 ) == Episode1
-        self.season.addEpisode( Episode2 ) == Episode2
+        self.season.addEpisode( Episode1 )
+        self.season.addEpisode( Episode2 )
         assert self.season.removeEpisode( Episode1 ) == Episode1
         assert self.season.removeEpisode( Episode1 ) == None
-        assert self.season.removeEpisode( Episode( "2", "What A Title", "6 November, 2008" ) ) == None
-        assert self.season.removeEpisode( Episode2 ) == Episode2
-        assert self.season.removeEpisode( Episode( "333", "For A TV Show", "18 November, 2008" ) ) == None
+        assert self.season.removeEpisode( Episode( "4", "What A Title", "6 November, 2008" ) ) == None
+        assert self.season.removeEpisode( Episode( "333", "For A TV Show", "18 November, 2008" ) ) == Episode2
 
 #class testFilesystems :
 #    """
@@ -106,12 +192,13 @@ class testFilesystem :
     def testRemoveChar( self ) :
         InvalidCharacter1 = InvChar( "Description", "002B", "plus" )
         InvalidCharacter2 = InvChar( "NewDescription", "0026", "and" )
+        InvalidCharacter3 = InvChar( "Description", "002F", "or" )
         self.filesystem.addChar( InvalidCharacter1 )
         self.filesystem.addChar( InvalidCharacter2 )
         assert self.filesystem.removeChar( InvalidCharacter1 ) == InvalidCharacter1
         assert self.filesystem.removeChar( InvalidCharacter1 ) == None
-        assert self.filesystem.removeChar( InvChar( "NewDescription", "0000", "and")) == None
-        assert self.filesystem.removeChar( InvChar( "NewDescription", "0026", "ERROR")) == None
+        assert self.filesystem.removeChar( InvChar( "Description", "002F", "or" ) ) == None
+        assert self.filesystem.removeChar( InvChar( "NewDescription", "0026", "and" ) ) == InvalidCharacter2
         
     def testValidateString( self ) :
         InvalidCharacter1 = InvChar( "Description", "002B", "plus" )
