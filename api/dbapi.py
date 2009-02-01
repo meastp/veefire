@@ -126,7 +126,7 @@ class Database :
         if Show == None :
             return None
         else : 
-            self.show.remove( Show )
+            self.database.remove( Show )
             return Show
     
     def printDb ( self ) :
