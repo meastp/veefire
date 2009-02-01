@@ -15,20 +15,67 @@
 #    GNU General Public License for more details.
 
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with veefire.  If not, see <http://www.gnu.org/licenses/>.
 
 import nose
 
 from api.dbapi import Filesystem, Filesystems, InvChar
-from api.dbapi import Show, Season, Episode
+from api.dbapi import Database, Show, Season, Episode
 from api.dbapi import Alias
+
+class testDatabase :
+    """
+    Test Database Class
+    """
+    def __init__(self) :
+        self.database = Database()
+        
+    def testLoadDB(self) :
+        # Depends on files
+        assert False
+        
+    def testAddAlias(self) :
+        Show1 = Show( "Test Show One", "60", Filesystem("FS1"), "dummybackend", "dummyurlone" )
+        Show2 = Show( "Test Show Two", "60", Filesystem("FS2"), "dummybackend", "dummyurltwo" )
+        Show3 = Show( "Test Show Three", "60", Filesystem("FS3"), "dummybackend", "dummyurlthree" )
+        assert self.database.addShow( Show1 ) == Show1
+        assert self.database.addShow( Show1 ) == None
+        assert self.database.addShow( Show2 ) == Show2
+        assert self.database.addShow( Show( "Test Show Two", "60", Filesystem("FS2"), "dummybackend", "dummyurltwo" )) == None
+        assert self.database.addShow( Show3 ) == Show3
+        
+    def testGetAlias(self) :
+        Show1 = Show( "Test Show One", "60", Filesystem("FS1"), "dummybackend", "dummyurlone" )
+        Show2 = Show( "Test Show Two", "60", Filesystem("FS2"), "dummybackend", "dummyurltwo" )
+        Show3 = Show( "Test Show Three", "60", Filesystem("FS3"), "dummybackend", "dummyurlthree" )
+        self.database.addShow( Show1 )
+        self.database.addShow( Show2 )
+        assert self.database.getShow( Show1 ) == Show1
+        assert self.database.getShow( Show3 ) == None
+        assert self.database.getShow( Show( "Test Show Two", "60", Filesystem("FS2"), "dummybackend", "dummyurltwo" ) ) == Show2
+        assert self.database.getShow( Show( "Test Show Three", "60", Filesystem("FS3"), "dummybackend", "dummyurlthree" ) ) == None
+        
+    def testRemoveAlias(self) :
+        Show1 = Show( "Test Show One", "60", Filesystem("FS1"), "dummybackend", "dummyurlone" )
+        Show2 = Show( "Test Show Two", "60", Filesystem("FS2"), "dummybackend", "dummyurltwo" )
+        Show3 = Show( "Test Show Three", "60", Filesystem("FS3"), "dummybackend", "dummyurlthree" )
+        self.database.addShow( Show1 )
+        self.database.addShow( Show2 )
+        assert self.database.removeShow( Show1 ) == Show1
+        assert self.database.removeShow( Show1 ) == None
+        assert self.database.removeShow( Show( "Test Show Three", "60", Filesystem("FS3"), "dummybackend", "dummyurlthree" ) ) == None
+        assert self.database.removeShow( Show( "Test Show Two", "60", Filesystem("FS2"), "dummybackend", "dummyurltwo" ) ) == Show2
+        
+    def testWrite(self) :
+        # Depends on files
+        assert False
 
 class testShow :
     """
     Test Show Class
     """
     def __init__(self) :
-        self.show = Show( "Test Show", "60", Filesystem("FileSystem"), "dummybackend", "dummyurl" )
+        self.show = Show( "Test Show", "60", Filesystem("FS1"), "dummybackend", "dummyurl" )
         
     def testAddAlias(self) :
         Alias1 = Alias("firstalias")
@@ -123,6 +170,7 @@ class testSeason :
         assert self.season.addEpisode( Episode1 ) == Episode1
         assert self.season.addEpisode( Episode1 ) == None
         assert self.season.addEpisode( Episode2 ) == Episode2
+        assert self.season.addEpisode( Episode( "333", "For A TV Show", "18 November, 2008" ) ) == None
         assert self.season.addEpisode( Episode3 ) == Episode3
         
     def testGetEpisode(self) :
@@ -133,7 +181,8 @@ class testSeason :
         self.season.addEpisode( Episode2 )
         assert self.season.getEpisode( Episode1 ) == Episode1
         assert self.season.getEpisode( Episode3 ) == None
-        assert self.season.getEpisode( Episode( "2", "What A Title", "6 November, 2008" ) ) == Episode1
+        assert self.season.getEpisode( Episode( "333", "For A TV Show", "18 November, 2008" ) ) == Episode2
+        assert self.season.getEpisode( Episode( "4", "What A Title", "6 November, 2008") ) == None
         
     def testRemoveEpisode(self) :
         Episode1 = Episode( "2", "What A Title", "6 November, 2008" )
@@ -146,25 +195,53 @@ class testSeason :
         assert self.season.removeEpisode( Episode( "4", "What A Title", "6 November, 2008" ) ) == None
         assert self.season.removeEpisode( Episode( "333", "For A TV Show", "18 November, 2008" ) ) == Episode2
 
-#class testFilesystems :
-#    """
-#    Test Filesystems Class.
-#    """
+class testFilesystems :
+    """
+    Test Filesystems Class.
+    """
+    def __init__( self ) :
+        pass
+    def testClassNotComplete( self ) :
+        assert False
+        
 #    def __init__( self ) :
 #        self.fileystems = Filesystems() # Filesystem dir is None
 #        
 #    def testAddFilesystem( self ) :
 #        Filesystem1 = Filesystem('FS1')
 #        Filesystem2 = Filesystem('FS2')
-#        Filesystem3 = Filesystem('FS1')
+#        Filesystem3 = Filesystem('FS3')
 #        assert self.filesystems.addFilesystem( Filesystem1 ) == Filesystem1
 #        assert self.filesystems.addFilesystem( Filesystem1 ) == None
 #        assert self.filesystems.addFilesystem( Filesystem2 ) == Filesystem2
-#        assert self.filesystems.addFilesystem( Filesystem3 ) == None
+#        assert self.filesystems.addFilesystem( Filesystem('FS2') ) == None
+#        assert self.filesystems.addFilesystem( Filesystem3 ) == Filesystem3
+#        
+#    def testGetFilesystem(self) :
+#        Filesystem1 = Filesystem('FS1')
+#        Filesystem2 = Filesystem('FS2')
+#        Filesystem3 = Filesystem('FS3')
+#        self.filesystems.addFilesystem( Filesystem1 )
+#        self.filesystems.addFilesystem( Filesystem2 )
+#        assert self.filesystems.getFilesystem( Filesystem1 ) == Filesystem1
+#        assert self.filesystems.getFilesystem( Filesystem3 ) == None
+#        assert self.filesystems.getFilesystem( Filesystem('FS2') ) == Filesystem2
+#        assert self.filesystems.getFilesystem( Filesystem('FS3') ) == None
+#        
+#    def testRemoveFilesystem(self) :
+#        Filesystem1 = Filesystem('FS1')
+#        Filesystem2 = Filesystem('FS2')
+#        Filesystem3 = Filesystem('FS3')
+#        self.filesystems.addFilesystem( Filesystem1 )
+#        self.filesystems.addFilesystem( Filesystem2 )
+#        assert self.filesystems.removeFilesystem( Filesystem1 ) == Filesystem1
+#        assert self.filesystems.removeFilesystem( Filesystem1 ) == None
+#        assert self.filesystems.removeFilesystem( Filesystem('FS3') ) == None
+#        assert self.filesystems.removeFilesystem( Filesystem('FS2') ) == Filesystem2
 
 class testFilesystem :
     """
-    Test Filesystem Class.
+    Test Filesystem Class
     """
     def __init__( self ) :
         self.filesystem = Filesystem( "FileSystem" )
