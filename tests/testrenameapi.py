@@ -34,4 +34,7 @@ class testDatabase :
     def testGetMatchingShows(self) :
         # Depends on files
         assert False
-        
+    
+    def testGeneratePreview(self) :
+        # Depends on files
+        assert False
