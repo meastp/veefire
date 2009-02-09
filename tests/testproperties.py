@@ -19,43 +19,63 @@
 
 # DIRECTORY FOR TEST FILES
 
-testFileDirectory = '/home/meastp'
+testFileDirectory = '/tmp/veefire'
 testSubDirectories = [ 'Black Books', 'CSI', 'Spaced']
 testFileNames = [   [ 'blackbooks.s01e02.avi', 'bb.s03e05.avi'],
                     [ 'CSIS01E11.avi', 'CSI.5x12.avi' ],
                     [ 'Spaced.2x3.avi', 'Spaced.S02E03.avi']   ]
 
 # CREATE FILE NAMES FOR TESTING
-
+#TODO: Create checks if directories exist.
 import os
+import shutil
 
-def createTempFiles(rootDir, testDirs, testFiles):
+def createTempFiles():
+    rootDir = testFileDirectory
+    testDirs = testSubDirectories
+    testFiles = testFileNames
+    
+    if os.path.exists(rootDir) :
+        removeTempFiles()
     os.mkdir(rootDir)
+    
     absDirs = [os.path.join(rootDir,name) for name in testDirs]
-    os.makedirs(absDirs)
+    for directory in absDirs:
+        os.mkdir(directory)
     # replaces os.system in python 2.6 : p = Popen("command" + "arg", shell=True)
     # sts = os.waitpid(p.pid, 0)
     while( len(absDirs) > 0 ):
         currentDir = absDirs.pop()
-        for files in testFiles[-1]
-            os.system('touch ' + '""' + os.path.join( currentDir, files ) + '""')
+        for files in testFiles[-1] :
+            os.system('touch ' + '"' + os.path.join( currentDir, files ) + '"')
     return
+
+def removeTempFiles():
+    rootDir = testFileDirectory
+    
+    shutil.rmtree(rootDir)
+    return
+
+def getRootDir():
+    return testFileDirectory
 
 # TEST CLASS
 
 class testFiles:
-    def __init__():
-        createTempFiles(testFileDirectory, testSubDirectories, testFileNames)
-    def getRootDir():
-        return testFileDirectory
+    def setUp(self):
+        createTempFiles()
         
-    def testTestFileDirectory():
+    def tearDown(self):
+        removeTempFiles()
+        
+    def testTestFileDirectory(self):
         assert os.path.isdir( testFileDirectory ) == True
         
-    def testTestFiles():
-        absDirs = [rootDir+name for name in testDirs]
+    def testTestFiles(self):
+        absDirs = [os.path.join(testFileDirectory,name) for name in testSubDirectories]
         while( len(absDirs) > 0 ):
-        currentDir = absDirs.pop()
-        for files in testFiles[-1]
-            assert os.path.isfile( os.path.join(currentDir, files) ) == True
-    #TODO: Create a cleanup-function to delete the files after.
+            currentDir = absDirs.pop()
+            for files in testFileNames[-1] :
+                print currentDir
+                print files
+                assert os.path.isfile( os.path.join(currentDir, files) ) == True
