@@ -25,7 +25,7 @@ class testDatabase :
     """
     Test FileName Class
     """
-    def __init__(self) :
+    def setUp(self) :
         self.database = Database()
         self.filename1 = FileName( 'blackbooks.s01e02.avi', self.database )
         self.filename2 = FileName( 'blackbooks.1x03.avi', self.database )

@@ -27,7 +27,7 @@ class testDatabase :
     """
     Test Database Class
     """
-    def __init__(self) :
+    def setUp(self) :
         self.database = Database()
         
     def testLoadDB(self) :
@@ -74,7 +74,7 @@ class testShow :
     """
     Test Show Class
     """
-    def __init__(self) :
+    def setUp(self) :
         self.show = Show( "Test Show", "60", Filesystem("FS1"), "dummybackend", "dummyurl" )
         
     def testAddAlias(self) :
@@ -160,7 +160,7 @@ class testSeason :
     """
     Test Season Class
     """
-    def __init__(self) :
+    def setUp(self) :
         self.season = Season("100")
         
     def testAddEpisode(self) :
@@ -199,12 +199,12 @@ class testFilesystems :
     """
     Test Filesystems Class.
     """
-    def __init__( self ) :
+    def setUp( self ) :
         pass
     def testClassNotComplete( self ) :
         assert False
         
-#    def __init__( self ) :
+#    def setUp( self ) :
 #        self.fileystems = Filesystems() # Filesystem dir is None
 #        
 #    def testAddFilesystem( self ) :
@@ -243,7 +243,7 @@ class testFilesystem :
     """
     Test Filesystem Class
     """
-    def __init__( self ) :
+    def setUp( self ) :
         self.filesystem = Filesystem( "FileSystem" )
         
     def testAddChar( self ) :
