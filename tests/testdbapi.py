@@ -22,6 +22,7 @@ import nose
 from api.dbapi import Filesystem, Filesystems, InvChar
 from api.dbapi import Database, Show, Season, Episode
 from api.dbapi import Alias
+from testproperties import Tools
 
 class testDatabase :
     """
@@ -199,45 +200,58 @@ class testFilesystems :
     """
     Test Filesystems Class.
     """
-    def setUp( self ) :
-        pass
-    def testClassNotComplete( self ) :
+    def setUp(self) :
+        self.FS = Filesystems() # Filesystem dir is None
+    
+    def testLoadFilesystems( self ) :
+        self.Tools = Tools()
+        self.Tools.createRootDir()
+        self.Tools.createFilesystemXML()
+        self.FS = Filesystems(self.Tools.filetypesXML)
+        
+        self.testAddFilesystem()
+        self.FS = Filesystems(self.Tools.filetypesXML)
+        
+        self.testGetFilesystem()
+        self.FS = Filesystems(self.Tools.filetypesXML)
+        
+        self.testRemoveFilesystem()
+        
+        self.Tools.removeTempFiles()
+        
         assert False
         
-#    def setUp( self ) :
-#        self.fileystems = Filesystems() # Filesystem dir is None
-#        
-#    def testAddFilesystem( self ) :
-#        Filesystem1 = Filesystem('FS1')
-#        Filesystem2 = Filesystem('FS2')
-#        Filesystem3 = Filesystem('FS3')
-#        assert self.filesystems.addFilesystem( Filesystem1 ) == Filesystem1
-#        assert self.filesystems.addFilesystem( Filesystem1 ) == None
-#        assert self.filesystems.addFilesystem( Filesystem2 ) == Filesystem2
-#        assert self.filesystems.addFilesystem( Filesystem('FS2') ) == None
-#        assert self.filesystems.addFilesystem( Filesystem3 ) == Filesystem3
-#        
-#    def testGetFilesystem(self) :
-#        Filesystem1 = Filesystem('FS1')
-#        Filesystem2 = Filesystem('FS2')
-#        Filesystem3 = Filesystem('FS3')
-#        self.filesystems.addFilesystem( Filesystem1 )
-#        self.filesystems.addFilesystem( Filesystem2 )
-#        assert self.filesystems.getFilesystem( Filesystem1 ) == Filesystem1
-#        assert self.filesystems.getFilesystem( Filesystem3 ) == None
-#        assert self.filesystems.getFilesystem( Filesystem('FS2') ) == Filesystem2
-#        assert self.filesystems.getFilesystem( Filesystem('FS3') ) == None
-#        
-#    def testRemoveFilesystem(self) :
-#        Filesystem1 = Filesystem('FS1')
-#        Filesystem2 = Filesystem('FS2')
-#        Filesystem3 = Filesystem('FS3')
-#        self.filesystems.addFilesystem( Filesystem1 )
-#        self.filesystems.addFilesystem( Filesystem2 )
-#        assert self.filesystems.removeFilesystem( Filesystem1 ) == Filesystem1
-#        assert self.filesystems.removeFilesystem( Filesystem1 ) == None
-#        assert self.filesystems.removeFilesystem( Filesystem('FS3') ) == None
-#        assert self.filesystems.removeFilesystem( Filesystem('FS2') ) == Filesystem2
+    def testAddFilesystem( self ) :
+        Filesystem1 = Filesystem('FS1')
+        Filesystem2 = Filesystem('FS2')
+        Filesystem3 = Filesystem('FS3')
+        assert self.FS.addFilesystem( Filesystem1 ) == Filesystem1
+        assert self.FS.addFilesystem( Filesystem1 ) == None
+        assert self.FS.addFilesystem( Filesystem2 ) == Filesystem2
+        assert self.FS.addFilesystem( Filesystem('FS2') ) == None
+        assert self.FS.addFilesystem( Filesystem3 ) == Filesystem3
+        
+    def testGetFilesystem(self) :
+        Filesystem1 = Filesystem('FS1')
+        Filesystem2 = Filesystem('FS2')
+        Filesystem3 = Filesystem('FS3')
+        self.FS.addFilesystem( Filesystem1 )
+        self.FS.addFilesystem( Filesystem2 )
+        assert self.FS.getFilesystem( Filesystem1 ) == Filesystem1
+        assert self.FS.getFilesystem( Filesystem3 ) == None
+        assert self.FS.getFilesystem( Filesystem('FS2') ) == Filesystem2
+        assert self.FS.getFilesystem( Filesystem('FS3') ) == None
+        
+    def testRemoveFilesystem(self) :
+        Filesystem1 = Filesystem('FS1')
+        Filesystem2 = Filesystem('FS2')
+        Filesystem3 = Filesystem('FS3')
+        self.FS.addFilesystem( Filesystem1 )
+        self.FS.addFilesystem( Filesystem2 )
+        assert self.FS.removeFilesystem( Filesystem1 ) == Filesystem1
+        assert self.FS.removeFilesystem( Filesystem1 ) == None
+        assert self.FS.removeFilesystem( Filesystem('FS3') ) == None
+        assert self.FS.removeFilesystem( Filesystem('FS2') ) == Filesystem2
 
 class testFilesystem :
     """
