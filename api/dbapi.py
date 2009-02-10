@@ -250,11 +250,11 @@ class Show :
         ## Aliases are lowercase.
         InputAlias.name = InputAlias.name.lower()
         for Alias in self.alias :
-            print Alias
-            print Alias.name
-            print InputAlias
-            print InputAlias.name
-            print '.........'
+            #print Alias
+            #print Alias.name
+            #print InputAlias
+            #print InputAlias.name
+            #print '.........'
             if Alias.name == InputAlias.name :
                 return Alias
         return None
@@ -454,8 +454,10 @@ class Filesystems :
         """
         
         self.filesystemsDir = filesystemsDir
-        self.filesystems = self.loadFilesystems()
-        
+        if filesystemsDir != None :
+            self.filesystems = self.loadFilesystems()
+        else :
+            self.filesystems = []
         
     def loadFilesystems ( self ) :
         """
@@ -484,10 +486,10 @@ class Filesystems :
         :returns: On success, returns Filesystem.
         :rtype: :class:`api.dbapi.Filesystem` or None
         """
-        if self.getChar( InputFilesystem ) != None :
+        if self.getFilesystem( InputFilesystem ) != None :
             return None
         else : 
-            self.chars.append( InputFilesystem )
+            self.filesystems.append( InputFilesystem )
             return InputFilesystem
     
     def getFilesystem( self, InputFilesystem ) :
