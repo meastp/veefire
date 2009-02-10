@@ -25,39 +25,73 @@ testFileNames = [   [ 'blackbooks.s01e02.avi', 'bb.s03e05.avi'],
                     [ 'CSIS01E11.avi', 'CSI.5x12.avi' ],
                     [ 'Spaced.2x3.avi', 'Spaced.S02E03.avi']   ]
 
+# CONTENTS FOR FILETYPES / FILESYSTEMS
+
+testFiletypesDirectory = testFileDirectory
+testFiletypesContent = r'''<?xml version="1.0" encoding="UTF-8"?>
+<filetypes>
+    <filetype name="ext3">
+        <invalid_char name="SLASH, VIRGULE" char="002F" replacement="or" />
+        <invalid_char name="QUOTATION MARK" char="0022" replacement="" />
+    </filetype>
+    <filetype name="ntfs">
+        <invalid_char name="COMMERCIAL AT" char="0040" replacement="at" />
+        <invalid_char name="POUND SIGN" char="00A3" replacement="GBP" />
+        <invalid_char name="DOLLAR SIGN" char="0024" replacement="USD" />
+        <invalid_char name="NUMBER SIGN" char="0023" replacement="No." />
+        <invalid_char name="PERCENT SIGN" char="0025" replacement="PerCent" />
+        <invalid_char name="QUESTION MARK" char="003F" replacement="Qo" />
+        <invalid_char name="EXCLAMATION MARK" char="0021" replacement="" />
+        <invalid_char name="PLUS SIGN" char="002B" replacement="plus" />
+        <invalid_char name="ASTERISK" char="002A" replacement="" />
+        <invalid_char name="REVERSE SOLIDUS" char="005C" replacement=" " />
+        <invalid_char name="AMPERSAND" char="0026" replacement="and" />
+        <invalid_char name="SLASH, VIRGULE" char="002F" replacement="or" />
+        <invalid_char name="QUOTATION MARK" char="0022" replacement="" />
+        <invalid_char name="COLON" char="003A" replacement="" />
+        <invalid_char name="APOSTROPHE" char="0027" replacement="" />
+    </filetype>
+</filetypes>
+'''
+
 # CREATE FILE NAMES FOR TESTING
 #TODO: Create checks if directories exist.
 import os
 import shutil
 
-def createTempFiles():
-    rootDir = testFileDirectory
-    testDirs = testSubDirectories
-    testFiles = testFileNames
+class Tools :
     
-    if os.path.exists(rootDir) :
-        removeTempFiles()
-    os.mkdir(rootDir)
+    def __init__(self):
+        self.rootDir = testFileDirectory
+        self.testDirs = testSubDirectories
+        self.testFiles = testFileNames
+        
+        self.filetypesXML = os.path.join(testFiletypesDirectory, 'filetypes.xml')
     
-    absDirs = [os.path.join(rootDir,name) for name in testDirs]
-    for directory in absDirs:
-        os.mkdir(directory)
-    # replaces os.system in python 2.6 : p = Popen("command" + "arg", shell=True)
-    # sts = os.waitpid(p.pid, 0)
-    while( len(absDirs) > 0 ):
-        currentDir = absDirs.pop()
-        for files in testFiles[-1] :
-            os.system('touch ' + '"' + os.path.join( currentDir, files ) + '"')
-    return
-
-def removeTempFiles():
-    rootDir = testFileDirectory
+    def createRootDir(self):
+        if os.path.exists(self.rootDir) :
+            self.removeTempFiles()
+        os.mkdir(self.rootDir)
     
-    shutil.rmtree(rootDir)
-    return
-
-def getRootDir():
-    return testFileDirectory
+    def createTempFiles(self):
+        
+        absDirs = [os.path.join(self.rootDir,name) for name in self.testDirs]
+        for directory in absDirs:
+            os.mkdir(directory)
+        # replaces os.system in python 2.6 : p = Popen("command" + "arg", shell=True)
+        # sts = os.waitpid(p.pid, 0)
+        while( len(absDirs) > 0 ):
+            currentDir = absDirs.pop()
+            for files in self.testFiles[-1] :
+                os.system('touch ' + '"' + os.path.join( currentDir, files ) + '"')
+    
+    def removeTempFiles(self):
+        shutil.rmtree(self.rootDir)
+    
+    def createFilesystemXML(self):
+        filesystemsXML = open(self.filetypesXML ,"w")
+        filesystemsXML.writelines(testFiletypesContent)
+        filesystemsXML.close()
 
 # TEST CLASS
 
