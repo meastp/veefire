@@ -97,10 +97,12 @@ class Tools :
 
 class testFiles:
     def setUp(self):
-        createTempFiles()
+        self.Tools = Tools()
+        self.Tools.createRootDir()
+        self.Tools.createTempFiles()
         
     def tearDown(self):
-        removeTempFiles()
+        self.Tools.removeTempFiles()
         
     def testTestFileDirectory(self):
         assert os.path.isdir( testFileDirectory ) == True
