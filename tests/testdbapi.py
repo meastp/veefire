@@ -209,17 +209,24 @@ class testFilesystems :
         self.Tools.createFilesystemXML()
         self.FS = Filesystems(self.Tools.filetypesXML)
         
-        self.testAddFilesystem()
-        self.FS = Filesystems(self.Tools.filetypesXML)
+        Ext3FS = self.FS.getFilesystem(Filesystem('ext3'))
+        NTFSFS = self.FS.getFilesystem(Filesystem('ntfs'))
+        Filesystem3 = Filesystem('FS3')
         
-        self.testGetFilesystem()
-        self.FS = Filesystems(self.Tools.filetypesXML)
+        assert self.FS.addFilesystem( Ext3FS ) == None
+        assert self.FS.addFilesystem( Filesystem('ntfs') ) == None
+        assert self.FS.addFilesystem( Filesystem3 ) == Filesystem3
         
-        self.testRemoveFilesystem()
+        assert self.FS.getFilesystem( Filesystem3 ) == Filesystem3
+        assert self.FS.getFilesystem( NTFSFS ) == NTFSFS
+        assert self.FS.getFilesystem( Ext3FS ) == Ext3FS
+        
+        assert self.FS.removeFilesystem( NTFSFS ) == NTFSFS
+        assert self.FS.removeFilesystem( NTFSFS ) == None
+        assert self.FS.removeFilesystem( Ext3FS ) == Ext3FS
+        assert self.FS.removeFilesystem( Ext3FS ) == None
         
         self.Tools.removeTempFiles()
-        
-        assert False
         
     def testAddFilesystem( self ) :
         Filesystem1 = Filesystem('FS1')
