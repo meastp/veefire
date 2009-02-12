@@ -19,6 +19,7 @@
 
 import nose
 
+from api.dbapi import Database
 from api.renameapi import FileName
 
 class testDatabase :
@@ -26,6 +27,7 @@ class testDatabase :
     Test FileName Class
     """
     def setUp(self) :
+        # Only make fakefiles where nothing else is possible.
         self.database = Database()
         self.filename1 = FileName( 'blackbooks.s01e02.avi', self.database )
         self.filename2 = FileName( 'blackbooks.1x03.avi', self.database )
