@@ -236,6 +236,10 @@ class FileName :
             self.CorrectShow = None
             return
         
+        if len( PossibleShowMatches ) == 1 :
+            self.CorrectShow = PossibleShowMatches[0]
+            return self.CorrectShow
+        
         self.CorrectShow = self.setCorrectShow( PossibleShowMatches )
         
         return self.CorrectShow
@@ -363,7 +367,7 @@ class FileName :
         else :
             return None
         
-    def getSeason(self) :
+    def getSeason(self):
         """
         Return season number.
         
