@@ -5,20 +5,16 @@
 Welcome to veefire's documentation!
 ===================================
 
-Contents:
-
-.. toctree::
-   :maxdepth: 2
 
 Indices and tables
-==================
+----------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
 
 Modules
-========
+----------------------
 
 ..  toctree::
     :maxdepth: 2
@@ -26,7 +22,7 @@ Modules
     modules/model
 
 Database
-=========
+----------------------
 
 ..  toctree::
     :maxdepth: 2
@@ -34,7 +30,7 @@ Database
     misc/database
 
 Filesystems
-============
+----------------------
 
 ..  toctree::
     :maxdepth: 2
