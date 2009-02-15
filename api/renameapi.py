@@ -198,6 +198,9 @@ class FileName :
         
         self.generatedFileName = None
         
+        ##Determine the file's regex pattern.
+        self.regexPattern = self.getPattern()
+        
         ##Styles
         #TODO: Support multiple Styles.
         
@@ -209,9 +212,6 @@ class FileName :
         :returns: list of Show objects
         :rtype: list
         """
-        ##Determine the file's regex pattern.
-        self.regexPattern = self.getPattern()
-        
         if self.regexPattern == None:
             return None
         
@@ -221,14 +221,13 @@ class FileName :
         if rawShowName == None :
             return None
         
-        #print rawShowName
-        
         ## Search through Shows and try to match Aliases
         ## PossibleShowMatches could have multiple Show matches.
         PossibleShowMatches = []
         for Show in self.database.database :
             for Alias in Show.alias :
                 if rawShowName.lower() == Alias.name :
+                    
                     PossibleShowMatches.append( copy.deepcopy( Show ) )
         
         #FIXME: Use a function to resolve the conflicts here. Needs to be abstract and overridden.
