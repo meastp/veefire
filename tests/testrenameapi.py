@@ -19,24 +19,48 @@
 
 import nose
 
-from api.dbapi import Database
+from api.dbapi import Database, Show, Filesystem
 from api.renameapi import FileName
+from testproperties import Tools
 
-class testDatabase :
+class testFileName :
     """
     Test FileName Class
     """
     def setUp(self) :
-        # Only make fakefiles where nothing else is possible.
-        self.database = Database()
-        self.filename1 = FileName( 'blackbooks.s01e02.avi', self.database )
-        self.filename2 = FileName( 'blackbooks.1x03.avi', self.database )
-        self.filename3 = FileName( 'blackbooks.s01E03.avi', self.database )
+        self.Tools = Tools()
+        self.Tools.createRootDir()
+        self.Tools.createDatabaseFiles()
         
-    def testGetMatchingShows(self) :
-        # Depends on files
-        assert False
-    
-    def testGeneratePreview(self) :
-        # Depends on files
-        assert False
+        self.database = Database(self.Tools.databaseDir)
+        self.database.loadDB()
+        self.filename1 = FileName( 'black.books.s01e02.avi', self.database )
+        self.filename2 = FileName( 'spaced.2x03.avi', self.database )
+        self.filename3 = FileName( 'csi.s02E13.avi', self.database )
+        
+    def tearDown(self):
+        self.Tools.removeTempFiles()
+        
+    def testGetPattern(self):
+        assert self.filename1.getPattern() == self.filename1.pattern1
+        assert self.filename2.getPattern() == self.filename2.pattern2
+        assert self.filename3.getPattern() == self.filename3.pattern1
+        
+    def testGetSeason(self):
+        assert self.filename1.getSeason() == '1'
+        assert self.filename2.getSeason() == '2'
+        assert self.filename3.getSeason() == '2'
+        
+    def testGetEpisode(self):
+        assert self.filename1.getEpisode() == '2'
+        assert self.filename2.getEpisode() == '3'
+        assert self.filename3.getEpisode() == '13'
+        
+    def testGetMatchingShows(self):
+        assert self.filename1.getMatchingShows().name == 'Black Books'
+        assert self.filename2.getMatchingShows().name == 'Spaced'
+        assert self.filename3.getMatchingShows().name == 'C.S.I'
+        
+#    def testGenerateFileName(self):
+#        # generateFileName(Style=None)
+#        assert False

@@ -29,10 +29,20 @@ class testDatabase :
     Test Database Class
     """
     def setUp(self) :
-        self.database = Database()
+        self.Tools = Tools()
+        self.database = Database(self.Tools.databaseDir)
         
     def testLoadDB(self) :
-        # Depends on files
+        self.Tools.createRootDir()
+        self.Tools.createDatabaseFiles()
+        
+        self.database.loadDB()
+        
+        assert 'Black Books' in [ objects.name for objects in self.database.database ]
+        assert 'Spaced' in [ objects.name for objects in self.database.database ]
+        assert 'C.S.I' in [ objects.name for objects in self.database.database ]
+        assert 'Dummy' not in [ objects.name for objects in self.database.database ]
+        
         assert False
         
     def testAddAlias(self) :

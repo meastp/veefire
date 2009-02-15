@@ -17,6 +17,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with veefire.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
+import shutil
+
 # DIRECTORY FOR TEST FILES
 
 testFileDirectory = '/tmp/veefire'
@@ -57,12 +60,12 @@ testFiletypesContent = r'''<?xml version="1.0" encoding="UTF-8"?>
 # CONTENTS FOR DATABASE
 
 testDatabaseDirectory = os.path.join(testFileDirectory, 'database')
-testDatabase = { testDatabaseBlackBooks : 'blackbooks.xml', testDatabaseSpaced : 'spaced.xml', testDatabaseCSI : 'csi.xml' }
 
 testDatabaseBlackBooks = r'''<?xml version="1.0" encoding="UTF-8"?>
 <tvshow>
   <showproperties backend="imdbtvbackend" duration="30" filesystem="ext3" name="Black Books" url="tt0262150"/>
   <fileproperties>
+    <alias value="blackbooks"/>
     <alias value="black.books"/>
     <alias value="bb"/>
   </fileproperties>
@@ -96,7 +99,9 @@ testDatabaseBlackBooks = r'''<?xml version="1.0" encoding="UTF-8"?>
 testDatabaseSpaced = r'''<?xml version="1.0" encoding="UTF-8"?>
 <tvshow>
   <showproperties backend="imdbtvbackend" duration="60" filesystem="ext3" name="Spaced" url="tt0187664"/>
-  <fileproperties/>
+  <fileproperties>
+    <alias value="spaced"/>
+  </fileproperties>
   <season number="1">
     <episode airdate="24 September 1999" arc="none" number="1" title="Beginnings"/>
     <episode airdate="1 October 1999" arc="none" number="2" title="Gatherings"/>
@@ -176,10 +181,11 @@ testDatabaseCSI = r'''<?xml version="1.0" encoding="UTF-8"?>
 </tvshow>
 '''
 
+testDatabase = { testDatabaseBlackBooks : 'blackbooks.xml', testDatabaseSpaced : 'spaced.xml', testDatabaseCSI : 'csi.xml' }
+
 # CREATE FILE NAMES FOR TESTING
 #TODO: Create checks if directories exist.
-import os
-import shutil
+
 
 class Tools :
     
@@ -219,6 +225,7 @@ class Tools :
         testfile.close()
     
     def createDatabaseFiles(self):
+        os.mkdir(self.databaseDir)
         for content, filename in testDatabase.items() :
             testfile = open(os.path.join( self.databaseDir, filename ),"w")
             testfile.writelines( content )
@@ -243,6 +250,4 @@ class testFiles:
         while( len(absDirs) > 0 ):
             currentDir = absDirs.pop()
             for files in testFileNames[-1] :
-                print currentDir
-                print files
                 assert os.path.isfile( os.path.join(currentDir, files) ) == True
