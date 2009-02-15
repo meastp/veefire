@@ -276,7 +276,7 @@ class FileName :
         
         return self.fileName, self.generatedFileName
     
-    def getShowDetails (self, filesystemDir, Show) :
+    def getShowDetails (self, filesystemDir, MatchingShow) :
         """
         Retrieves Show details.
         
@@ -286,36 +286,36 @@ class FileName :
         :type Show: :class:`api.dbapi.Show`
         """
         
-        if Show == None :
+        if MatchingShow == None :
             return None
         
         #FIXME: Show should not be a list (but resolved after self.getMatchingShows() ).
-        self.fileSystem = Filesystems(filesystemDir).getFilesystem( Filesystem( Show.filesystem ) )
+        fileSystem = Filesystems(filesystemDir).getFilesystem( Filesystem( MatchingShow.filesystem ) )
         
-        self.showName = Show.name
-        self.seasonNumber = self.getSeason()
-        self.episodeNumber = self.getEpisode()
+        seasonNumber = self.getSeason()
+        episodeNumber = self.getEpisode()
         
-        NewSeason = Show.getSeason( Season( self.seasonNumber ) )
-        NewEpisode = NewSeason.getEpisode( Episode( self.episodeNumber , 'title', 'airdate' ))
+        NewSeason = MatchingShow.getSeason( Season( seasonNumber ) )
+        NewEpisode = NewSeason.getEpisode( Episode( episodeNumber , 'title', 'airdate' ))
+        NewSeason.episodes = [ ]
         
         ## Episode does not exist.
         if NewEpisode == None :
             return None
         
-        self.episodeTitle = NewEpisode.title
-        self.episodeAirDate = NewEpisode.airdate
-        self.episodeArc = NewEpisode.arc
-        
         #FIXME: Proper regex function to get file suffix.
-        self.fileSuffix = self.fileName[-4:]
+        fileSuffix = self.fileName[-4:]
         
-        return Show
+        NewShow = Show( MatchingShow.name, MatchingShow.duration, fileSystem, MatchingShow.backend, MatchingShow.url )
+        NewShow.addEpisode( NewEpisode, NewSeason )
+        
+        return NewShow
         
     def replaceInvalidCharacters ( self ) :
         """
         Replace invalid characters.
         """
+        #FIXME: May be broken since getShowDetails was changed 15.02.2009
         self.showName = self.fileSystem.validateString( self.showName )
         self.episodeTitle = self.fileSystem.validateString( self.episodeTitle )
         self.episodeAirDate = self.fileSystem.validateString( self.episodeAirDate )
