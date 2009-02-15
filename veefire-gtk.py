@@ -19,7 +19,7 @@
 
 import sys
 import os
-from dbapi import Database
+from api.dbapi import Database
 
 try:
     import pygtk
