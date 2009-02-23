@@ -271,7 +271,6 @@ class FileName :
         if self.getShowDetails( filesystemDir, self.CorrectShow ) == None :
             return self.fileName , None
             
-        self.replaceInvalidCharacters()
         self.generatedFileName = self.generateFileName(filesystemDir)
         
         return self.fileName, self.generatedFileName
@@ -304,35 +303,41 @@ class FileName :
             return None
         
         #FIXME: Proper regex function to get file suffix.
-        fileSuffix = self.fileName[-4:]
+        self.fileSuffix = self.fileName[-4:]
         
         NewShow = Show( MatchingShow.name, MatchingShow.duration, fileSystem, MatchingShow.backend, MatchingShow.url )
         NewShow.addEpisode( NewEpisode, NewSeason )
         
         return NewShow
         
-    def replaceInvalidCharacters ( self ) :
-        """
-        Replace invalid characters.
-        """
-        #FIXME: May be broken since getShowDetails was changed 15.02.2009
-        self.showName = self.fileSystem.validateString( self.showName )
-        self.episodeTitle = self.fileSystem.validateString( self.episodeTitle )
-        self.episodeAirDate = self.fileSystem.validateString( self.episodeAirDate )
-        self.episodeArc = self.fileSystem.validateString( self.episodeArc )
-        self.fileSuffix = self.fileSystem.validateString( self.fileSuffix )
-        
-    def generateFileName( self, Style=None ) :
+    def generateFileName( self, Show, fileSystemDir, Style=None ) :
         """
         Generate and return a file name.
         
+        :param Show: Show object to get file name details from.
+        :type Show: :class:`api.dbapi.Show`
+        :param filesystemDir: Path to filesystems.xml
+        :type filesystemDir: string
         :param Style: Style to use for the new file name
         :type Style: string or None
         """
+        
+        fs = Filesystems(fileSystemDir).getFilesystem( Filesystem( Show.filesystem.name ) )
+        
+        showName = Show.name
+        if len(Show.seasons[0].episodes) != 1 or len(Show.seasons) != 1 :
+            print 'error: more than one episode or season in show object.'
+            return -1
+        seasonNumber = fs.validateString(Show.seasons[0].name)
+        episodeNumber = fs.validateString(Show.seasons[0].episodes[0].name)
+        episodeTitle = fs.validateString(Show.seasons[0].episodes[0].title)
+        episodeArc = fs.validateString(Show.seasons[0].episodes[0].arc)
+        episodeAirDate = fs.validateString(Show.seasons[0].episodes[0].airdate)
+        
         #FIXME: Proper way to use different styles.
         
         ## Temporary default style.
-        Style1 = self.showName + ' - S' + str('%02d' % int(self.seasonNumber)) + 'E' + str('%02d' % int(self.episodeNumber)) + ' - ' + self.episodeTitle + self.fileSuffix
+        Style1 = showName + ' - S' + str('%02d' % int(seasonNumber)) + 'E' + str('%02d' % int(episodeNumber)) + ' - ' + episodeTitle + self.fileSuffix
         
         return Style1
         
