@@ -112,11 +112,29 @@ class testFileName :
         assert compareShows( testShow2, correctShow2 )
         assert compareShows( testShow3, correctShow3 )
         
-#    def testReplaceInvalidCharacters(self):
-#       Set Wrong Variables for testing
-#       Run replaceInvalidCharacters()
-#       Check if the corrected names are correct.
+    def testGenerateFileName(self):
+        #FIXME: More than one Style, different file suffixes, arcs.
+        # generateFileName(Style=None)
         
-#    def testGenerateFileName(self):
-#        # generateFileName(Style=None)
-#        assert False
+        fileSystem1 = Filesystems(self.Tools.filetypesXML).getFilesystem( Filesystem( 'ntfs' ) )
+        correctShow1 = Show( 'Black Books', '30', fileSystem1, 'imdbtvbackend', 'tt0262150' )
+        correctShow1.addEpisode( Episode( '2', "A test's test' & a test / # a test", '6 October 2000', 'none'), Season('1') )
+        
+        fileSystem2 = Filesystems(self.Tools.filetypesXML).getFilesystem( Filesystem( 'ext3' ) )
+        correctShow2 = Show( 'Spaced', '60', fileSystem2, 'imdbtvbackend', 'tt0187664' )
+        correctShow2.addEpisode( Episode( '3', "A test's test' & a test / # a test", '9 March 2001', 'none'), Season('2') )
+        
+        fileSystem3 = Filesystems(self.Tools.filetypesXML).getFilesystem( Filesystem( 'ntfs' ) )
+        correctShow3 = Show( 'C.S.I', '60', fileSystem3, 'imdbtvbackend', 'tt0247082' )
+        correctShow3.addEpisode( Episode( '13', "Identity Crisis / # 4587", '17 January 2002', 'none'), Season('2') )
+        
+        self.FN = FileName('', self.database)
+        self.FN.fileSuffix = '.avi'
+        
+        fileName1 = self.FN.generateFileName( correctShow1, self.Tools.filetypesXML )
+        fileName2 = self.FN.generateFileName( correctShow2, self.Tools.filetypesXML )
+        fileName3 = self.FN.generateFileName( correctShow3, self.Tools.filetypesXML )
+        
+        assert fileName1 == "Black Books - S01E02 - A tests test and a test or No. a test.avi"
+        assert fileName2 == "Spaced - S02E03 - A test's test' & a test or # a test.avi"
+        assert fileName3 == "C.S.I - S02E13 - Identity Crisis or No. 4587.avi"
