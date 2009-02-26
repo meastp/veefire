@@ -25,8 +25,8 @@ import shutil
 testFileDirectory = '/tmp/veefire'
 testSubDirectories = [ 'Black Books', 'CSI', 'Spaced']
 testFileNames = [   [ 'blackbooks.s01e02.avi', 'bb.s03e05.avi'],
-                    [ 'CSIS01E11.avi', 'CSI.5x12.avi' ],
-                    [ 'Spaced.2x3.avi', 'Spaced.S02E03.avi']   ]
+                    [ 'csiS01E11.avi', 'CSI.2x12.avi' ],
+                    [ 'Spaced.2x4.avi', 'Spaced.S02E03.avi']   ]
 
 # CONTENTS FOR FILETYPES / FILESYSTEMS
 
@@ -211,10 +211,14 @@ class Tools :
             os.mkdir(directory)
         # replaces os.system in python 2.6 : p = Popen("command" + "arg", shell=True)
         # sts = os.waitpid(p.pid, 0)
-        while( len(absDirs) > 0 ):
-            currentDir = absDirs.pop()
-            for files in self.testFiles[-1] :
-                os.system('touch ' + '"' + os.path.join( currentDir, files ) + '"')
+        for i in xrange(0,len(absDirs) ) :
+            for aFile in self.testFiles[i] :
+                os.system('touch ' + '"' + os.path.join( absDirs[i] , aFile ) + '"')
+        
+#        while( len(absDirs) > 0 ):
+#            currentDir = absDirs.pop()
+#            for files in self.testFiles[-1] :
+#                os.system('touch ' + '"' + os.path.join( currentDir, files ) + '"')
     
     def removeTempFiles(self):
         shutil.rmtree(self.rootDir)
