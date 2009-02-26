@@ -18,11 +18,64 @@
 #    along with veefire.  If not, see <http://www.gnu.org/licenses/>.
 
 import nose
+import os
 
 from api.dbapi import Database, Show, Season, Episode, Filesystem, Filesystems
-from api.renameapi import FileName
+from api.renameapi import FileName, Folder
 from testproperties import Tools
 
+class testFolder :
+    """
+    Test Folder Class
+    """
+    def setUp(self) :
+        self.Tools = Tools()
+        self.Tools.createRootDir()
+        self.Tools.createTempFiles()
+        self.Tools.createDatabaseFiles()
+        self.Tools.createFilesystemXML()
+        
+        self.database = Database(self.Tools.databaseDir)
+        self.database.loadDB()
+        self.filename1 = FileName( 'black.books.s01e02.avi', self.database )
+        self.filename2 = FileName( 'spaced.2x03.avi', self.database )
+        self.filename3 = FileName( 'csi.s02E13.avi', self.database )
+        
+        self.folder1 = Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[0]), self.Tools.databaseDir)
+        self.folder2 = Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[1]), self.Tools.databaseDir)
+        self.folder3 = Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[2]), self.Tools.databaseDir)
+        
+    def tearDown(self):
+        self.Tools.removeTempFiles()
+        
+    def testLoadFiles(self):
+        self.folder1.loadFiles()
+        self.folder2.loadFiles()
+        self.folder3.loadFiles()
+        
+        assert [ fn.fileName for fn in self.folder1.fileNames ] == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']
+        assert [ fn.fileName for fn in self.folder2.fileNames ] == ['CSI.2x12.avi', 'csiS01E11.avi']
+        assert [ fn.fileName for fn in self.folder3.fileNames ] == ['Spaced.2x4.avi', 'Spaced.S02E03.avi']
+        
+    def testGetMatchingShows(self):
+        self.folder1.loadFiles()
+        self.folder2.loadFiles()
+        self.folder3.loadFiles()
+        
+        assert [ fn.CorrectShow.name for fn in self.folder1.getMatchingShows() ] == ['Black Books', 'Black Books']
+        assert [ fn.CorrectShow.name for fn in self.folder2.getMatchingShows() ] == ['C.S.I', 'C.S.I']
+        assert [ fn.CorrectShow.name for fn in self.folder3.getMatchingShows() ] == ['Spaced', 'Spaced']
+        
+    def testGeneratePreviews(self):
+        
+        self.folder1.loadFiles()
+        self.folder2.loadFiles()
+        self.folder3.loadFiles()
+        
+        assert [ fn for fn in self.folder1.generatePreviews(self.Tools.filetypesXML) ] == [('bb.s03e05.avi', 'Black Books - S03E05 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi")]
+        assert [ fn for fn in self.folder2.generatePreviews(self.Tools.filetypesXML) ] == [('CSI.2x12.avi', "C.S.I - S02E12 - You've Got Male.avi"), ('csiS01E11.avi', 'C.S.I - S01E11 - I-15 Murders.avi')]
+        assert [ fn for fn in self.folder3.generatePreviews(self.Tools.filetypesXML) ] == [('Spaced.2x4.avi', 'Spaced - S02E04 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - S02E03 - Mettle.avi')]
+        
 class testFileName :
     """
     Test FileName Class
