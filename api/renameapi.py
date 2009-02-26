@@ -205,7 +205,7 @@ class FileName :
         #TODO: Support multiple Styles.
         
         
-    def getMatchingShows (self) :
+    def getMatchingShows(self) :
         """
         Get Possible show matches for this file name.
         
@@ -267,11 +267,15 @@ class FileName :
         :returns: tuple (oldname, newname)
         :rtype: tuple
         """
+        
+        CorrectShow = self.getMatchingShows()
+        NewShow = self.getShowDetails( filesystemDir, CorrectShow )
+        
         ## Episode does not exist.
-        if self.getShowDetails( filesystemDir, self.CorrectShow ) == None :
+        if NewShow == None:
             return self.fileName , None
             
-        self.generatedFileName = self.generateFileName(filesystemDir)
+        self.generatedFileName = self.generateFileName(NewShow, filesystemDir)
         
         return self.fileName, self.generatedFileName
     
