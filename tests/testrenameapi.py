@@ -62,6 +62,12 @@ class testFileName :
         assert self.filename2.getMatchingShows().name == 'Spaced'
         assert self.filename3.getMatchingShows().name == 'C.S.I'
         
+    def testGeneratePreview(self):
+        
+        assert self.filename1.generatePreview(self.Tools.filetypesXML) == ( 'black.books.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi" )
+        assert self.filename2.generatePreview(self.Tools.filetypesXML) == ('spaced.2x03.avi', 'Spaced - S02E03 - Mettle.avi')
+        assert self.filename3.generatePreview(self.Tools.filetypesXML) == ('csi.s02E13.avi', 'C.S.I - S02E13 - Identity Crisis.avi')
+        
     def testGetShowDetails(self):
         show1 = self.filename1.getMatchingShows()
         show2 = self.filename2.getMatchingShows()
