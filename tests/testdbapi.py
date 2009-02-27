@@ -45,7 +45,7 @@ class testDatabase :
         
         assert False
         
-    def testAddAlias(self) :
+    def testAddShow(self) :
         Show1 = Show( "Test Show One", "60", Filesystem("FS1"), "dummybackend", "dummyurlone" )
         Show2 = Show( "Test Show Two", "60", Filesystem("FS2"), "dummybackend", "dummyurltwo" )
         Show3 = Show( "Test Show Three", "60", Filesystem("FS3"), "dummybackend", "dummyurlthree" )
@@ -55,7 +55,7 @@ class testDatabase :
         assert self.database.addShow( Show( "Test Show Two", "60", Filesystem("FS2"), "dummybackend", "dummyurltwo" )) == None
         assert self.database.addShow( Show3 ) == Show3
         
-    def testGetAlias(self) :
+    def testGetShow(self) :
         Show1 = Show( "Test Show One", "60", Filesystem("FS1"), "dummybackend", "dummyurlone" )
         Show2 = Show( "Test Show Two", "60", Filesystem("FS2"), "dummybackend", "dummyurltwo" )
         Show3 = Show( "Test Show Three", "60", Filesystem("FS3"), "dummybackend", "dummyurlthree" )
@@ -66,7 +66,7 @@ class testDatabase :
         assert self.database.getShow( Show( "Test Show Two", "60", Filesystem("FS2"), "dummybackend", "dummyurltwo" ) ) == Show2
         assert self.database.getShow( Show( "Test Show Three", "60", Filesystem("FS3"), "dummybackend", "dummyurlthree" ) ) == None
         
-    def testRemoveAlias(self) :
+    def testRemoveShow(self) :
         Show1 = Show( "Test Show One", "60", Filesystem("FS1"), "dummybackend", "dummyurlone" )
         Show2 = Show( "Test Show Two", "60", Filesystem("FS2"), "dummybackend", "dummyurltwo" )
         Show3 = Show( "Test Show Three", "60", Filesystem("FS3"), "dummybackend", "dummyurlthree" )
