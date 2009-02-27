@@ -21,9 +21,101 @@ import nose
 import os
 
 from api.dbapi import Database, Show, Season, Episode, Filesystem, Filesystems
-from api.renameapi import FileName, Folder
+from api.renameapi import FileName, Folder, Rename
 from testproperties import Tools
 
+class testRename :
+    """
+    Test Rename Class
+    """
+    def setUp(self) :
+        self.Tools = Tools()
+        self.Tools.createRootDir()
+        self.Tools.createTempFiles()
+        self.Tools.createDatabaseFiles()
+        self.Tools.createFilesystemXML()
+        
+        self.database = Database(self.Tools.databaseDir)
+        self.database.loadDB()
+        self.filename1 = FileName( 'black.books.s01e02.avi', self.database )
+        self.filename2 = FileName( 'spaced.2x03.avi', self.database )
+        self.filename3 = FileName( 'csi.s02E13.avi', self.database )
+        
+        self.folder1 = Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[0]), self.Tools.databaseDir)
+        self.folder2 = Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[1]), self.Tools.databaseDir)
+        self.folder3 = Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[2]), self.Tools.databaseDir)
+        
+    def tearDown(self):
+        self.Tools.removeTempFiles()
+        
+    def testAddFolder(self) :
+        rename = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+        
+        assert rename.addFolder( self.folder1 ) == self.folder1
+        assert rename.addFolder( self.folder1 ) == None
+        assert rename.addFolder( self.folder1 ) == self.folder1
+        assert rename.addFolder( Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[1]), self.Tools.databaseDir) ) == None
+        assert rename.addFolder( self.folder3 ) == self.folder3
+        
+    def testGetFolder(self) :
+        rename = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+        
+        rename.addFolder( self.folder1 )
+        rename.addFolder( self.folder1 )
+        assert rename.getFolder( self.folder1 ) == self.folder1
+        assert rename.getFolder( self.folder3 ) == None
+        assert rename.getFolder( Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[1]), self.Tools.databaseDir) ) == self.folder1
+        assert rename.getFolder( Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[2]), self.Tools.databaseDir) ) == None
+        
+    def testRemoveFolder(self) :
+        rename = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+        
+        rename.addFolder( self.folder1 )
+        rename.addFolder( self.folder1 )
+        assert rename.removeFolder( self.folder1 ) == self.folder1
+        assert rename.removeFolder( self.folder1 ) == None
+        assert rename.removeFolder( Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[2]), self.Tools.databaseDir) ) == None
+        assert rename.removeFolder( Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[1]), self.Tools.databaseDir) ) == self.folder1
+        
+    def testGetMatchingShows(self):
+        self.folder1.loadFiles()
+        self.folder2.loadFiles()
+        self.folder3.loadFiles()
+        
+        rename1 = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+        rename2 = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+        rename3 = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+        
+        rename1.addFolder(self.folder1)
+        rename1.addFolder(self.folder2)
+        rename2.addFolder(self.folder1)
+        rename2.addFolder(self.folder3)
+        rename3.addFolder(self.folder3)
+        
+        assert [ fn.CorrectShow.name for fo in rename1.getMatchingShows() for fn in fo.getMatchingShows()] == ['Black Books', 'Black Books', 'C.S.I', 'C.S.I']
+        assert [ fn.CorrectShow.name for fo in rename2.getMatchingShows() for fn in fo.getMatchingShows()] == ['Black Books', 'Black Books', 'Spaced', 'Spaced']
+        assert [ fn.CorrectShow.name for fo in rename3.getMatchingShows() for fn in fo.getMatchingShows()] == ['Spaced', 'Spaced']
+        
+    def testGeneratePreviews(self):
+        
+        self.folder1.loadFiles()
+        self.folder2.loadFiles()
+        self.folder3.loadFiles()
+        
+        rename1 = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+        rename2 = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+        rename3 = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+        
+        rename1.addFolder(self.folder1)
+        rename1.addFolder(self.folder2)
+        rename2.addFolder(self.folder1)
+        rename2.addFolder(self.folder3)
+        rename3.addFolder(self.folder3)
+        
+        assert [ fo for fo in rename1.generatePreviews() ] == [[('bb.s03e05.avi', 'Black Books - S03E05 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi")], [('CSI.2x12.avi', "C.S.I - S02E12 - You've Got Male.avi"), ('csiS01E11.avi', 'C.S.I - S01E11 - I-15 Murders.avi')]]
+        assert [ fo for fo in rename2.generatePreviews() ] == [[('bb.s03e05.avi', 'Black Books - S03E05 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi")], [('Spaced.2x4.avi', 'Spaced - S02E04 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - S02E03 - Mettle.avi')]]
+        assert [ fo for fo in rename3.generatePreviews() ] == [[('Spaced.2x4.avi', 'Spaced - S02E04 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - S02E03 - Mettle.avi')]]
+        
 class testFolder :
     """
     Test Folder Class
