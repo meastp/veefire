@@ -49,6 +49,8 @@ class Database :
         """
         Load shows from the 'database' directory.
         """
+        self.database = []
+        
         #FIXME: Catch the right exeption. ( when database directory is empty )
         for afile in os.listdir( self.dbDir ) :
             ## We don't want to include temporary files.
@@ -151,6 +153,9 @@ class Database :
         :param verbose: verbose mode. prints info to stdout
         :type verbose: True or False
         """
+        if os.path.exists( self.dbDir ) != True :
+            return None
+        
         for Show in self.database :
             if verbose == True :
                 print '-----  ',
@@ -202,7 +207,9 @@ class Database :
             showName4 = showName3.replace("'", "")
             showName5 = showName4.replace("/", "")
             tree.write(  os.path.join( self.dbDir , showName5.lower() + ".show") )
-
+        
+        return self.database
+        
 class Show :
     """
     A Show. Contains Seasons, Aliases and a Filesystem.
