@@ -134,6 +134,26 @@ class Folder :
         self.shows = shows
         self.path = path
         
+    def __cmp__(self, other):
+        """
+        :param other: object to compare with
+        :type other: :class:`api.renameapi.Folder` or None
+        """
+        if other == None :
+            return False
+        
+        if self.dbDir != other.dbDir or self.path != other.path :
+            return False
+        
+        if self.shows == None and other.shows == None :
+            return True
+        
+        for i in xrange(0, len(self.shows)) :
+            if self.shows[i].fileName != other.shows[i].fileName :
+                return False
+        
+        return True
+        
     def loadFiles( self ) :
         ## Load Databse (optionally with limits.)
         self.database = Database( self.dbDir , self.shows )
