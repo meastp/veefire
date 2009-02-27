@@ -64,12 +64,16 @@ class Database :
             
             
             show = Show( properties.attrib['name'], properties.attrib['duration'], properties.attrib['filesystem'], properties.attrib['backend'], properties.attrib['url'] )
+            
+            notInList = False
             ## Not very elegant? Omits Shows not in self.shows, if not None.
             if self.shows != None :
-                if self.shows.getShow( show ) == None :
-                    continue
+                for S in self.shows :
+                    if S.name != show.name or S.duration != show.duration or S.backend != show.backend or S.url != show.url:
+                        notInList = True
             
-            
+            if notInList == True:
+                continue
             
             ## Aliases
             for showname in root.find('fileproperties').findall('alias') :
