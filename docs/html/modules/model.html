@@ -238,10 +238,10 @@
 </ul>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Episode.</p>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Returns Episode if Season exists, else returns Season</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Episode" class="reference" href="#api.dbapi.Episode"><tt class="xref docutils literal"><span class="pre">api.dbapi.Episode</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Episode" class="reference" href="#api.dbapi.Episode"><tt class="xref docutils literal"><span class="pre">api.dbapi.Episode</span></tt></a> or <cite>api.dbapi.Season</cite></p>
 </td>
 </tr>
 </tbody>
@@ -815,13 +815,15 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 </table>
 <dl class="method">
 <dt id="api.renameapi.FileName.generateFileName">
-<!--[api.renameapi.FileName.generateFileName]--><tt class="descname">generateFileName</tt><big>(</big><em>Style=None</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.generateFileName" title="Permalink to this definition">¶</a></dt>
+<!--[api.renameapi.FileName.generateFileName]--><tt class="descname">generateFileName</tt><big>(</big><em>Show</em>, <em>fileSystemDir</em>, <em>Style=None</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.generateFileName" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate and return a file name.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>Show</em> (api.dbapi.Show) &#8211; Show object to get file name details from.</li>
+<li><em>filesystemDir</em> (string) &#8211; Path to filesystems.xml</li>
 <li><em>Style</em> (string or None) &#8211; Style to use for the new file name</li>
 </ul>
 </td>
@@ -919,7 +921,7 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 
 <dl class="method">
 <dt id="api.renameapi.FileName.getShowDetails">
-<!--[api.renameapi.FileName.getShowDetails]--><tt class="descname">getShowDetails</tt><big>(</big><em>filesystemDir</em>, <em>Show</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.getShowDetails" title="Permalink to this definition">¶</a></dt>
+<!--[api.renameapi.FileName.getShowDetails]--><tt class="descname">getShowDetails</tt><big>(</big><em>filesystemDir</em>, <em>MatchingShow</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.getShowDetails" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves Show details.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -934,11 +936,6 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 </tbody>
 </table>
 </dd></dl>
-
-<dl class="method">
-<dt id="api.renameapi.FileName.replaceInvalidCharacters">
-<!--[api.renameapi.FileName.replaceInvalidCharacters]--><tt class="descname">replaceInvalidCharacters</tt><big>(</big><big>)</big><a class="headerlink" href="#api.renameapi.FileName.replaceInvalidCharacters" title="Permalink to this definition">¶</a></dt>
-<dd>Replace invalid characters.</dd></dl>
 
 <dl class="method">
 <dt id="api.renameapi.FileName.setCorrectShow">
@@ -2240,7 +2237,7 @@ A backend must be able to get data based on Show objects.</blockquote>
     </div>
     <div class="footer">
       &copy; Copyright 2008, Mats Taraldsvik.
-      Last updated on Nov 10, 2008.
+      Last updated on Feb 28, 2009.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
     </div>
   </body>
