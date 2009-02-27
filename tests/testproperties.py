@@ -34,7 +34,7 @@ testBackendFiles = [ '__init__.py', 'base.py', 'imdbtv.py' ]
 
 # CONTENTS FOR FILETYPES / FILESYSTEMS
 
-testFiletypesDirectory = testFileDirectory
+testFiletypesFile = os.path.join(testFileDirectory, 'filetypes.xml')
 testFiletypesContent = r'''<?xml version="1.0" encoding="UTF-8"?>
 <filetypes>
     <filetype name="ext3">
@@ -185,7 +185,7 @@ testDatabaseCSI = r'''<?xml version="1.0" encoding="UTF-8"?>
 </tvshow>
 '''
 
-testDatabase = { testDatabaseBlackBooks : 'blackbooks.xml', testDatabaseSpaced : 'spaced.xml', testDatabaseCSI : 'csi.xml' }
+testDatabase = { testDatabaseBlackBooks : 'blackbooks.show', testDatabaseSpaced : 'spaced.show', testDatabaseCSI : 'csi.show' }
 
 # CREATE FILE NAMES FOR TESTING
 #TODO: Create checks if directories exist.
@@ -198,9 +198,10 @@ class Tools :
         self.testDirs = testSubDirectories
         self.testFiles = testFileNames
         
-        self.filetypesXML = os.path.join(testFiletypesDirectory, 'filetypes.xml')
+        self.filetypesXML = testFiletypesFile
         
         self.databaseDir = testDatabaseDirectory
+        self.databaseFiles = testDatabase
         
         self.BackendDirectory = testBackendDirectory
         self.BackendFiles = testBackendFiles
@@ -219,13 +220,8 @@ class Tools :
         # replaces os.system in python 2.6 : p = Popen("command" + "arg", shell=True)
         # sts = os.waitpid(p.pid, 0)
         for i in xrange(0,len(absDirs) ) :
-            for aFile in self.testFiles[i] :
-                os.system('touch ' + '"' + os.path.join( absDirs[i] , aFile ) + '"')
-        
-#        while( len(absDirs) > 0 ):
-#            currentDir = absDirs.pop()
-#            for files in self.testFiles[-1] :
-#                os.system('touch ' + '"' + os.path.join( currentDir, files ) + '"')
+            for filename in self.testFiles[i] :
+                os.system('touch ' + '"' + os.path.join( absDirs[i] , filename ) + '"')
     
     def removeTempFiles(self):
         shutil.rmtree(self.rootDir)
@@ -242,7 +238,7 @@ class Tools :
     
     def createDatabaseFiles(self):
         os.mkdir(self.databaseDir)
-        for content, filename in testDatabase.items() :
+        for content, filename in self.databaseFiles.items() :
             testfile = open(os.path.join( self.databaseDir, filename ),"w")
             testfile.writelines( content )
             testfile.close()
@@ -254,6 +250,9 @@ class testFiles:
         self.Tools = Tools()
         self.Tools.createRootDir()
         self.Tools.createTempFiles()
+        self.Tools.createBackendFiles()
+        self.Tools.createFilesystemXML()
+        self.Tools.createDatabaseFiles()
         
     def tearDown(self):
         self.Tools.removeTempFiles()
@@ -261,9 +260,25 @@ class testFiles:
     def testTestFileDirectory(self):
         assert os.path.isdir( testFileDirectory ) == True
         
-    def testTestFiles(self):
+    def testCreateTempFiles(self):
         absDirs = [os.path.join(testFileDirectory,name) for name in testSubDirectories]
-        while( len(absDirs) > 0 ):
-            currentDir = absDirs.pop()
-            for files in testFileNames[-1] :
-                assert os.path.isfile( os.path.join(currentDir, files) ) == True
+        for directory in absDirs:
+            os.path.isdir(directory)
+        # replaces os.system in python 2.6 : p = Popen("command" + "arg", shell=True)
+        # sts = os.waitpid(p.pid, 0)
+        for i in xrange(0,len(absDirs) ) :
+            for filename in testFileNames[i] :
+                assert os.path.isfile( os.path.join(absDirs[i] , filename) ) == True
+        
+    def testCreateBackendFiles(self):
+        os.path.isdir( testBackendDirectory )
+        for filename in testBackendFiles :
+            assert os.path.isfile( os.path.join(testBackendDirectory , filename) ) == True
+        
+    def testCreateFilesystemXML(self):
+        assert os.path.isfile( testFiletypesFile ) == True
+        
+    def testCreateDatabaseFiles(self):
+        assert os.path.isdir( testDatabaseDirectory )
+        for filename in testDatabase.values() :
+            assert os.path.isfile( os.path.join(testDatabaseDirectory , filename) ) == True
