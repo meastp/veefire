@@ -123,9 +123,9 @@ class Regexes :
     '''
     def __init__ ( self ) :
         self.airdate = re.compile(r'<strong>([12]?[0-9] [a-zA-Z]+ [0-9]+)</strong>')
-        self.septi = re.compile(r'<h3>Season ([12]?[0-9]), Episode ([1-9]?[0-9]): <a href="/title/[a-z0-9]+/">([^<]+)</a></h3>')
+        self.septi = re.compile(r'<h3>Season (?:[0]+)?([12]?[0-9]+), Episode (?:[0]+)?([12]?[0-9]+): <a href="/title/[a-z0-9]+/">([^<]+)?</a></h3>')
         self.removetags = re.compile(r'<[^>]*>([^<]*)<[^>]*>')
-        self.invalidtitle = re.compile(r'(Episode #[1-9]+.[1-9]([0-9]+)?)')
+        self.invalidtitle = re.compile(r'(Episode #[1-9]+.[1-9]([0-9]+)?)') #FIXME: Not Used?
         
     def removeTags( self, string ) :
         '''
