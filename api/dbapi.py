@@ -49,6 +49,8 @@ class Database :
         """
         Load shows from the 'database' directory.
         """
+        self.database = []
+        
         #FIXME: Catch the right exeption. ( when database directory is empty )
         for afile in os.listdir( self.dbDir ) :
             ## We don't want to include temporary files.
@@ -64,12 +66,16 @@ class Database :
             
             
             show = Show( properties.attrib['name'], properties.attrib['duration'], properties.attrib['filesystem'], properties.attrib['backend'], properties.attrib['url'] )
+            
+            notInList = False
             ## Not very elegant? Omits Shows not in self.shows, if not None.
             if self.shows != None :
-                if self.shows.getShow( show ) == None :
-                    continue
+                for S in self.shows :
+                    if S.name != show.name or S.duration != show.duration or S.backend != show.backend or S.url != show.url:
+                        notInList = True
             
-            
+            if notInList == True:
+                continue
             
             ## Aliases
             for showname in root.find('fileproperties').findall('alias') :
@@ -122,11 +128,12 @@ class Database :
         :returns: On success, returns Show.
         :rtype: :class:`api.dbapi.Show` or None
         """
-        if self.getShow( InputShow ) == None :
+        Show = self.getShow( InputShow )
+        if Show == None :
             return None
         else : 
-            self.database.remove( InputShow )
-            return InputShow
+            self.database.remove( Show )
+            return Show
     
     def printDb ( self ) :
         """
@@ -146,6 +153,9 @@ class Database :
         :param verbose: verbose mode. prints info to stdout
         :type verbose: True or False
         """
+        if os.path.exists( self.dbDir ) != True :
+            return None
+        
         for Show in self.database :
             if verbose == True :
                 print '-----  ',
@@ -197,7 +207,9 @@ class Database :
             showName4 = showName3.replace("'", "")
             showName5 = showName4.replace("/", "")
             tree.write(  os.path.join( self.dbDir , showName5.lower() + ".show") )
-
+        
+        return self.database
+        
 class Show :
     """
     A Show. Contains Seasons, Aliases and a Filesystem.
@@ -249,6 +261,11 @@ class Show :
         ## Aliases are lowercase.
         InputAlias.name = InputAlias.name.lower()
         for Alias in self.alias :
+            #print Alias
+            #print Alias.name
+            #print InputAlias
+            #print InputAlias.name
+            #print '.........'
             if Alias.name == InputAlias.name :
                 return Alias
         return None
@@ -262,11 +279,12 @@ class Show :
         :returns: On success, returns Alias.
         :rtype: :class:`api.dbapi.Alias` or None
         """
-        if self.getAlias( InputAlias ) == None :
+        Alias = self.getAlias( InputAlias )
+        if Alias == None :
             return None
         else : 
-            self.alias.remove( InputAlias )
-            return InputAlias
+            self.alias.remove( Alias )
+            return Alias
         
     def addSeason ( self, InputSeason ) :
         """
@@ -277,6 +295,7 @@ class Show :
         :returns: On success, returns Season.
         :rtype: :class:`api.dbapi.Season` or None
         """
+        
         if self.getSeason( InputSeason ) != None :
             return None
         else : 
@@ -306,11 +325,13 @@ class Show :
         :returns: On success, returns Season.
         :rtype: :class:`api.dbapi.Season` or None
         """
-        if self.getSeason( InputSeason ) == None :
+        Season = self.getSeason( InputSeason )
+        if Season == None :
             return None
         else : 
-            self.seasons.remove( InputSeason )
-            return InputSeason
+            self.seasons.remove( Season )
+            return Season
+        
     
     def addEpisode ( self, InputEpisode, InputSeason ) :
         """
@@ -320,14 +341,14 @@ class Show :
         :type InputEpisode: :class:`api.dbapi.Episode`
         :param InputSeason: Season the Episode belongs in
         :type InputSeason: :class:`api.dbapi.Season`
-        :returns: On success, returns Episode.
-        :rtype: :class:`api.dbapi.Episode` or None
+        :returns: Returns Episode if Season exists, else returns Season
+        :rtype: :class:`api.dbapi.Episode` or `api.dbapi.Season`
         """
         Season = self.getSeason( InputSeason )
         if Season != None :
             return Season.addEpisode( InputEpisode )
         else :
-            InputSeason.addEpisode( InputEpisode )
+            Episode = InputSeason.addEpisode( InputEpisode )
             return self.addSeason( InputSeason )
     
     def clearEpisodes ( self ) :
@@ -395,11 +416,12 @@ class Season :
         :returns: On success, returns Episode.
         :rtype: :class:`api.dbapi.Episode` or None
         """
-        if self.getEpisode( InputEpisode ) == None :
+        Episode = self.getEpisode( InputEpisode )
+        if Episode == None :
             return None
         else : 
-            self.episodes.remove( InputEpisode )
-            return InputEpisode
+            self.episodes.remove( Episode )
+            return Episode
 
 class Episode :
     """
@@ -443,8 +465,10 @@ class Filesystems :
         """
         
         self.filesystemsDir = filesystemsDir
-        self.filesystems = self.loadFilesystems()
-        
+        if filesystemsDir != None :
+            self.filesystems = self.loadFilesystems()
+        else :
+            self.filesystems = []
         
     def loadFilesystems ( self ) :
         """
@@ -473,10 +497,10 @@ class Filesystems :
         :returns: On success, returns Filesystem.
         :rtype: :class:`api.dbapi.Filesystem` or None
         """
-        if self.getChar( InputFilesystem ) != None :
+        if self.getFilesystem( InputFilesystem ) != None :
             return None
         else : 
-            self.chars.append( InputFilesystem )
+            self.filesystems.append( InputFilesystem )
             return InputFilesystem
     
     def getFilesystem( self, InputFilesystem ) :
@@ -502,11 +526,12 @@ class Filesystems :
         :returns: On success, returns Filesystem.
         :rtype: :class:`api.dbapi.Filesystem` or None
         """
-        if self.getChar( InputFilesystem ) == None :
+        Filesystem = self.getFilesystem( InputFilesystem )
+        if Filesystem == None :
             return None
         else : 
-            self.chars.remove( InputFilesystem )
-            return InputFilesystem
+            self.filesystems.remove( Filesystem )
+            return Filesystem
 
 class Filesystem :
     """
@@ -558,11 +583,12 @@ class Filesystem :
         :returns: On success, returns Invalid character.
         :rtype: :class:`api.dbapi.InvChar` or None
         """
-        if self.getChar( InvChar ) == None :
+        Char = self.getChar( InvChar )
+        if Char == None :
             return None
         else : 
-            self.chars.remove( InvChar )
-            return InvChar
+            self.chars.remove( Char )
+            return Char
         
     def validateString( self, String ) :
         """

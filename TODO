@@ -1,6 +1,5 @@
 
-Fix editor. -> dbfunctions returns None instead of False
-            -> fix imports.
+Update tests in documentation.
 
 Make main gtk program.
 - Check date modified on update?
@@ -8,3 +7,4 @@ Make main gtk program.
 Make cli / daemon interface. Could be used in headless torrent server setup.
 
 Make setup file for Linux, Windows, Mac
+    - should run unittests on install?

@@ -134,6 +134,26 @@ class Folder :
         self.shows = shows
         self.path = path
         
+    def __cmp__(self, other):
+        """
+        :param other: object to compare with
+        :type other: :class:`api.renameapi.Folder` or None
+        """
+        if other == None :
+            return False
+        
+        if self.dbDir != other.dbDir or self.path != other.path :
+            return False
+        
+        if self.shows == None and other.shows == None :
+            return True
+        
+        for i in xrange(0, len(self.shows)) :
+            if self.shows[i].fileName != other.shows[i].fileName :
+                return False
+        
+        return True
+        
     def loadFiles( self ) :
         ## Load Databse (optionally with limits.)
         self.database = Database( self.dbDir , self.shows )
@@ -198,20 +218,20 @@ class FileName :
         
         self.generatedFileName = None
         
+        ##Determine the file's regex pattern.
+        self.regexPattern = self.getPattern()
+        
         ##Styles
         #TODO: Support multiple Styles.
         
         
-    def getMatchingShows (self) :
+    def getMatchingShows(self) :
         """
         Get Possible show matches for this file name.
         
         :returns: list of Show objects
         :rtype: list
         """
-        ##Determine the file's regex pattern.
-        self.regexPattern = self.getPattern()
-        
         if self.regexPattern == None:
             return None
         
@@ -221,20 +241,23 @@ class FileName :
         if rawShowName == None :
             return None
         
-        #print rawShowName
-        
         ## Search through Shows and try to match Aliases
         ## PossibleShowMatches could have multiple Show matches.
         PossibleShowMatches = []
         for Show in self.database.database :
             for Alias in Show.alias :
                 if rawShowName.lower() == Alias.name :
+                    
                     PossibleShowMatches.append( copy.deepcopy( Show ) )
         
         #FIXME: Use a function to resolve the conflicts here. Needs to be abstract and overridden.
         if len( PossibleShowMatches ) == 0 :
             self.CorrectShow = None
             return
+        
+        if len( PossibleShowMatches ) == 1 :
+            self.CorrectShow = PossibleShowMatches[0]
+            return self.CorrectShow
         
         self.CorrectShow = self.setCorrectShow( PossibleShowMatches )
         
@@ -264,16 +287,19 @@ class FileName :
         :returns: tuple (oldname, newname)
         :rtype: tuple
         """
+        
+        CorrectShow = self.getMatchingShows()
+        NewShow = self.getShowDetails( filesystemDir, CorrectShow )
+        
         ## Episode does not exist.
-        if self.getShowDetails( filesystemDir, self.CorrectShow ) == None :
+        if NewShow == None:
             return self.fileName , None
             
-        self.replaceInvalidCharacters()
-        self.generatedFileName = self.generateFileName(filesystemDir)
+        self.generatedFileName = self.generateFileName(NewShow, filesystemDir)
         
         return self.fileName, self.generatedFileName
     
-    def getShowDetails (self, filesystemDir, Show) :
+    def getShowDetails (self, filesystemDir, MatchingShow) :
         """
         Retrieves Show details.
         
@@ -283,53 +309,59 @@ class FileName :
         :type Show: :class:`api.dbapi.Show`
         """
         
-        if Show == None :
+        if MatchingShow == None :
             return None
         
         #FIXME: Show should not be a list (but resolved after self.getMatchingShows() ).
-        self.fileSystem = Filesystems(filesystemDir).getFilesystem( Filesystem( Show.filesystem ) )
+        fileSystem = Filesystems(filesystemDir).getFilesystem( Filesystem( MatchingShow.filesystem ) )
         
-        self.showName = Show.name
-        self.seasonNumber = self.getSeason()
-        self.episodeNumber = self.getEpisode()
+        seasonNumber = self.getSeason()
+        episodeNumber = self.getEpisode()
         
-        NewSeason = Show.getSeason( Season( self.seasonNumber ) )
-        NewEpisode = NewSeason.getEpisode( Episode( self.episodeNumber , 'title', 'airdate' ))
+        NewSeason = MatchingShow.getSeason( Season( seasonNumber ) )
+        NewEpisode = NewSeason.getEpisode( Episode( episodeNumber , 'title', 'airdate' ))
+        NewSeason.episodes = [ ]
         
         ## Episode does not exist.
         if NewEpisode == None :
             return None
         
-        self.episodeTitle = NewEpisode.title
-        self.episodeAirDate = NewEpisode.airdate
-        self.episodeArc = NewEpisode.arc
-        
         #FIXME: Proper regex function to get file suffix.
         self.fileSuffix = self.fileName[-4:]
         
-        return Show
+        NewShow = Show( MatchingShow.name, MatchingShow.duration, fileSystem, MatchingShow.backend, MatchingShow.url )
+        NewShow.addEpisode( NewEpisode, NewSeason )
         
-    def replaceInvalidCharacters ( self ) :
-        """
-        Replace invalid characters.
-        """
-        self.showName = self.fileSystem.validateString( self.showName )
-        self.episodeTitle = self.fileSystem.validateString( self.episodeTitle )
-        self.episodeAirDate = self.fileSystem.validateString( self.episodeAirDate )
-        self.episodeArc = self.fileSystem.validateString( self.episodeArc )
-        self.fileSuffix = self.fileSystem.validateString( self.fileSuffix )
+        return NewShow
         
-    def generateFileName( self, Style=None ) :
+    def generateFileName( self, Show, fileSystemDir, Style=None ) :
         """
         Generate and return a file name.
         
+        :param Show: Show object to get file name details from.
+        :type Show: :class:`api.dbapi.Show`
+        :param filesystemDir: Path to filesystems.xml
+        :type filesystemDir: string
         :param Style: Style to use for the new file name
         :type Style: string or None
         """
+        
+        fs = Filesystems(fileSystemDir).getFilesystem( Filesystem( Show.filesystem.name ) )
+        
+        showName = Show.name
+        if len(Show.seasons[0].episodes) != 1 or len(Show.seasons) != 1 :
+            print 'error: more than one episode or season in show object.'
+            return -1
+        seasonNumber = fs.validateString(Show.seasons[0].name)
+        episodeNumber = fs.validateString(Show.seasons[0].episodes[0].name)
+        episodeTitle = fs.validateString(Show.seasons[0].episodes[0].title)
+        episodeArc = fs.validateString(Show.seasons[0].episodes[0].arc)
+        episodeAirDate = fs.validateString(Show.seasons[0].episodes[0].airdate)
+        
         #FIXME: Proper way to use different styles.
         
         ## Temporary default style.
-        Style1 = self.showName + ' - S' + str('%02d' % int(self.seasonNumber)) + 'E' + str('%02d' % int(self.episodeNumber)) + ' - ' + self.episodeTitle + self.fileSuffix
+        Style1 = showName + ' - S' + str('%02d' % int(seasonNumber)) + 'E' + str('%02d' % int(episodeNumber)) + ' - ' + episodeTitle + self.fileSuffix
         
         return Style1
         
@@ -363,7 +395,7 @@ class FileName :
         else :
             return None
         
-    def getSeason(self) :
+    def getSeason(self):
         """
         Return season number.
         

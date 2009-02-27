@@ -89,7 +89,7 @@ class BackendInterface :
         """
         self.fillUpdateDB()
         
-        self.mergeDB.write(True)
+        self.mergeDB.write()
     
     def fillUpdateDB( self ) :
         """
