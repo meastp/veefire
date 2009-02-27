@@ -28,6 +28,10 @@ testFileNames = [   [ 'blackbooks.s01e02.avi', 'bb.s03e05.avi'],
                     [ 'csiS01E11.avi', 'CSI.2x12.avi' ],
                     [ 'Spaced.2x4.avi', 'Spaced.S02E03.avi']   ]
 
+# BACKENDS TEST FILES
+testBackendDirectory = os.path.join(testFileDirectory, 'backends')
+testBackendFiles = [ '__init__.py', 'base.py', 'imdbtv.py' ]
+
 # CONTENTS FOR FILETYPES / FILESYSTEMS
 
 testFiletypesDirectory = testFileDirectory
@@ -198,7 +202,10 @@ class Tools :
         
         self.databaseDir = testDatabaseDirectory
         
-    
+        self.BackendDirectory = testBackendDirectory
+        self.BackendFiles = testBackendFiles
+        
+        
     def createRootDir(self):
         if os.path.exists(self.rootDir) :
             self.removeTempFiles()
@@ -222,6 +229,11 @@ class Tools :
     
     def removeTempFiles(self):
         shutil.rmtree(self.rootDir)
+    
+    def createBackendFiles(self):
+        os.mkdir( self.BackendDirectory)
+        for filename in self.BackendFiles :
+            os.system('touch ' + '"' + os.path.join( self.BackendDirectory , filename ) + '"')
     
     def createFilesystemXML(self):
         testfile = open(self.filetypesXML ,"w")
