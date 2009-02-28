@@ -718,80 +718,126 @@
 <p><strong>Example:</strong></p>
 <blockquote>
 Load the current database files into Python objects, and print a nice formatted overview of it.  In this example, there is a database directory with the xml file in <a class="reference" href="../misc/database.html#database-xml-file"><em>Show Database</em></a>.</blockquote>
-<table class="highlighttable"><tr><td class="linenos"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27</pre></td><td class="code"><div class="highlight"><pre><span class="k">from</span> <span class="nn">api.dbapi</span> <span class="k">import</span> <span class="n">Show</span><span class="p">,</span> <span class="n">Episode</span><span class="p">,</span> <span class="n">Season</span><span class="p">,</span> <span class="n">Database</span>
-
-<span class="n">db</span> <span class="o">=</span> <span class="n">Database</span><span class="p">(</span><span class="s">&#39;/home/meastp/testdb&#39;</span><span class="p">)</span>
-<span class="n">db</span><span class="o">.</span><span class="n">loadDB</span><span class="p">()</span>
-<span class="n">db</span><span class="o">.</span><span class="n">printDb</span><span class="p">()</span>
-<span class="c">####   Black Books   ####</span>
-<span class="c">#       Season: 1</span>
-<span class="c">#               Episode: Cooking the Books</span>
-<span class="c">#               Episode: Manny&#39;s First Day</span>
-<span class="c">#               Episode: The Grapes of Wrath</span>
-<span class="c">#               Episode: The Blackout</span>
-<span class="c">#               Episode: The Big Lock-Out</span>
-<span class="c">#               Episode: He&#39;s Leaving Home</span>
-<span class="c">#       Season: 2</span>
-<span class="c">#               Episode: The Entertainer</span>
-<span class="c">#               Episode: Fever</span>
-<span class="c">#               Episode: The Fixer</span>
-<span class="c">#               Episode: Blood</span>
-<span class="c">#               Episode: Hello Sun</span>
-<span class="c">#               Episode: A Nice Change</span>
-<span class="c">#       Season: 3</span>
-<span class="c">#               Episode: Manny Come Home</span>
-<span class="c">#               Episode: Elephants and Hens</span>
-<span class="c">#               Episode: Moo-Ma and Moo-Pa</span>
-<span class="c">#               Episode: A Little Flutter</span>
-<span class="c">#               Episode: The Travel Writer</span>
-<span class="c">#               Episode: Party</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.dbapi</span> <span class="k">import</span> <span class="n">Show</span><span class="p">,</span> <span class="n">Episode</span><span class="p">,</span> <span class="n">Season</span><span class="p">,</span> <span class="n">Database</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span> <span class="o">=</span> <span class="n">Tools</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createRootDir</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createDatabaseFiles</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">Database</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">databaseDir</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Import the .show files from the database directory.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">loadDB</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">printDb</span><span class="p">()</span>
+<span class="go">####   C.S.I   ####</span>
+<span class="go">       Season: 1</span>
+<span class="go">               Episode: Pilot</span>
+<span class="go">               Episode: Cool Change</span>
+<span class="go">               Episode: Crate &#39;n&#39; Burial</span>
+<span class="go">               Episode: Pledging Mr. Johnson</span>
+<span class="go">               Episode: Friends &amp;#38; Lovers</span>
+<span class="go">               Episode: Who Are You?</span>
+<span class="go">               Episode: Blood Drops</span>
+<span class="go">               Episode: Anonymous</span>
+<span class="go">               Episode: Unfriendly Skies</span>
+<span class="go">               Episode: Sex, Lies and Larvae</span>
+<span class="go">               Episode: I-15 Murders</span>
+<span class="go">               Episode: Fahrenheit 932</span>
+<span class="go">               Episode: Boom</span>
+<span class="go">               Episode: To Halve and to Hold</span>
+<span class="go">               Episode: Table Stakes</span>
+<span class="go">               Episode: Too Tough to Die</span>
+<span class="go">               Episode: Face Lift</span>
+<span class="go">               Episode: $35K O.B.O.</span>
+<span class="go">               Episode: Gentle, Gentle</span>
+<span class="go">               Episode: Sounds of Silence</span>
+<span class="go">               Episode: Justice Is Served</span>
+<span class="go">               Episode: Evaluation Day</span>
+<span class="go">               Episode: The Strip Strangler</span>
+<span class="go">       Season: 2</span>
+<span class="go">               Episode: Burked</span>
+<span class="go">               Episode: Chaos Theory</span>
+<span class="go">               Episode: Overload</span>
+<span class="go">               Episode: Bully for You</span>
+<span class="go">               Episode: Scuba Doobie-Doo</span>
+<span class="go">               Episode: Alter Boys</span>
+<span class="go">               Episode: Caged</span>
+<span class="go">               Episode: Slaves of Las Vegas</span>
+<span class="go">               Episode: And Then There Were None</span>
+<span class="go">               Episode: Ellie</span>
+<span class="go">               Episode: Organ Grinder</span>
+<span class="go">               Episode: You&#39;ve Got Male</span>
+<span class="go">               Episode: Identity Crisis</span>
+<span class="go">               Episode: The Finger</span>
+<span class="go">               Episode: Burden of Proof</span>
+<span class="go">               Episode: Primum Non Nocere</span>
+<span class="go">               Episode: Felonious Monk</span>
+<span class="go">               Episode: Chasing the Bus</span>
+<span class="go">               Episode: Stalker</span>
+<span class="go">               Episode: Cats in the Cradle...</span>
+<span class="go">               Episode: Anatomy of a Lye</span>
+<span class="go">               Episode: Cross-Jurisdictions</span>
+<span class="go">               Episode: The Hunger Artist</span>
+<span class="go">####   Spaced   ####</span>
+<span class="go">       Season: 1</span>
+<span class="go">               Episode: Beginnings</span>
+<span class="go">               Episode: Gatherings</span>
+<span class="go">               Episode: Art</span>
+<span class="go">               Episode: Battles</span>
+<span class="go">               Episode: Chaos</span>
+<span class="go">               Episode: Epiphanies</span>
+<span class="go">               Episode: Ends</span>
+<span class="go">       Season: 2</span>
+<span class="go">               Episode: Back</span>
+<span class="go">               Episode: Change</span>
+<span class="go">               Episode: Mettle</span>
+<span class="go">               Episode: Help</span>
+<span class="go">               Episode: Gone</span>
+<span class="go">               Episode: Dissolution</span>
+<span class="go">               Episode: Leaves</span>
+<span class="go">####   Black Books   ####</span>
+<span class="go">       Season: 1</span>
+<span class="go">               Episode: Cooking the Books</span>
+<span class="go">               Episode: Manny&#39;s First Day</span>
+<span class="go">               Episode: The Grapes of Wrath</span>
+<span class="go">               Episode: The Blackout</span>
+<span class="go">               Episode: The Big Lock-Out</span>
+<span class="go">               Episode: He&#39;s Leaving Home</span>
+<span class="go">       Season: 2</span>
+<span class="go">               Episode: The Entertainer</span>
+<span class="go">               Episode: Fever</span>
+<span class="go">               Episode: The Fixer</span>
+<span class="go">               Episode: Blood</span>
+<span class="go">               Episode: Hello Sun</span>
+<span class="go">               Episode: A Nice Change</span>
+<span class="go">       Season: 3</span>
+<span class="go">               Episode: Manny Come Home</span>
+<span class="go">               Episode: Elephants and Hens</span>
+<span class="go">               Episode: Moo-Ma and Moo-Pa</span>
+<span class="go">               Episode: A Little Flutter</span>
+<span class="go">               Episode: The Travel Writer</span>
+<span class="go">               Episode: Party</span>
 </pre></div>
-</td></tr></table><p><strong>Example:</strong></p>
+<p><strong>Example:</strong></p>
 <blockquote>
 Get Filesystem object by name.  The filetypes.xml is explained in <a class="reference" href="../misc/filesystems.html#filetypes-xml"><em>Filesystems in veefire</em></a>.</blockquote>
-<table class="highlighttable"><tr><td class="linenos"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></td><td class="code"><div class="highlight"><pre><span class="k">from</span> <span class="nn">api.dbapi</span> <span class="k">import</span> <span class="n">Filesystems</span><span class="p">,</span> <span class="n">Filesystem</span>
-
-<span class="n">fs</span> <span class="o">=</span> <span class="n">Filesystems</span><span class="p">(</span><span class="s">&#39;/home/meastp/filetypes.xml&#39;</span><span class="p">)</span>
-<span class="n">fs1</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getFilesystem</span><span class="p">(</span> <span class="n">Filesystem</span><span class="p">(</span><span class="s">&quot;ext3&quot;</span><span class="p">)</span> <span class="p">)</span>
-<span class="k">print</span> <span class="n">fs1</span><span class="o">.</span><span class="n">validateString</span><span class="p">(</span><span class="s">&quot;thisis/324sdf@$3?+&quot;</span><span class="p">)</span>
-<span class="c">#### OUTPUT</span>
-<span class="c">#thisisor324sdf@$3?+</span>
-<span class="c">####</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.dbapi</span> <span class="k">import</span> <span class="n">Filesystems</span><span class="p">,</span> <span class="n">Filesystem</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span> <span class="o">=</span> <span class="n">Tools</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createRootDir</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createDatabaseFiles</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createFilesystemXML</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span> <span class="o">=</span> <span class="n">Filesystems</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">filetypesXML</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fs1</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getFilesystem</span><span class="p">(</span> <span class="n">Filesystem</span><span class="p">(</span><span class="s">&quot;ext3&quot;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">fs1</span><span class="o">.</span><span class="n">validateString</span><span class="p">(</span><span class="s">&quot;thisis/324sdf/@$3?+&quot;</span><span class="p">)</span>
+<span class="go">thisisor324sdfor@$3?+</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fs2</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getFilesystem</span><span class="p">(</span> <span class="n">Filesystem</span><span class="p">(</span><span class="s">&quot;ntfs&quot;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">fs2</span><span class="o">.</span><span class="n">validateString</span><span class="p">(</span><span class="s">&quot;thisis/324sdf/@$3?+&quot;</span><span class="p">)</span>
+<span class="go">thisisor324sdforatUSD3Qoplus</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="section">
 <h1 id="module-api.renameapi"><tt class="xref docutils literal"><span class="pre">api.renameapi</span></tt> &#8211; File, Folder and Rename<a class="headerlink" href="#module-api.renameapi" title="Permalink to this headline">¶</a></h1>
