@@ -190,7 +190,6 @@ testDatabase = { testDatabaseBlackBooks : 'blackbooks.show', testDatabaseSpaced 
 # CREATE FILE NAMES FOR TESTING
 #TODO: Create checks if directories exist.
 
-
 class Tools :
     
     def __init__(self):
@@ -206,14 +205,12 @@ class Tools :
         self.BackendDirectory = testBackendDirectory
         self.BackendFiles = testBackendFiles
         
-        
     def createRootDir(self):
         if os.path.exists(self.rootDir) :
             self.removeTempFiles()
         os.mkdir(self.rootDir)
     
     def createTempFiles(self):
-        
         absDirs = [os.path.join(self.rootDir,name) for name in self.testDirs]
         for directory in absDirs:
             os.mkdir(directory)
