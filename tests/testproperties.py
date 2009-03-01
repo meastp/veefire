@@ -67,7 +67,7 @@ testDatabaseDirectory = os.path.join(testFileDirectory, 'database')
 
 testDatabaseBlackBooks = r'''<?xml version="1.0" encoding="UTF-8"?>
 <tvshow>
-  <showproperties backend="imdbtvbackend" duration="30" filesystem="ext3" name="Black Books" url="tt0262150"/>
+  <showproperties backend="imdbtvbackend" duration="30" name="Black Books" url="tt0262150"/>
   <fileproperties>
     <alias value="blackbooks"/>
     <alias value="black.books"/>
@@ -102,7 +102,7 @@ testDatabaseBlackBooks = r'''<?xml version="1.0" encoding="UTF-8"?>
 
 testDatabaseSpaced = r'''<?xml version="1.0" encoding="UTF-8"?>
 <tvshow>
-  <showproperties backend="imdbtvbackend" duration="60" filesystem="ext3" name="Spaced" url="tt0187664"/>
+  <showproperties backend="imdbtvbackend" duration="60" name="Spaced" url="tt0187664"/>
   <fileproperties>
     <alias value="spaced"/>
   </fileproperties>
@@ -128,7 +128,7 @@ testDatabaseSpaced = r'''<?xml version="1.0" encoding="UTF-8"?>
 
 testDatabaseCSI = r'''<?xml version="1.0" encoding="UTF-8"?>
 <tvshow>
-  <showproperties backend="imdbtvbackend" duration="60" filesystem="ext3" name="C.S.I" url="tt0247082"/>
+  <showproperties backend="imdbtvbackend" duration="60" name="C.S.I" url="tt0247082"/>
   <fileproperties>
     <alias value="csi"/>
   </fileproperties>

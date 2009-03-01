@@ -184,7 +184,7 @@
 
 <dl class="class">
 <dt id="api.dbapi.Show">
-<!--[api.dbapi.Show]-->class <tt class="descclassname">api.dbapi.</tt><tt class="descname">Show</tt><big>(</big><em>name</em>, <em>duration</em>, <em>Filesystem</em>, <em>backend</em>, <em>url</em><big>)</big><a class="headerlink" href="#api.dbapi.Show" title="Permalink to this definition">¶</a></dt>
+<!--[api.dbapi.Show]-->class <tt class="descclassname">api.dbapi.</tt><tt class="descname">Show</tt><big>(</big><em>name</em>, <em>duration</em>, <em>backend</em>, <em>url</em><big>)</big><a class="headerlink" href="#api.dbapi.Show" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Show. Contains Seasons, Aliases and a Filesystem.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -481,231 +481,15 @@
 </table>
 </dd></dl>
 
-<dl class="class">
-<dt id="api.dbapi.Filesystems">
-<!--[api.dbapi.Filesystems]-->class <tt class="descclassname">api.dbapi.</tt><tt class="descname">Filesystems</tt><big>(</big><em>filesystemsDir=None</em><big>)</big><a class="headerlink" href="#api.dbapi.Filesystems" title="Permalink to this definition">¶</a></dt>
-<dd><p>Filesystems. Methods for Filesystem.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><em>filesystemDir</em> (string) &#8211; Path to filesystems.xml</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="api.dbapi.Filesystems.addFilesystem">
-<!--[api.dbapi.Filesystems.addFilesystem]--><tt class="descname">addFilesystem</tt><big>(</big><em>InputFilesystem</em><big>)</big><a class="headerlink" href="#api.dbapi.Filesystems.addFilesystem" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a Filesystem.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>InputFilesystem</em> (api.dbapi.Filesystem) &#8211; Filesystem to add</li>
-</ul>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Filesystem.</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Filesystem" class="reference" href="#api.dbapi.Filesystem"><tt class="xref docutils literal"><span class="pre">api.dbapi.Filesystem</span></tt></a> or None</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="api.dbapi.Filesystems.getFilesystem">
-<!--[api.dbapi.Filesystems.getFilesystem]--><tt class="descname">getFilesystem</tt><big>(</big><em>InputFilesystem</em><big>)</big><a class="headerlink" href="#api.dbapi.Filesystems.getFilesystem" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a Filesystem.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>InputFilesystem</em> (api.dbapi.Filesystem) &#8211; Filesystem to return. Name needs to be equal</li>
-</ul>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Filesystem.</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Filesystem" class="reference" href="#api.dbapi.Filesystem"><tt class="xref docutils literal"><span class="pre">api.dbapi.Filesystem</span></tt></a> or None</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="api.dbapi.Filesystems.loadFilesystems">
-<!--[api.dbapi.Filesystems.loadFilesystems]--><tt class="descname">loadFilesystems</tt><big>(</big><big>)</big><a class="headerlink" href="#api.dbapi.Filesystems.loadFilesystems" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return current registered filesystems</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of Filesystem objects from the filesystems.xml file.</td>
-</tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="api.dbapi.Filesystems.removeFilesystem">
-<!--[api.dbapi.Filesystems.removeFilesystem]--><tt class="descname">removeFilesystem</tt><big>(</big><em>InputFilesystem</em><big>)</big><a class="headerlink" href="#api.dbapi.Filesystems.removeFilesystem" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove a Filesystem.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>InputFilesystem</em> (api.dbapi.Filesystem) &#8211; Filesystem to remove</li>
-</ul>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Filesystem.</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Filesystem" class="reference" href="#api.dbapi.Filesystem"><tt class="xref docutils literal"><span class="pre">api.dbapi.Filesystem</span></tt></a> or None</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="api.dbapi.Filesystem">
-<!--[api.dbapi.Filesystem]-->class <tt class="descclassname">api.dbapi.</tt><tt class="descname">Filesystem</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#api.dbapi.Filesystem" title="Permalink to this definition">¶</a></dt>
-<dd><p>A Filesystem. Contains InvChars.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><em>name</em> (string) &#8211; Name of filesystem</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="api.dbapi.Filesystem.addChar">
-<!--[api.dbapi.Filesystem.addChar]--><tt class="descname">addChar</tt><big>(</big><em>InvChar</em><big>)</big><a class="headerlink" href="#api.dbapi.Filesystem.addChar" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add an invalid character.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>InvChar</em> (api.dbapi.InvChar) &#8211; Invalid character to add</li>
-</ul>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Invalid character.</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.InvChar" class="reference" href="#api.dbapi.InvChar"><tt class="xref docutils literal"><span class="pre">api.dbapi.InvChar</span></tt></a> or None</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="api.dbapi.Filesystem.getChar">
-<!--[api.dbapi.Filesystem.getChar]--><tt class="descname">getChar</tt><big>(</big><em>InvChar</em><big>)</big><a class="headerlink" href="#api.dbapi.Filesystem.getChar" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return an invalid character.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>InvChar</em> (api.dbapi.InvChar) &#8211; Invalid character to return. char and replacement needs to be equal</li>
-</ul>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Invalid character.</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.InvChar" class="reference" href="#api.dbapi.InvChar"><tt class="xref docutils literal"><span class="pre">api.dbapi.InvChar</span></tt></a> or None</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="api.dbapi.Filesystem.removeChar">
-<!--[api.dbapi.Filesystem.removeChar]--><tt class="descname">removeChar</tt><big>(</big><em>InvChar</em><big>)</big><a class="headerlink" href="#api.dbapi.Filesystem.removeChar" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove an invalid character.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>InvChar</em> (api.dbapi.InvChar) &#8211; Invalid character to remove</li>
-</ul>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Invalid character.</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.InvChar" class="reference" href="#api.dbapi.InvChar"><tt class="xref docutils literal"><span class="pre">api.dbapi.InvChar</span></tt></a> or None</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="api.dbapi.Filesystem.validateString">
-<!--[api.dbapi.Filesystem.validateString]--><tt class="descname">validateString</tt><big>(</big><em>String</em><big>)</big><a class="headerlink" href="#api.dbapi.Filesystem.validateString" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return valid string.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><em>String</em> (string) &#8211; The string to validate against this filesystem</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="api.dbapi.InvChar">
-<!--[api.dbapi.InvChar]-->class <tt class="descclassname">api.dbapi.</tt><tt class="descname">InvChar</tt><big>(</big><em>descr</em>, <em>char</em>, <em>replacement</em><big>)</big><a class="headerlink" href="#api.dbapi.InvChar" title="Permalink to this definition">¶</a></dt>
-<dd><p>Invalid character.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><em>descr</em> (string) &#8211; Name of this invalid character</li>
-<li><em>char</em> &#8211; The unicode of this character, as four integers, e.g 0023</li>
-<li><em>char</em> &#8211; string</li>
-<li><em>replacement</em> &#8211; the text or character replacing the invalid character (char)</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/move-filesystem/docs/source/modules/model.rst</tt>, line 20)</p>
+autodoc can&#8217;t import/find class &#8216;Filesystems&#8217;, it reported error: &#8220;&#8216;module&#8217; object has no attribute &#8216;Filesystems&#8217;&#8221;,please check your spelling and sys.path</div>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/move-filesystem/docs/source/modules/model.rst</tt>, line 23)</p>
+autodoc can&#8217;t import/find class &#8216;Filesystem&#8217;, it reported error: &#8220;&#8216;module&#8217; object has no attribute &#8216;Filesystem&#8217;&#8221;,please check your spelling and sys.path</div>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/move-filesystem/docs/source/modules/model.rst</tt>, line 26)</p>
+autodoc can&#8217;t import/find class &#8216;InvChar&#8217;, it reported error: &#8220;&#8216;module&#8217; object has no attribute &#8216;InvChar&#8217;&#8221;,please check your spelling and sys.path</div>
 <div class="section">
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
@@ -818,25 +602,6 @@ Load the current database files into Python objects, and print a nice formatted 
 <span class="go">               Episode: The Travel Writer</span>
 <span class="go">               Episode: Party</span>
 </pre></div>
-<p><strong>Example:</strong></p>
-<blockquote>
-Get Filesystem object by name.  The filetypes.xml is explained in <a class="reference" href="../misc/filesystems.html#filetypes-xml"><em>Filesystems in veefire</em></a>.</blockquote>
-<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.dbapi</span> <span class="k">import</span> <span class="n">Filesystems</span><span class="p">,</span> <span class="n">Filesystem</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span> <span class="o">=</span> <span class="n">Tools</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createRootDir</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createDatabaseFiles</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createFilesystemXML</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span> <span class="o">=</span> <span class="n">Filesystems</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">filetypesXML</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fs1</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getFilesystem</span><span class="p">(</span> <span class="n">Filesystem</span><span class="p">(</span><span class="s">&quot;ext3&quot;</span><span class="p">)</span> <span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">fs1</span><span class="o">.</span><span class="n">validateString</span><span class="p">(</span><span class="s">&quot;thisis/324sdf/@$3?+&quot;</span><span class="p">)</span>
-<span class="go">thisisor324sdfor@$3?+</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fs2</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getFilesystem</span><span class="p">(</span> <span class="n">Filesystem</span><span class="p">(</span><span class="s">&quot;ntfs&quot;</span><span class="p">)</span> <span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">fs2</span><span class="o">.</span><span class="n">validateString</span><span class="p">(</span><span class="s">&quot;thisis/324sdf/@$3?+&quot;</span><span class="p">)</span>
-<span class="go">thisisor324sdforatUSD3Qoplus</span>
-</pre></div>
 </div>
 </div>
 <div class="section">
@@ -861,7 +626,7 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 </table>
 <dl class="method">
 <dt id="api.renameapi.FileName.generateFileName">
-<!--[api.renameapi.FileName.generateFileName]--><tt class="descname">generateFileName</tt><big>(</big><em>Show</em>, <em>fileSystemDir</em>, <em>Style=None</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.generateFileName" title="Permalink to this definition">¶</a></dt>
+<!--[api.renameapi.FileName.generateFileName]--><tt class="descname">generateFileName</tt><big>(</big><em>Show</em>, <em>fileSystemDir</em>, <em>fileSystem</em>, <em>Style=None</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.generateFileName" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate and return a file name.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -869,7 +634,8 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 <tbody valign="top">
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><em>Show</em> (api.dbapi.Show) &#8211; Show object to get file name details from.</li>
-<li><em>filesystemDir</em> (string) &#8211; Path to filesystems.xml</li>
+<li><em>fileSystemDir</em> (string) &#8211; Path to filetypes.xml</li>
+<li><em>fileSystem</em> (string) &#8211; Filesystem to use</li>
 <li><em>Style</em> (string or None) &#8211; Style to use for the new file name</li>
 </ul>
 </td>
@@ -880,14 +646,15 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 
 <dl class="method">
 <dt id="api.renameapi.FileName.generatePreview">
-<!--[api.renameapi.FileName.generatePreview]--><tt class="descname">generatePreview</tt><big>(</big><em>filesystemDir</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.generatePreview" title="Permalink to this definition">¶</a></dt>
+<!--[api.renameapi.FileName.generatePreview]--><tt class="descname">generatePreview</tt><big>(</big><em>filesystemDir</em>, <em>fileSystem</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.generatePreview" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return current file name and new file name in a tuple.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>filesystemDir</em> (string) &#8211; Path to filesystems.xml</li>
+<li><em>filesystemDir</em> (string) &#8211; Path to filetypes.xml</li>
+<li><em>fileSystem</em> (string) &#8211; Filesystem to use</li>
 </ul>
 </td>
 </tr>
@@ -974,7 +741,7 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><em>filesystemDir</em> (string) &#8211; Path to filesystems.xml</li>
+<li><em>filesystemDir</em> (string) &#8211; Path to filetypes.xml</li>
 <li><em>Show</em> (api.dbapi.Show) &#8211; Show object to add file name details to.</li>
 </ul>
 </td>
@@ -1031,14 +798,15 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 </table>
 <dl class="method">
 <dt id="api.renameapi.Folder.generatePreviews">
-<!--[api.renameapi.Folder.generatePreviews]--><tt class="descname">generatePreviews</tt><big>(</big><em>filesystemDir</em><big>)</big><a class="headerlink" href="#api.renameapi.Folder.generatePreviews" title="Permalink to this definition">¶</a></dt>
+<!--[api.renameapi.Folder.generatePreviews]--><tt class="descname">generatePreviews</tt><big>(</big><em>filesystemDir</em>, <em>fileSystem</em><big>)</big><a class="headerlink" href="#api.renameapi.Folder.generatePreviews" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate previews for every FileName.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>filesystemDir</em> (string) &#8211; Path to filesystems.xml</li>
+<li><em>filesystemDir</em> (string) &#8211; Path to filetypes.xml</li>
+<li><em>fileSystem</em> (string) &#8211; Filesystem to use</li>
 </ul>
 </td>
 </tr>
@@ -1080,7 +848,8 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 <tbody valign="top">
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><em>dbDir</em> (string or None) &#8211; Path to database directory</li>
-<li><em>filesystemDir</em> (string) &#8211; Path to filesystems.xml</li>
+<li><em>filesystemDir</em> (string) &#8211; Path to filetypes.xml</li>
+<li><em>fileSystem</em> (string) &#8211; Filesystem to use</li>
 </ul>
 </td>
 </tr>
@@ -1111,7 +880,7 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 
 <dl class="method">
 <dt id="api.renameapi.Rename.generatePreviews">
-<!--[api.renameapi.Rename.generatePreviews]--><tt class="descname">generatePreviews</tt><big>(</big><big>)</big><a class="headerlink" href="#api.renameapi.Rename.generatePreviews" title="Permalink to this definition">¶</a></dt>
+<!--[api.renameapi.Rename.generatePreviews]--><tt class="descname">generatePreviews</tt><big>(</big><em>fileSystem=None</em><big>)</big><a class="headerlink" href="#api.renameapi.Rename.generatePreviews" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate previews for every Folder-&gt;FileName.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1250,7 +1019,7 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 <span class="go">Black Books</span>
 <span class="go">[&#39;1&#39;, &#39;2&#39;, &#39;3&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Printed twice because there are two files from Black Books.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pv</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">generatePreviews</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pv</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">generatePreviews</span><span class="p">(</span><span class="s">&#39;ext3&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Generate new filenames from the database.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">Folder</span> <span class="ow">in</span> <span class="n">pv</span> <span class="p">:</span>
 <span class="gp">... </span>    <span class="k">print</span> <span class="n">Folder</span>
@@ -1286,6 +1055,25 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 </div>
 </div>
 </blockquote>
+<p><strong>Example:</strong></p>
+<blockquote>
+Get Filesystem object by name.  The filetypes.xml is explained in <a class="reference" href="../misc/filesystems.html#filetypes-xml"><em>Filesystems in veefire</em></a>.</blockquote>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.renameapi</span> <span class="k">import</span> <span class="n">Filesystems</span><span class="p">,</span> <span class="n">Filesystem</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span> <span class="o">=</span> <span class="n">Tools</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createRootDir</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createDatabaseFiles</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createFilesystemXML</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span> <span class="o">=</span> <span class="n">Filesystems</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">filetypesXML</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fs1</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getFilesystem</span><span class="p">(</span> <span class="n">Filesystem</span><span class="p">(</span><span class="s">&quot;ext3&quot;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">fs1</span><span class="o">.</span><span class="n">validateString</span><span class="p">(</span><span class="s">&quot;thisis/324sdf/@$3?+&quot;</span><span class="p">)</span>
+<span class="go">thisisor324sdfor@$3?+</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fs2</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getFilesystem</span><span class="p">(</span> <span class="n">Filesystem</span><span class="p">(</span><span class="s">&quot;ntfs&quot;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">fs2</span><span class="o">.</span><span class="n">validateString</span><span class="p">(</span><span class="s">&quot;thisis/324sdf/@$3?+&quot;</span><span class="p">)</span>
+<span class="go">thisisor324sdforatUSD3Qoplus</span>
+</pre></div>
 </div>
 </div>
 <div class="section">
@@ -1592,9 +1380,9 @@ Get backend names.</blockquote>
 A backend must be able to get data based on Show objects.</blockquote>
 <div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.dbapi</span> <span class="k">import</span> <span class="n">Show</span><span class="p">,</span> <span class="n">Episode</span><span class="p">,</span> <span class="n">Season</span><span class="p">,</span> <span class="n">Database</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">backends.base</span> <span class="k">import</span> <span class="n">BaseBackend</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Showlist</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Black Books&quot;</span><span class="p">,</span> <span class="s">&quot;30&quot;</span><span class="p">,</span> <span class="s">&quot;ext3&quot;</span> <span class="p">,</span> <span class="s">&quot;BaseBackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0262150&quot;</span> <span class="p">)</span> <span class="p">,</span>
-<span class="gp">... </span><span class="n">Show</span><span class="p">(</span> <span class="s">&quot;The IT Crowd&quot;</span><span class="p">,</span> <span class="s">&quot;30&quot;</span><span class="p">,</span> <span class="s">&quot;ext3&quot;</span> <span class="p">,</span> <span class="s">&quot;BaseBackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0487831&quot;</span> <span class="p">)</span> <span class="p">,</span>
-<span class="gp">... </span><span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Life on Mars&quot;</span><span class="p">,</span> <span class="s">&quot;60&quot;</span><span class="p">,</span> <span class="s">&quot;ext3&quot;</span> <span class="p">,</span> <span class="s">&quot;BaseBackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0478942&quot;</span> <span class="p">)</span> <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Showlist</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Black Books&quot;</span><span class="p">,</span> <span class="s">&quot;30&quot;</span><span class="p">,</span> <span class="s">&quot;BaseBackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0262150&quot;</span> <span class="p">)</span> <span class="p">,</span>
+<span class="gp">... </span><span class="n">Show</span><span class="p">(</span> <span class="s">&quot;The IT Crowd&quot;</span><span class="p">,</span> <span class="s">&quot;30&quot;</span><span class="p">,</span> <span class="s">&quot;BaseBackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0487831&quot;</span> <span class="p">)</span> <span class="p">,</span>
+<span class="gp">... </span><span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Life on Mars&quot;</span><span class="p">,</span> <span class="s">&quot;60&quot;</span><span class="p">,</span> <span class="s">&quot;BaseBackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0478942&quot;</span> <span class="p">)</span> <span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">backend</span> <span class="o">=</span> <span class="n">BaseBackend</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DataBase</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">updateShows</span><span class="p">(</span> <span class="n">Showlist</span> <span class="p">)</span>
 <span class="gt">Traceback (most recent call last):</span>
@@ -1748,13 +1536,13 @@ A backend must be able to get data based on Show objects.</blockquote>
 <pre>Update shows against imdbtv.</pre>
 <div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.dbapi</span> <span class="k">import</span> <span class="n">Show</span><span class="p">,</span> <span class="n">Episode</span><span class="p">,</span> <span class="n">Season</span><span class="p">,</span> <span class="n">Database</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">backends.imdbtv</span> <span class="k">import</span> <span class="n">Backend</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Showlist</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Black Books&quot;</span><span class="p">,</span> <span class="s">&quot;30&quot;</span><span class="p">,</span> <span class="s">&quot;ext3&quot;</span> <span class="p">,</span> <span class="s">&quot;imdbtvbackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0262150&quot;</span> <span class="p">)</span> <span class="p">,</span>
-<span class="gp">... </span><span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Spaced&quot;</span><span class="p">,</span> <span class="s">&quot;60&quot;</span><span class="p">,</span> <span class="s">&quot;ext3&quot;</span> <span class="p">,</span> <span class="s">&quot;imdbtvbackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0187664&quot;</span> <span class="p">)</span> <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Showlist</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Black Books&quot;</span><span class="p">,</span> <span class="s">&quot;30&quot;</span><span class="p">,</span> <span class="s">&quot;imdbtvbackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0262150&quot;</span> <span class="p">)</span> <span class="p">,</span>
+<span class="gp">... </span><span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Spaced&quot;</span><span class="p">,</span> <span class="s">&quot;60&quot;</span><span class="p">,</span> <span class="s">&quot;imdbtvbackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0187664&quot;</span> <span class="p">)</span> <span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">backend</span> <span class="o">=</span> <span class="n">Backend</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DB</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">updateShows</span><span class="p">(</span> <span class="n">Showlist</span> <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Updates the show database from the backend.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DB</span><span class="o">.</span><span class="n">printDb</span><span class="p">()</span>
-<span class="go">    ####   Black Books   ####</span>
+<span class="go">####   Black Books   ####</span>
 <span class="go">       Season: 1</span>
 <span class="go">               Episode: Cooking the Books</span>
 <span class="go">               Episode: Manny&#39;s First Day</span>
@@ -1878,7 +1666,7 @@ A backend must be able to get data based on Show objects.</blockquote>
     </div>
     <div class="footer">
       &copy; Copyright 2008, Mats Taraldsvik.
-      Last updated on Mar 01, 2009.
+      Last updated on Mar 02, 2009.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
     </div>
   </body>

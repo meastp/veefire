@@ -14,9 +14,9 @@ Examples
     
     >>> from api.dbapi import Show, Episode, Season, Database
     >>> from backends.base import BaseBackend
-    >>> Showlist = [ Show( "Black Books", "30", "ext3" , "BaseBackend", "tt0262150" ) ,
-    ... Show( "The IT Crowd", "30", "ext3" , "BaseBackend", "tt0487831" ) ,
-    ... Show( "Life on Mars", "60", "ext3" , "BaseBackend", "tt0478942" ) ]
+    >>> Showlist = [ Show( "Black Books", "30", "BaseBackend", "tt0262150" ) ,
+    ... Show( "The IT Crowd", "30", "BaseBackend", "tt0487831" ) ,
+    ... Show( "Life on Mars", "60", "BaseBackend", "tt0478942" ) ]
     >>> backend = BaseBackend()
     >>> DataBase = backend.updateShows( Showlist )
     Traceback (most recent call last):

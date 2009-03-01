@@ -53,13 +53,13 @@
 <pre>Update shows against imdbtv.</pre>
 <div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.dbapi</span> <span class="k">import</span> <span class="n">Show</span><span class="p">,</span> <span class="n">Episode</span><span class="p">,</span> <span class="n">Season</span><span class="p">,</span> <span class="n">Database</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">backends.imdbtv</span> <span class="k">import</span> <span class="n">Backend</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Showlist</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Black Books&quot;</span><span class="p">,</span> <span class="s">&quot;30&quot;</span><span class="p">,</span> <span class="s">&quot;ext3&quot;</span> <span class="p">,</span> <span class="s">&quot;imdbtvbackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0262150&quot;</span> <span class="p">)</span> <span class="p">,</span>
-<span class="gp">... </span><span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Spaced&quot;</span><span class="p">,</span> <span class="s">&quot;60&quot;</span><span class="p">,</span> <span class="s">&quot;ext3&quot;</span> <span class="p">,</span> <span class="s">&quot;imdbtvbackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0187664&quot;</span> <span class="p">)</span> <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Showlist</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Black Books&quot;</span><span class="p">,</span> <span class="s">&quot;30&quot;</span><span class="p">,</span> <span class="s">&quot;imdbtvbackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0262150&quot;</span> <span class="p">)</span> <span class="p">,</span>
+<span class="gp">... </span><span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Spaced&quot;</span><span class="p">,</span> <span class="s">&quot;60&quot;</span><span class="p">,</span> <span class="s">&quot;imdbtvbackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0187664&quot;</span> <span class="p">)</span> <span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">backend</span> <span class="o">=</span> <span class="n">Backend</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DB</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">updateShows</span><span class="p">(</span> <span class="n">Showlist</span> <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Updates the show database from the backend.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DB</span><span class="o">.</span><span class="n">printDb</span><span class="p">()</span>
-<span class="go">    ####   Black Books   ####</span>
+<span class="go">####   Black Books   ####</span>
 <span class="go">       Season: 1</span>
 <span class="go">               Episode: Cooking the Books</span>
 <span class="go">               Episode: Manny&#39;s First Day</span>
@@ -147,7 +147,7 @@
     </div>
     <div class="footer">
       &copy; Copyright 2008, Mats Taraldsvik.
-      Last updated on Mar 01, 2009.
+      Last updated on Mar 02, 2009.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
     </div>
   </body>

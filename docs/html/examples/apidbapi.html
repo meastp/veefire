@@ -152,25 +152,6 @@ Load the current database files into Python objects, and print a nice formatted 
 <span class="go">               Episode: The Travel Writer</span>
 <span class="go">               Episode: Party</span>
 </pre></div>
-<p><strong>Example:</strong></p>
-<blockquote>
-Get Filesystem object by name.  The filetypes.xml is explained in <a class="reference" href="../misc/filesystems.html#filetypes-xml"><em>Filesystems in veefire</em></a>.</blockquote>
-<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.dbapi</span> <span class="k">import</span> <span class="n">Filesystems</span><span class="p">,</span> <span class="n">Filesystem</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span> <span class="o">=</span> <span class="n">Tools</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createRootDir</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createDatabaseFiles</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createFilesystemXML</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span> <span class="o">=</span> <span class="n">Filesystems</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">filetypesXML</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fs1</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getFilesystem</span><span class="p">(</span> <span class="n">Filesystem</span><span class="p">(</span><span class="s">&quot;ext3&quot;</span><span class="p">)</span> <span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">fs1</span><span class="o">.</span><span class="n">validateString</span><span class="p">(</span><span class="s">&quot;thisis/324sdf/@$3?+&quot;</span><span class="p">)</span>
-<span class="go">thisisor324sdfor@$3?+</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fs2</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getFilesystem</span><span class="p">(</span> <span class="n">Filesystem</span><span class="p">(</span><span class="s">&quot;ntfs&quot;</span><span class="p">)</span> <span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">fs2</span><span class="o">.</span><span class="n">validateString</span><span class="p">(</span><span class="s">&quot;thisis/324sdf/@$3?+&quot;</span><span class="p">)</span>
-<span class="go">thisisor324sdforatUSD3Qoplus</span>
-</pre></div>
 </div>
 
 
@@ -207,7 +188,7 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
     </div>
     <div class="footer">
       &copy; Copyright 2008, Mats Taraldsvik.
-      Last updated on Mar 01, 2009.
+      Last updated on Mar 02, 2009.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
     </div>
   </body>

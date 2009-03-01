@@ -20,8 +20,8 @@
 import nose
 import os
 
-from api.dbapi import Database, Show, Season, Episode, Filesystem, Filesystems
-from api.renameapi import FileName, Folder, Rename
+from api.dbapi import Database, Show, Season, Episode
+from api.renameapi import FileName, Folder, Rename, Filesystem, Filesystems, InvChar
 from testproperties import Tools
 
 class testRename :
@@ -112,9 +112,9 @@ class testRename :
         rename2.addFolder(self.folder3)
         rename3.addFolder(self.folder3)
         
-        assert [ fo for fo in rename1.generatePreviews() ] == [[('bb.s03e05.avi', 'Black Books - S03E05 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi")], [('CSI.2x12.avi', "C.S.I - S02E12 - You've Got Male.avi"), ('csiS01E11.avi', 'C.S.I - S01E11 - I-15 Murders.avi')]]
-        assert [ fo for fo in rename2.generatePreviews() ] == [[('bb.s03e05.avi', 'Black Books - S03E05 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi")], [('Spaced.2x4.avi', 'Spaced - S02E04 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - S02E03 - Mettle.avi')]]
-        assert [ fo for fo in rename3.generatePreviews() ] == [[('Spaced.2x4.avi', 'Spaced - S02E04 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - S02E03 - Mettle.avi')]]
+        assert [ fo for fo in rename1.generatePreviews('ext3') ] == [[('bb.s03e05.avi', 'Black Books - S03E05 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi")], [('CSI.2x12.avi', "C.S.I - S02E12 - You've Got Male.avi"), ('csiS01E11.avi', 'C.S.I - S01E11 - I-15 Murders.avi')]]
+        assert [ fo for fo in rename2.generatePreviews('ntfs') ] == [[('bb.s03e05.avi', 'Black Books - S03E05 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', 'Black Books - S01E02 - Mannys First Day.avi')], [('Spaced.2x4.avi', 'Spaced - S02E04 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - S02E03 - Mettle.avi')]]
+        assert [ fo for fo in rename3.generatePreviews('ext3') ] == [[('Spaced.2x4.avi', 'Spaced - S02E04 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - S02E03 - Mettle.avi')]]
         
 class testFolder :
     """
@@ -164,9 +164,9 @@ class testFolder :
         self.folder2.loadFiles()
         self.folder3.loadFiles()
         
-        assert [ fn for fn in self.folder1.generatePreviews(self.Tools.filetypesXML) ] == [('bb.s03e05.avi', 'Black Books - S03E05 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi")]
-        assert [ fn for fn in self.folder2.generatePreviews(self.Tools.filetypesXML) ] == [('CSI.2x12.avi', "C.S.I - S02E12 - You've Got Male.avi"), ('csiS01E11.avi', 'C.S.I - S01E11 - I-15 Murders.avi')]
-        assert [ fn for fn in self.folder3.generatePreviews(self.Tools.filetypesXML) ] == [('Spaced.2x4.avi', 'Spaced - S02E04 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - S02E03 - Mettle.avi')]
+        assert [ fn for fn in self.folder1.generatePreviews(self.Tools.filetypesXML, 'ext3') ] == [('bb.s03e05.avi', 'Black Books - S03E05 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi")]
+        assert [ fn for fn in self.folder2.generatePreviews(self.Tools.filetypesXML, 'ntfs') ] == [('CSI.2x12.avi', 'C.S.I - S02E12 - Youve Got Male.avi'), ('csiS01E11.avi', 'C.S.I - S01E11 - I-15 Murders.avi')]
+        assert [ fn for fn in self.folder3.generatePreviews(self.Tools.filetypesXML, 'ext3') ] == [('Spaced.2x4.avi', 'Spaced - S02E04 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - S02E03 - Mettle.avi')]
         
 class testFileName :
     """
@@ -209,9 +209,9 @@ class testFileName :
         
     def testGeneratePreview(self):
         
-        assert self.filename1.generatePreview(self.Tools.filetypesXML) == ( 'black.books.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi" )
-        assert self.filename2.generatePreview(self.Tools.filetypesXML) == ('spaced.2x03.avi', 'Spaced - S02E03 - Mettle.avi')
-        assert self.filename3.generatePreview(self.Tools.filetypesXML) == ('csi.s02E13.avi', 'C.S.I - S02E13 - Identity Crisis.avi')
+        assert self.filename1.generatePreview(self.Tools.filetypesXML, 'ext3') == ( 'black.books.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi" )
+        assert self.filename2.generatePreview(self.Tools.filetypesXML, 'ntfs') == ('spaced.2x03.avi', 'Spaced - S02E03 - Mettle.avi')
+        assert self.filename3.generatePreview(self.Tools.filetypesXML, 'ext3') == ('csi.s02E13.avi', 'C.S.I - S02E13 - Identity Crisis.avi')
         
     def testGetShowDetails(self):
         show1 = self.filename1.getMatchingShows()
@@ -238,19 +238,19 @@ class testFileName :
 #                print '    episode: ' + episode.name + ' - ' + episode.title + ' - ' + episode.airdate + ' - ' + episode.arc
         
         fileSystem1 = Filesystems(self.Tools.filetypesXML).getFilesystem( Filesystem( 'ext3' ) )
-        correctShow1 = Show( 'Black Books', '30', fileSystem1, 'imdbtvbackend', 'tt0262150' )
+        correctShow1 = Show( 'Black Books', '30', 'imdbtvbackend', 'tt0262150' )
         correctShow1.addEpisode( Episode( '2', "Manny's First Day", '6 October 2000', 'none'), Season('1') )
         
         fileSystem2 = Filesystems(self.Tools.filetypesXML).getFilesystem( Filesystem( 'ext3' ) )
-        correctShow2 = Show( 'Spaced', '60', fileSystem2, 'imdbtvbackend', 'tt0187664' )
+        correctShow2 = Show( 'Spaced', '60', 'imdbtvbackend', 'tt0187664' )
         correctShow2.addEpisode( Episode( '3', 'Mettle', '9 March 2001', 'none'), Season('2') )
         
         fileSystem3 = Filesystems(self.Tools.filetypesXML).getFilesystem( Filesystem( 'ext3' ) )
-        correctShow3 = Show( 'C.S.I', '60', fileSystem2, 'imdbtvbackend', 'tt0247082' )
+        correctShow3 = Show( 'C.S.I', '60', 'imdbtvbackend', 'tt0247082' )
         correctShow3.addEpisode( Episode( '13', 'Identity Crisis', '17 January 2002', 'none'), Season('2') )
         
         def compareShows(show, other) :
-            if show.name != other.name or show.duration != other.duration or show.filesystem.name != other.filesystem.name or show.backend != other.backend or show.url != other.url :
+            if show.name != other.name or show.duration != other.duration or show.backend != other.backend or show.url != other.url :
                 assert False
             elif show.seasons[0].name != other.seasons[0].name :
                 assert False
@@ -267,25 +267,135 @@ class testFileName :
         #FIXME: More than one Style, different file suffixes, arcs.
         # generateFileName(Style=None)
         
-        fileSystem1 = Filesystems(self.Tools.filetypesXML).getFilesystem( Filesystem( 'ntfs' ) )
-        correctShow1 = Show( 'Black Books', '30', fileSystem1, 'imdbtvbackend', 'tt0262150' )
+        correctShow1 = Show( 'Black Books', '30', 'imdbtvbackend', 'tt0262150' )
         correctShow1.addEpisode( Episode( '2', "A test's test' & a test / # a test", '6 October 2000', 'none'), Season('1') )
         
-        fileSystem2 = Filesystems(self.Tools.filetypesXML).getFilesystem( Filesystem( 'ext3' ) )
-        correctShow2 = Show( 'Spaced', '60', fileSystem2, 'imdbtvbackend', 'tt0187664' )
+        correctShow2 = Show( 'Spaced', '60', 'imdbtvbackend', 'tt0187664' )
         correctShow2.addEpisode( Episode( '3', "A test's test' & a test / # a test", '9 March 2001', 'none'), Season('2') )
         
-        fileSystem3 = Filesystems(self.Tools.filetypesXML).getFilesystem( Filesystem( 'ntfs' ) )
-        correctShow3 = Show( 'C.S.I', '60', fileSystem3, 'imdbtvbackend', 'tt0247082' )
+        correctShow3 = Show( 'C.S.I', '60', 'imdbtvbackend', 'tt0247082' )
         correctShow3.addEpisode( Episode( '13', "Identity Crisis / # 4587", '17 January 2002', 'none'), Season('2') )
         
         self.FN = FileName('', self.database)
         self.FN.fileSuffix = '.avi'
         
-        fileName1 = self.FN.generateFileName( correctShow1, self.Tools.filetypesXML )
-        fileName2 = self.FN.generateFileName( correctShow2, self.Tools.filetypesXML )
-        fileName3 = self.FN.generateFileName( correctShow3, self.Tools.filetypesXML )
+        fileName1 = self.FN.generateFileName( correctShow1, self.Tools.filetypesXML, 'ext3' )
+        fileName2 = self.FN.generateFileName( correctShow2, self.Tools.filetypesXML, 'ntfs' )
+        fileName3 = self.FN.generateFileName( correctShow3, self.Tools.filetypesXML, 'ext3' )
         
-        assert fileName1 == "Black Books - S01E02 - A tests test and a test or No. a test.avi"
-        assert fileName2 == "Spaced - S02E03 - A test's test' & a test or # a test.avi"
-        assert fileName3 == "C.S.I - S02E13 - Identity Crisis or No. 4587.avi"
+        assert fileName1 == "Black Books - S01E02 - A test's test' & a test or # a test.avi"
+        assert fileName2 == "Spaced - S02E03 - A tests test and a test or No. a test.avi"
+        assert fileName3 == "C.S.I - S02E13 - Identity Crisis or # 4587.avi"
+        
+class testFilesystems :
+    """
+    Test Filesystems Class.
+    """
+    def setUp(self) :
+        self.FS = Filesystems() # Filesystem dir is None
+    
+    def testLoadFilesystems( self ) :
+        self.Tools = Tools()
+        self.Tools.createRootDir()
+        self.Tools.createFilesystemXML()
+        self.FS = Filesystems(self.Tools.filetypesXML)
+        
+        Ext3FS = self.FS.getFilesystem(Filesystem('ext3'))
+        NTFSFS = self.FS.getFilesystem(Filesystem('ntfs'))
+        Filesystem3 = Filesystem('FS3')
+        
+        assert self.FS.addFilesystem( Ext3FS ) == None
+        assert self.FS.addFilesystem( Filesystem('ntfs') ) == None
+        assert self.FS.addFilesystem( Filesystem3 ) == Filesystem3
+        
+        assert self.FS.getFilesystem( Filesystem3 ) == Filesystem3
+        assert self.FS.getFilesystem( NTFSFS ) == NTFSFS
+        assert self.FS.getFilesystem( Ext3FS ) == Ext3FS
+        
+        assert self.FS.removeFilesystem( NTFSFS ) == NTFSFS
+        assert self.FS.removeFilesystem( NTFSFS ) == None
+        assert self.FS.removeFilesystem( Ext3FS ) == Ext3FS
+        assert self.FS.removeFilesystem( Ext3FS ) == None
+        
+        self.Tools.removeTempFiles()
+        
+    def testAddFilesystem( self ) :
+        Filesystem1 = Filesystem('FS1')
+        Filesystem2 = Filesystem('FS2')
+        Filesystem3 = Filesystem('FS3')
+        assert self.FS.addFilesystem( Filesystem1 ) == Filesystem1
+        assert self.FS.addFilesystem( Filesystem1 ) == None
+        assert self.FS.addFilesystem( Filesystem2 ) == Filesystem2
+        assert self.FS.addFilesystem( Filesystem('FS2') ) == None
+        assert self.FS.addFilesystem( Filesystem3 ) == Filesystem3
+        
+    def testGetFilesystem(self) :
+        Filesystem1 = Filesystem('FS1')
+        Filesystem2 = Filesystem('FS2')
+        Filesystem3 = Filesystem('FS3')
+        self.FS.addFilesystem( Filesystem1 )
+        self.FS.addFilesystem( Filesystem2 )
+        assert self.FS.getFilesystem( Filesystem1 ) == Filesystem1
+        assert self.FS.getFilesystem( Filesystem3 ) == None
+        assert self.FS.getFilesystem( Filesystem('FS2') ) == Filesystem2
+        assert self.FS.getFilesystem( Filesystem('FS3') ) == None
+        
+    def testRemoveFilesystem(self) :
+        Filesystem1 = Filesystem('FS1')
+        Filesystem2 = Filesystem('FS2')
+        Filesystem3 = Filesystem('FS3')
+        self.FS.addFilesystem( Filesystem1 )
+        self.FS.addFilesystem( Filesystem2 )
+        assert self.FS.removeFilesystem( Filesystem1 ) == Filesystem1
+        assert self.FS.removeFilesystem( Filesystem1 ) == None
+        assert self.FS.removeFilesystem( Filesystem('FS3') ) == None
+        assert self.FS.removeFilesystem( Filesystem('FS2') ) == Filesystem2
+
+class testFilesystem :
+    """
+    Test Filesystem Class
+    """
+    def setUp( self ) :
+        self.filesystem = Filesystem( "FileSystem" )
+        
+    def testAddChar( self ) :
+        InvalidCharacter1 = InvChar( "Description", "002B", "plus" )
+        InvalidCharacter2 = InvChar( "NewDescription", "002B", "plus" )
+        InvalidCharacter3 = InvChar( "Description", "002F", "or" )
+        assert self.filesystem.addChar( InvalidCharacter1 ) == InvalidCharacter1
+        assert self.filesystem.addChar( InvalidCharacter1 ) == None
+        assert self.filesystem.addChar( InvalidCharacter2 ) == None
+        assert self.filesystem.addChar( InvalidCharacter3 ) == InvalidCharacter3
+        
+    def testGetChar( self ) :
+        assert self.filesystem.chars == []
+        InvalidCharacter1 = InvChar( "Description", "002B", "plus" )
+        InvalidCharacter2 = InvChar( "NewDescription", "0026", "and" )
+        self.filesystem.addChar( InvalidCharacter1 )
+        self.filesystem.addChar( InvalidCharacter2 )
+        assert self.filesystem.getChar( InvalidCharacter1 ) == InvalidCharacter1
+        assert self.filesystem.getChar( InvChar( "Description", "002B", "ERROR" )) == None
+        assert self.filesystem.getChar( InvalidCharacter2 ) == InvalidCharacter2
+        assert self.filesystem.getChar( InvChar( "Description", "0000", "and" )) == None
+        
+    def testRemoveChar( self ) :
+        InvalidCharacter1 = InvChar( "Description", "002B", "plus" )
+        InvalidCharacter2 = InvChar( "NewDescription", "0026", "and" )
+        InvalidCharacter3 = InvChar( "Description", "002F", "or" )
+        self.filesystem.addChar( InvalidCharacter1 )
+        self.filesystem.addChar( InvalidCharacter2 )
+        assert self.filesystem.removeChar( InvalidCharacter1 ) == InvalidCharacter1
+        assert self.filesystem.removeChar( InvalidCharacter1 ) == None
+        assert self.filesystem.removeChar( InvChar( "Description", "002F", "or" ) ) == None
+        assert self.filesystem.removeChar( InvChar( "NewDescription", "0026", "and" ) ) == InvalidCharacter2
+        
+    def testValidateString( self ) :
+        InvalidCharacter1 = InvChar( "Description", "002B", "plus" )
+        InvalidCharacter2 = InvChar( "NewDescription", "0026", "and" )
+        InvalidCharacter3 = InvChar( "Description", "002F", "or" )
+        self.filesystem.addChar( InvalidCharacter1 )
+        self.filesystem.addChar( InvalidCharacter2 )
+        self.filesystem.addChar( InvalidCharacter3 )
+        assert self.filesystem.validateString( "test+test" ) == "testplustest"
+        assert self.filesystem.validateString( "+test/test&test" ) == "plustestortestandtest"
+        
