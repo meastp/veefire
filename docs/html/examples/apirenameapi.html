@@ -101,7 +101,7 @@
 <span class="go">Black Books</span>
 <span class="go">[&#39;1&#39;, &#39;2&#39;, &#39;3&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Printed twice because there are two files from Black Books.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pv</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">generatePreviews</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pv</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">generatePreviews</span><span class="p">(</span><span class="s">&#39;ext3&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Generate new filenames from the database.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">Folder</span> <span class="ow">in</span> <span class="n">pv</span> <span class="p">:</span>
 <span class="gp">... </span>    <span class="k">print</span> <span class="n">Folder</span>
@@ -137,6 +137,25 @@
 </div>
 </div>
 </blockquote>
+<p><strong>Example:</strong></p>
+<blockquote>
+Get Filesystem object by name.  The filetypes.xml is explained in <a class="reference" href="../misc/filesystems.html#filetypes-xml"><em>Filesystems in veefire</em></a>.</blockquote>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.renameapi</span> <span class="k">import</span> <span class="n">Filesystems</span><span class="p">,</span> <span class="n">Filesystem</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span> <span class="o">=</span> <span class="n">Tools</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createRootDir</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createDatabaseFiles</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createFilesystemXML</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span> <span class="o">=</span> <span class="n">Filesystems</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">filetypesXML</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fs1</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getFilesystem</span><span class="p">(</span> <span class="n">Filesystem</span><span class="p">(</span><span class="s">&quot;ext3&quot;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">fs1</span><span class="o">.</span><span class="n">validateString</span><span class="p">(</span><span class="s">&quot;thisis/324sdf/@$3?+&quot;</span><span class="p">)</span>
+<span class="go">thisisor324sdfor@$3?+</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fs2</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getFilesystem</span><span class="p">(</span> <span class="n">Filesystem</span><span class="p">(</span><span class="s">&quot;ntfs&quot;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">fs2</span><span class="o">.</span><span class="n">validateString</span><span class="p">(</span><span class="s">&quot;thisis/324sdf/@$3?+&quot;</span><span class="p">)</span>
+<span class="go">thisisor324sdforatUSD3Qoplus</span>
+</pre></div>
 </div>
 
 
@@ -179,7 +198,7 @@
     </div>
     <div class="footer">
       &copy; Copyright 2008, Mats Taraldsvik.
-      Last updated on Mar 01, 2009.
+      Last updated on Mar 02, 2009.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
     </div>
   </body>

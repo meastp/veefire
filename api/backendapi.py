@@ -24,7 +24,7 @@ Contains classes for interfacing with the backends.
 
 '''
 
-from dbapi import Database, Show, Filesystem
+from dbapi import Database, Show
 from backends.imdbtv import Backend as imdbtvbackend
 import os
 import sys
@@ -256,8 +256,3 @@ class BackendInterface :
         
         raise NotImplementedError
         
-if __name__ == '__main__':
-    testSession = BackendInterface()
-    #testSession.addNewShow( Show() )
-    testSession.updateDatabase()
-    

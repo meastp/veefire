@@ -19,7 +19,7 @@
 
 import nose
 
-from api.dbapi import Database, Season, Show, Episode, Filesystem
+from api.dbapi import Database, Season, Show, Episode
 from backends.imdbtv import Regexes, Backend
 from testproperties import Tools
 
@@ -35,11 +35,11 @@ class testBackend :
         
         self.backend = Backend()
         
-        validShows1 = [ Show(  "Spaced", "60", Filesystem( 'FS1' ), "imdbtvbackend", "tt0187664" ) ]
+        validShows1 = [ Show(  "Spaced", "60", "imdbtvbackend", "tt0187664" ) ]
         self.database1 = Database(self.Tools.databaseDir, validShows1)
         self.database1.loadDB()
         
-        validShows2 = [ Show(  "Black Books", "30", Filesystem( 'FS1' ), "imdbtvbackend", "tt0262150" ) ]
+        validShows2 = [ Show(  "Black Books", "30", "imdbtvbackend", "tt0262150" ) ]
         self.database2 = Database(self.Tools.databaseDir, validShows2)
         self.database2.loadDB()
         

@@ -112,27 +112,3 @@ Examples
                    Episode: The Travel Writer
                    Episode: Party
 
-
-**Example:**
-    
-    Get Filesystem object by name.  The filetypes.xml is explained in :ref:`filetypes-xml`.
-    
-
-.. doctest ::
-    
-    >>> from api.dbapi import Filesystems, Filesystem
-    >>> # import Tools to create a fake test directory.
-    >>> # Remember to set the root path variable in tests/testproperties.py if you're not on Windows or Mac.
-    >>> from tests.testproperties import Tools
-    >>> tools = Tools()
-    >>> tools.createRootDir()
-    >>> tools.createDatabaseFiles()
-    >>> tools.createFilesystemXML()
-    >>> fs = Filesystems(tools.filetypesXML)
-    >>> fs1 = fs.getFilesystem( Filesystem("ext3") )
-    >>> print fs1.validateString("thisis/324sdf/@$3?+")
-    thisisor324sdfor@$3?+
-    >>> fs2 = fs.getFilesystem( Filesystem("ntfs") )
-    >>> print fs2.validateString("thisis/324sdf/@$3?+")
-    thisisor324sdforatUSD3Qoplus
-

@@ -24,13 +24,15 @@ Contains classes for renaming files, using :mod:`backends`.
 
 '''
 
-from dbapi import Database, Show, Season, Episode, Alias, Filesystems, Filesystem, InvChar
+from dbapi import Database, Show, Season, Episode, Alias
 import xml.etree.ElementTree as ET
 import os
 import re
 import copy
 
 class Error(Exception): pass
+
+#        fileSystem3 = Filesystems(self.Tools.filetypesXML).getFilesystem( Filesystem( 'ntfs' ) )
 
 class Rename :
     """
@@ -40,8 +42,10 @@ class Rename :
         '''
         :param dbDir: Path to database directory
         :type dbDir: string or None
-        :param filesystemDir: Path to filesystems.xml
+        :param filesystemDir: Path to filetypes.xml
         :type filesystemDir: string
+        :param fileSystem: Filesystem to use
+        :type fileSystem: string
         '''
         self.folders = [ ]
         
@@ -105,16 +109,17 @@ class Rename :
             Folder.getMatchingShows()
         return self.folders
         
-    def generatePreviews(self) :
+    def generatePreviews(self, fileSystem=None) :
         """
         Generate previews for every Folder->FileName.
         
         :returns: previews (oldname, newname) for every file in every folder
         :rtype: list
         """
+        
         tfolders = []
         for Folder in self.folders :
-            tfolders.append(Folder.generatePreviews(self.filesystemDir))
+            tfolders.append(Folder.generatePreviews(self.filesystemDir, fileSystem))
         return tfolders
 
 class Folder :
@@ -178,18 +183,20 @@ class Folder :
             FileName.getMatchingShows()
         return self.fileNames
         
-    def generatePreviews(self, filesystemDir) :
+    def generatePreviews(self, filesystemDir, fileSystem) :
         """
         Generate previews for every FileName.
         
-        :param filesystemDir: Path to filesystems.xml
+        :param filesystemDir: Path to filetypes.xml
         :type filesystemDir: string
+        :param fileSystem: Filesystem to use
+        :type fileSystem: string
         :returns: list of tuples (oldname, newname) for every FileName
         :rtype: list
         """
         previews = []
         for FileName in self.fileNames :
-            previews.append(FileName.generatePreview(filesystemDir))
+            previews.append(FileName.generatePreview(filesystemDir, fileSystem))
         return previews
 
 class FileName :
@@ -278,12 +285,14 @@ class FileName :
         
         raise NotImplemented
         
-    def generatePreview(self, filesystemDir) :
+    def generatePreview(self, filesystemDir, fileSystem) :
         """
         Return current file name and new file name in a tuple.
         
-        :param filesystemDir: Path to filesystems.xml
+        :param filesystemDir: Path to filetypes.xml
         :type filesystemDir: string
+        :param fileSystem: Filesystem to use
+        :type fileSystem: string
         :returns: tuple (oldname, newname)
         :rtype: tuple
         """
@@ -295,7 +304,8 @@ class FileName :
         if NewShow == None:
             return self.fileName , None
             
-        self.generatedFileName = self.generateFileName(NewShow, filesystemDir)
+        self.generatedFileName = self.generateFileName(NewShow, filesystemDir, fileSystem)
+        #FIXME: Proper way to use different styles.
         
         return self.fileName, self.generatedFileName
     
@@ -303,7 +313,7 @@ class FileName :
         """
         Retrieves Show details.
         
-        :param filesystemDir: Path to filesystems.xml
+        :param filesystemDir: Path to filetypes.xml
         :type filesystemDir: string
         :param Show: Show object to add file name details to.
         :type Show: :class:`api.dbapi.Show`
@@ -313,7 +323,6 @@ class FileName :
             return None
         
         #FIXME: Show should not be a list (but resolved after self.getMatchingShows() ).
-        fileSystem = Filesystems(filesystemDir).getFilesystem( Filesystem( MatchingShow.filesystem ) )
         
         seasonNumber = self.getSeason()
         episodeNumber = self.getEpisode()
@@ -329,24 +338,26 @@ class FileName :
         #FIXME: Proper regex function to get file suffix.
         self.fileSuffix = self.fileName[-4:]
         
-        NewShow = Show( MatchingShow.name, MatchingShow.duration, fileSystem, MatchingShow.backend, MatchingShow.url )
+        NewShow = Show( MatchingShow.name, MatchingShow.duration, MatchingShow.backend, MatchingShow.url )
         NewShow.addEpisode( NewEpisode, NewSeason )
         
         return NewShow
         
-    def generateFileName( self, Show, fileSystemDir, Style=None ) :
+    def generateFileName( self, Show, fileSystemDir, fileSystem, Style=None ) :
         """
         Generate and return a file name.
         
         :param Show: Show object to get file name details from.
         :type Show: :class:`api.dbapi.Show`
-        :param filesystemDir: Path to filesystems.xml
-        :type filesystemDir: string
+        :param fileSystemDir: Path to filetypes.xml
+        :type fileSystemDir: string
+        :param fileSystem: Filesystem to use
+        :type fileSystem: string
         :param Style: Style to use for the new file name
         :type Style: string or None
         """
         
-        fs = Filesystems(fileSystemDir).getFilesystem( Filesystem( Show.filesystem.name ) )
+        fs = Filesystems(fileSystemDir).getFilesystem( Filesystem(fileSystem) )
         
         showName = Show.name
         if len(Show.seasons[0].episodes) != 1 or len(Show.seasons) != 1 :
@@ -410,20 +421,173 @@ class FileName :
             return searchResults
         else :
             return None
+
+class Filesystems :
+    """
+    Filesystems. Methods for Filesystem.
+    """
+    def __init__ ( self, filesystemsDir=None ) :
+        """
+        :param filesystemDir: Path to filetypes.xml
+        :type filesystemDir: string
+        """
+        
+        self.filesystemsDir = filesystemsDir
+        if filesystemsDir != None :
+            self.filesystems = self.loadFilesystems()
+        else :
+            self.filesystems = []
+        
+    def loadFilesystems ( self ) :
+        """
+        Return current registered filesystems
+        
+        :returns: list of Filesystem objects from the filetypes.xml file.
+        :rtype: list
+        """
+        filesystems = [ ]
+        root = ET.parse( os.path.abspath(self.filesystemsDir )).getroot()
+        
+        for filetype in root.findall('filetype') :
+            system = Filesystem( filetype.attrib['name'] )
+            for invchar in filetype.findall('invalid_char') :
+                system.addChar( InvChar( invchar.attrib['name'], invchar.attrib['char'], invchar.attrib['replacement'] ) )
+            filesystems.append( system )
+        
+        return filesystems
     
-if __name__ == '__main__':
+    def addFilesystem ( self, InputFilesystem) :
+        """
+        Add a Filesystem.
+        
+        :param InputFilesystem: Filesystem to add
+        :type InputFilesystem: :class:`api.dbapi.Filesystem`
+        :returns: On success, returns Filesystem.
+        :rtype: :class:`api.dbapi.Filesystem` or None
+        """
+        if self.getFilesystem( InputFilesystem ) != None :
+            return None
+        else : 
+            self.filesystems.append( InputFilesystem )
+            return InputFilesystem
     
-    me = Rename()
-    me.addFolder( Folder('/home/meastp/test'))
-    me.addFolder( Folder('/home/meastp/test/backup'))
-    ms = me.getMatchingShows()
-    for Folder in ms :
-        print Folder.path
-        for FileName in Folder.fileNames :
-            print '  ' + str(FileName.PossibleShowMatches) + '  ' + str( FileName.PossibleShowMatches[0].name )
-    pv = me.generatePreviews()
-    for Folder in pv :
-        for item in Folder :
-            print item
-#        for FileName in Folder.fileNames :
-#            print '  ' + FileName.generatedFileName
+    def getFilesystem( self, InputFilesystem ) :
+        """
+        Return a Filesystem.
+        
+        :param InputFilesystem: Filesystem to return. Name needs to be equal
+        :type InputFilesystem: :class:`api.dbapi.Filesystem`
+        :returns: On success, returns Filesystem.
+        :rtype: :class:`api.dbapi.Filesystem` or None
+        """
+        for Filesystem in self.filesystems :
+            if InputFilesystem.name == Filesystem.name :
+                return Filesystem
+        return None
+    
+    def removeFilesystem ( self, InputFilesystem) :
+        """
+        Remove a Filesystem.
+        
+        :param InputFilesystem: Filesystem to remove
+        :type InputFilesystem: :class:`api.dbapi.Filesystem`
+        :returns: On success, returns Filesystem.
+        :rtype: :class:`api.dbapi.Filesystem` or None
+        """
+        Filesystem = self.getFilesystem( InputFilesystem )
+        if Filesystem == None :
+            return None
+        else : 
+            self.filesystems.remove( Filesystem )
+            return Filesystem
+
+class Filesystem :
+    """
+    A Filesystem. Contains InvChars.
+    """
+    def __init__ ( self, name ) :
+        """
+        :param name: Name of filesystem
+        :type name: string
+        """
+        self.chars = [ ]
+        self.name = name
+        
+    def addChar ( self, InvChar) :
+        """
+        Add an invalid character.
+        
+        :param InvChar: Invalid character to add
+        :type InvChar: :class:`api.dbapi.InvChar`
+        :returns: On success, returns Invalid character.
+        :rtype: :class:`api.dbapi.InvChar` or None
+        """
+        if self.getChar( InvChar ) != None :
+            return None
+        else : 
+            self.chars.append( InvChar )
+            return InvChar
+        
+    def getChar ( self, InvChar ) :
+        """
+        Return an invalid character.
+        
+        :param InvChar: Invalid character to return. char and replacement needs to be equal
+        :type InvChar: :class:`api.dbapi.InvChar`
+        :returns: On success, returns Invalid character.
+        :rtype: :class:`api.dbapi.InvChar` or None
+        """
+        for Char in self.chars :
+            if InvChar.char == Char.char and InvChar.replacement == Char.replacement :
+                return Char
+        return None
+        
+    def removeChar ( self, InvChar) :
+        """
+        Remove an invalid character.
+        
+        :param InvChar: Invalid character to remove
+        :type InvChar: :class:`api.dbapi.InvChar`
+        :returns: On success, returns Invalid character.
+        :rtype: :class:`api.dbapi.InvChar` or None
+        """
+        Char = self.getChar( InvChar )
+        if Char == None :
+            return None
+        else : 
+            self.chars.remove( Char )
+            return Char
+        
+    def validateString( self, String ) :
+        """
+        Return valid string.
+        
+        :param String: The string to validate against this filesystem
+        :type String: string
+        """
+        if String == None :
+            return None
+        
+        for InvChar in self.chars :
+            exec('invalidChar = ' + 'u"\u' + InvChar.char + '"')
+            invalidCharDecoded = invalidChar.encode( 'utf-8')
+            if invalidCharDecoded in String :
+                String = String.replace( invalidCharDecoded, InvChar.replacement )
+        
+        return String
+
+class InvChar :
+    """
+    Invalid character.
+    """
+    def __init__ ( self, descr, char, replacement ) :
+        """
+        :param descr: Name of this invalid character
+        :type descr: string
+        :param char: The unicode of this character, as four integers, e.g 0023
+        :param char: string
+        :param replacement: the text or character replacing the invalid character (char)
+        """
+        self.description = descr
+        self.char = char
+        self.replacement = replacement

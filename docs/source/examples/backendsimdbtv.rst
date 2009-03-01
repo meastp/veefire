@@ -13,13 +13,13 @@ Examples
     
     >>> from api.dbapi import Show, Episode, Season, Database
     >>> from backends.imdbtv import Backend
-    >>> Showlist = [ Show( "Black Books", "30", "ext3" , "imdbtvbackend", "tt0262150" ) ,
-    ... Show( "Spaced", "60", "ext3" , "imdbtvbackend", "tt0187664" ) ]
+    >>> Showlist = [ Show( "Black Books", "30", "imdbtvbackend", "tt0262150" ) ,
+    ... Show( "Spaced", "60", "imdbtvbackend", "tt0187664" ) ]
     >>> backend = Backend()
     >>> DB = backend.updateShows( Showlist )
     >>> # Updates the show database from the backend.
     >>> DB.printDb()
-        ####   Black Books   ####
+    ####   Black Books   ####
            Season: 1
                    Episode: Cooking the Books
                    Episode: Manny's First Day
@@ -58,7 +58,7 @@ Examples
                    Episode: Gone
                    Episode: Dissolution
                    Episode: Leaves
-    
+
 
 .. note::
     The url should be the part after "/title/" in the url.
