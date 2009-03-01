@@ -46,264 +46,44 @@
 <p class="first admonition-title">Note</p>
 <p>For testing the examples in the Python interpreter, start your Python interactive shell, and do the following.</p>
 <div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s">&#39;~/veefire&#39;</span><span class="p">)</span> <span class="c"># path to veefire directory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s">&#39;&lt;path/to/veefire&gt;&#39;</span><span class="p">)</span> <span class="c"># path to your veefire directory</span>
 </pre></div>
 </div>
 <p><strong>Example:</strong></p>
 <blockquote>
 Update the Database, using the backends to retrieve information. In this example, there is a database directory with the xml file in <a class="reference" href="../misc/database.html#database-xml-file"><em>Show Database</em></a>.</blockquote>
-<table class="highlighttable"><tr><td class="linenos"><pre>  1
-  2
-  3
-  4
-  5
-  6
-  7
-  8
-  9
- 10
- 11
- 12
- 13
- 14
- 15
- 16
- 17
- 18
- 19
- 20
- 21
- 22
- 23
- 24
- 25
- 26
- 27
- 28
- 29
- 30
- 31
- 32
- 33
- 34
- 35
- 36
- 37
- 38
- 39
- 40
- 41
- 42
- 43
- 44
- 45
- 46
- 47
- 48
- 49
- 50
- 51
- 52
- 53
- 54
- 55
- 56
- 57
- 58
- 59
- 60
- 61
- 62
- 63
- 64
- 65
- 66
- 67
- 68
- 69
- 70
- 71
- 72
- 73
- 74
- 75
- 76
- 77
- 78
- 79
- 80
- 81
- 82
- 83
- 84
- 85
- 86
- 87
- 88
- 89
- 90
- 91
- 92
- 93
- 94
- 95
- 96
- 97
- 98
- 99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109</pre></td><td class="code"><div class="highlight"><pre><span class="k">from</span> <span class="nn">api.backendapi</span> <span class="k">import</span> <span class="n">BackendInterface</span>
-
-<span class="n">se</span> <span class="o">=</span> <span class="n">BackendInterface</span><span class="p">(</span><span class="s">&#39;/home/username/testdb&#39;</span><span class="p">)</span> <span class="c">#database directory</span>
-
-<span class="c">#Now you can add new shows to the database, before updating.</span>
-<span class="c">#testSession.addNewShow( Show( &quot;Black Books&quot;, &quot;30&quot;, &quot;ext3&quot; , &quot;BaseBackend&quot;, &quot;tt0262150&quot; ) )</span>
-
-<span class="k">print</span> <span class="n">se</span><span class="o">.</span><span class="n">currentDB</span><span class="o">.</span><span class="n">database</span> <span class="c">#our directory with the file is loaded</span>
-<span class="c">#[&lt;api.dbapi.Show instance at 0x1afad40&gt;]</span>
-
-<span class="n">se</span><span class="o">.</span><span class="n">updateDatabase</span><span class="p">()</span>
-<span class="c">#### OUTPUT ( backendapi.py:92 = self.mergeDB.write(True) which gives this verbose output.</span>
-<span class="c">#-----   &lt;api.dbapi.Show instance at 0xe5dea8&gt;</span>
-<span class="c">#Black Books</span>
-<span class="c">#{&#39;duration&#39;: &#39;30&#39;, &#39;url&#39;: &#39;tt0262150&#39;, &#39;backend&#39;: &#39;imdbtvbackend&#39;, &#39;name&#39;: &#39;Black Books&#39;, &#39;filesystem&#39;: &#39;ext3&#39;}</span>
-<span class="c">#---</span>
-<span class="c">#1</span>
-<span class="c">#&lt;api.dbapi.Season instance at 0xe7c878&gt;</span>
-<span class="c">#[&lt;api.dbapi.Episode instance at 0xe7cc68&gt;, &lt;api.dbapi.Episode instance at 0xe74680&gt;,</span>
-<span class="c"># &lt;api.dbapi.Episode instance at 0xe6b440&gt;, &lt;api.dbapi.Episode instance at 0xe7d290&gt;,</span>
-<span class="c"># &lt;api.dbapi.Episode instance at 0xe7d1b8&gt;, &lt;api.dbapi.Episode instance at 0xe7d9e0&gt;]</span>
-<span class="c">#---</span>
-<span class="c">#1</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7cc68&gt;</span>
-<span class="c">#Cooking the Books</span>
-<span class="c">#---</span>
-<span class="c">#2</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe74680&gt;</span>
-<span class="c">#Manny&#39;s First Day</span>
-<span class="c">#---</span>
-<span class="c">#3</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe6b440&gt;</span>
-<span class="c">#The Grapes of Wrath</span>
-<span class="c">#---</span>
-<span class="c">#4</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7d290&gt;</span>
-<span class="c">#The Blackout</span>
-<span class="c">#---</span>
-<span class="c">#5</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7d1b8&gt;</span>
-<span class="c">#The Big Lock-Out</span>
-<span class="c">#---</span>
-<span class="c">#6</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7d9e0&gt;</span>
-<span class="c">#He&#39;s Leaving Home</span>
-<span class="c">#---</span>
-<span class="c">#2</span>
-<span class="c">#&lt;api.dbapi.Season instance at 0xe7dab8&gt;</span>
-<span class="c">#[&lt;api.dbapi.Episode instance at 0xe7da28&gt;, &lt;api.dbapi.Episode instance at 0xe7d440&gt;,</span>
-<span class="c"># &lt;api.dbapi.Episode instance at 0xe7da70&gt;, &lt;api.dbapi.Episode instance at 0xe7db48&gt;,</span>
-<span class="c"># &lt;api.dbapi.Episode instance at 0xe7db90&gt;, &lt;api.dbapi.Episode instance at 0xe7dbd8&gt;]</span>
-<span class="c">#---</span>
-<span class="c">#1</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7da28&gt;</span>
-<span class="c">#The Entertainer</span>
-<span class="c">#---</span>
-<span class="c">#2</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7d440&gt;</span>
-<span class="c">#Fever</span>
-<span class="c">#---</span>
-<span class="c">#3</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7da70&gt;</span>
-<span class="c">#The Fixer</span>
-<span class="c">#---</span>
-<span class="c">#4</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7db48&gt;</span>
-<span class="c">#Blood</span>
-<span class="c">#---</span>
-<span class="c">#5</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7db90&gt;</span>
-<span class="c">#Hello Sun</span>
-<span class="c">#---</span>
-<span class="c">#6</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7dbd8&gt;</span>
-<span class="c">#A Nice Change</span>
-<span class="c">#---</span>
-<span class="c">#3</span>
-<span class="c">#&lt;api.dbapi.Season instance at 0xe7dcb0&gt;</span>
-<span class="c">#[&lt;api.dbapi.Episode instance at 0xe7dc20&gt;, &lt;api.dbapi.Episode instance at 0xe7db00&gt;,</span>
-<span class="c"># &lt;api.dbapi.Episode instance at 0xe7dc68&gt;, &lt;api.dbapi.Episode instance at 0xe7dd40&gt;,</span>
-<span class="c"># &lt;api.dbapi.Episode instance at 0xe7dd88&gt;, &lt;api.dbapi.Episode instance at 0xe7ddd0&gt;]</span>
-<span class="c">#---</span>
-<span class="c">#1</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7dc20&gt;</span>
-<span class="c">#Manny Come Home</span>
-<span class="c">#---</span>
-<span class="c">#2</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7db00&gt;</span>
-<span class="c">#Elephants and Hens</span>
-<span class="c">#---</span>
-<span class="c">#3</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7dc68&gt;</span>
-<span class="c">#Moo-Ma and Moo-Pa</span>
-<span class="c">#---</span>
-<span class="c">#4</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7dd40&gt;</span>
-<span class="c">#A Little Flutter</span>
-<span class="c">#---</span>
-<span class="c">#5</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7dd88&gt;</span>
-<span class="c">#The Travel Writer</span>
-<span class="c">#---</span>
-<span class="c">#6</span>
-<span class="c">#&lt;api.dbapi.Episode instance at 0xe7ddd0&gt;</span>
-<span class="c">#Party</span>
-<span class="c">#-----</span>
-<span class="c">### UPDATED FILE CONTENT ###</span>
-<span class="c"># &lt;tvshow&gt;&lt;showproperties backend=&quot;imdbtvbackend&quot; ... Rest of string omitted</span>
-<span class="c">####</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.backendapi</span> <span class="k">import</span> <span class="n">BackendInterface</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span> <span class="o">=</span> <span class="n">Tools</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createRootDir</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createDatabaseFiles</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">se</span> <span class="o">=</span> <span class="n">BackendInterface</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">databaseDir</span><span class="p">)</span> <span class="c">#database directory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Optional : you can add new shows to the database, before updating.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># testSession.addNewShow( Show( &quot;Black Books&quot;, &quot;30&quot;, &quot;ext3&quot; , &quot;BaseBackend&quot;, &quot;tt0262150&quot; ) )</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="p">[</span> <span class="n">show</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">show</span> <span class="ow">in</span> <span class="n">se</span><span class="o">.</span><span class="n">currentDB</span><span class="o">.</span><span class="n">database</span> <span class="p">]</span>
+<span class="go">[&#39;C.S.I&#39;, &#39;Spaced&#39;, &#39;Black Books&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">se</span><span class="o">.</span><span class="n">updateDatabase</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Updates the database, and writes it to the database directory.</span>
 </pre></div>
-</td></tr></table><p><strong>Example:</strong></p>
+<p><strong>Example:</strong></p>
 <blockquote>
 Get backend names.</blockquote>
-<table class="highlighttable"><tr><td class="linenos"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15</pre></td><td class="code"><div class="highlight"><pre><span class="k">from</span> <span class="nn">api.backendapi</span> <span class="k">import</span> <span class="n">Backends</span>
-<span class="n">se</span> <span class="o">=</span> <span class="n">Backends</span><span class="p">()</span>
-<span class="n">se</span><span class="o">.</span><span class="n">getBackends</span><span class="p">(</span><span class="s">&#39;/home/username/veefire/backends&#39;</span><span class="p">)</span>
-<span class="c"># Files in directory</span>
-<span class="c">#imdbtvbackend.py~</span>
-<span class="c">#base.py~</span>
-<span class="c">#imdbtv.py~</span>
-<span class="c">#__init__.py</span>
-<span class="c">#base.py</span>
-<span class="c">#__init__.pyc</span>
-<span class="c">#imdbtv.py</span>
-<span class="c">#base.pyc</span>
-<span class="c">#imdbtv.pyc</span>
-<span class="c">#### OUTPUT</span>
-<span class="c">#[&#39;imdbtvbackend&#39;]</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.backendapi</span> <span class="k">import</span> <span class="n">Backends</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span> <span class="o">=</span> <span class="n">Tools</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createRootDir</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createDatabaseFiles</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createBackendFiles</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">se</span> <span class="o">=</span> <span class="n">Backends</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">se</span><span class="o">.</span><span class="n">getBackends</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">BackendDirectory</span><span class="p">)</span>
+<span class="go">[&#39;imdbtvbackend&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># View the supported backends.</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 
 
           </div>
@@ -339,7 +119,7 @@ Get backend names.</blockquote>
     </div>
     <div class="footer">
       &copy; Copyright 2008, Mats Taraldsvik.
-      Last updated on Feb 28, 2009.
+      Last updated on Mar 01, 2009.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
     </div>
   </body>

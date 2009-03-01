@@ -5,6 +5,6 @@
     .. code-block:: python
         
         >>> import os
-        >>> os.chdir('~/veefire') # path to veefire directory
+        >>> os.chdir('<path/to/veefire>') # path to your veefire directory
 
 

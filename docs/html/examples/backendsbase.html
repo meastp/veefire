@@ -46,41 +46,30 @@
 <p class="first admonition-title">Note</p>
 <p>For testing the examples in the Python interpreter, start your Python interactive shell, and do the following.</p>
 <div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s">&#39;~/veefire&#39;</span><span class="p">)</span> <span class="c"># path to veefire directory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s">&#39;&lt;path/to/veefire&gt;&#39;</span><span class="p">)</span> <span class="c"># path to your veefire directory</span>
 </pre></div>
 </div>
 <p><strong>Example:</strong></p>
 <blockquote>
 A backend must be able to get data based on Show objects.</blockquote>
-<table class="highlighttable"><tr><td class="linenos"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14</pre></td><td class="code"><div class="highlight"><pre><span class="k">from</span> <span class="nn">api.dbapi</span> <span class="k">import</span> <span class="n">Show</span><span class="p">,</span> <span class="n">Episode</span><span class="p">,</span> <span class="n">Season</span><span class="p">,</span> <span class="n">Database</span>
-<span class="k">from</span> <span class="nn">backends.base</span> <span class="k">import</span> <span class="n">BaseBackend</span>
-
-<span class="n">Showlist</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Black Books&quot;</span><span class="p">,</span> <span class="s">&quot;30&quot;</span><span class="p">,</span> <span class="s">&quot;ext3&quot;</span> <span class="p">,</span> <span class="s">&quot;BaseBackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0262150&quot;</span> <span class="p">)</span> <span class="p">,</span>
-             <span class="n">Show</span><span class="p">(</span> <span class="s">&quot;The IT Crowd&quot;</span><span class="p">,</span> <span class="s">&quot;30&quot;</span><span class="p">,</span> <span class="s">&quot;ext3&quot;</span> <span class="p">,</span> <span class="s">&quot;BaseBackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0487831&quot;</span> <span class="p">)</span> <span class="p">,</span>
-             <span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Life on Mars&quot;</span><span class="p">,</span> <span class="s">&quot;60&quot;</span><span class="p">,</span> <span class="s">&quot;ext3&quot;</span> <span class="p">,</span> <span class="s">&quot;BaseBackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0478942&quot;</span> <span class="p">)</span> <span class="p">]</span>
-
-<span class="n">backend</span> <span class="o">=</span> <span class="n">BaseBackend</span><span class="p">()</span>
-
-<span class="n">DataBase</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">updateShows</span><span class="p">(</span> <span class="n">Showlist</span> <span class="p">)</span>
-
-<span class="c">## OUTPUT ##</span>
-
-<span class="ne">NotImplementedError</span> <span class="c"># This is an abstract function.</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.dbapi</span> <span class="k">import</span> <span class="n">Show</span><span class="p">,</span> <span class="n">Episode</span><span class="p">,</span> <span class="n">Season</span><span class="p">,</span> <span class="n">Database</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">backends.base</span> <span class="k">import</span> <span class="n">BaseBackend</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Showlist</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Black Books&quot;</span><span class="p">,</span> <span class="s">&quot;30&quot;</span><span class="p">,</span> <span class="s">&quot;ext3&quot;</span> <span class="p">,</span> <span class="s">&quot;BaseBackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0262150&quot;</span> <span class="p">)</span> <span class="p">,</span>
+<span class="gp">... </span><span class="n">Show</span><span class="p">(</span> <span class="s">&quot;The IT Crowd&quot;</span><span class="p">,</span> <span class="s">&quot;30&quot;</span><span class="p">,</span> <span class="s">&quot;ext3&quot;</span> <span class="p">,</span> <span class="s">&quot;BaseBackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0487831&quot;</span> <span class="p">)</span> <span class="p">,</span>
+<span class="gp">... </span><span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Life on Mars&quot;</span><span class="p">,</span> <span class="s">&quot;60&quot;</span><span class="p">,</span> <span class="s">&quot;ext3&quot;</span> <span class="p">,</span> <span class="s">&quot;BaseBackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0478942&quot;</span> <span class="p">)</span> <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">backend</span> <span class="o">=</span> <span class="n">BaseBackend</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DataBase</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">updateShows</span><span class="p">(</span> <span class="n">Showlist</span> <span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;/usr/lib/python2.5/doctest.py&quot;</span>, line <span class="m">1228</span>, in <span class="n-Identifier">__run</span>
+    <span class="n">compileflags</span><span class="p">,</span> <span class="mf">1</span><span class="p">)</span> <span class="ow">in</span> <span class="n">test</span><span class="o">.</span><span class="n">globs</span>
+  File <span class="nb">&quot;&lt;doctest default[4]&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n-Identifier">&lt;module&gt;</span>
+    <span class="n">DataBase</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">updateShows</span><span class="p">(</span> <span class="n">Showlist</span> <span class="p">)</span>
+  File <span class="nb">&quot;/home/meastp/Development/Launchpad/veefire/features/example-tests/backends/base.py&quot;</span>, line <span class="m">46</span>, in <span class="n-Identifier">updateShows</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+<span class="nc">NotImplementedError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Function for BaseBackend is abstract and must be overloaded.</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 
 
           </div>
@@ -116,7 +105,7 @@ A backend must be able to get data based on Show objects.</blockquote>
     </div>
     <div class="footer">
       &copy; Copyright 2008, Mats Taraldsvik.
-      Last updated on Feb 28, 2009.
+      Last updated on Mar 01, 2009.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
     </div>
   </body>
