@@ -47,6 +47,7 @@ def usage():
 	print "-t, --target\t\tTarget directory for renaming. Default is current directory."
 	print "-f, --filesystem <fs-name>\tUse the rules for the assigned filesystem for renaming."
 	print "-l, --showlist\t\t\tPrint all episodes of all shows in database."
+	print "-p, --preview\t\t\tPreview only (no renaming)."
 	print "-D, --DB-path <db-path>\t\tUse this path as the database path. Default: \"database\"."
 	print ""
 	print "Example: "
@@ -69,7 +70,7 @@ def main():
 
 	try:
 		# Let's get those o'holy command line arguments.
-		opts, args = getopt.getopt(sys.argv[1:], "hvf:ltD:", ["help", "version", "filesystem=", "showlist", "target=","DB-path"])
+		opts, args = getopt.getopt(sys.argv[1:], "hvf:lt:D:", ["help", "version", "filesystem=", "showlist", "target=","DB-path"])
 	except getopt.GetoptError, err:
 		print str(err)
 		usage()
@@ -79,8 +80,10 @@ def main():
 	filesystem = "ext3" # Filesystem to consider when renaming
 	printlist = False   # Set to true for those who seek a listing of all shows
 	dbpath = "database" # Path to the great repository of show information
-	ftdir = "/home/hallgeir/Programming/Python/veefire/filetypes.xml"		# Directory of the filetypes.xml file
+	#ftdir = "/home/hallgeir/Programming/Python/veefire/filetypes.xml"		# Directory of the filetypes.xml file
+	ftdir = "/home/hallgeir/Programming/Python/veefire/cli-interface/filetypes.xml"		# Directory of the filetypes.xml file	
 	recursive = False	# Set to true if we want to dig recursively
+	preview = False
 
 	for o, a in opts:
 		if o in ("-v", "--version"):
@@ -97,6 +100,8 @@ def main():
 			dbpath = a
 		elif o in ("-l", "--showlist"):
 			printlist = True
+		elif o in ("-p", "--preview"):
+			preview = True
 		else:
 			assert False, "Invalid option."
 
@@ -122,10 +127,13 @@ def main():
 		#		print FileName.CorrectShow.name
 		#		print [ season.name for season in FileName.CorrectShow.seasons ]
 		
+		print ""
+		print "Preview"
+		print "-------"
 		pv = rn.generatePreviews()
 		for Folder in pv:
 			for item in Folder:
-				print item
+				print str(item[0]) + " -> " + str(item[1])
 
 if __name__ == "__main__":
 	main()
