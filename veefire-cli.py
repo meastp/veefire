@@ -19,7 +19,7 @@
 
 import getopt, sys, os
 from api.dbapi import Show, Episode, Season, Database
-from api.renameapi import Rename, Folder, FileName as AbstractFileName
+from api.renameapi import Rename, Folder, FileName as AbstractFileName, Filesystem
 from backends.imdbtv import Backend
 
 class NewFileName(AbstractFileName):
@@ -130,7 +130,7 @@ def main():
 		print ""
 		print "Preview"
 		print "-------"
-		pv = rn.generatePreviews()
+		pv = rn.generatePreviews(filesystem)
 		for Folder in pv:
 			for item in Folder:
 				print str(item[0]) + " -> " + str(item[1])

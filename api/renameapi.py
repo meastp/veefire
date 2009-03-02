@@ -132,7 +132,7 @@ class Rename :
             Folder.getMatchingShows()
         return self.folders
         
-    def generatePreviews(self, fileSystem=None) :
+    def generatePreviews(self, fileSystem) :
         """
         Generate previews for every Folder->FileName.
         
