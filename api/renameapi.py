@@ -61,13 +61,34 @@ class Rename :
         :returns: On success, returns Folder.
         :rtype: :class:`api.renameapi.Folder` or None
         """
+        
         if self.getFolder( InputFolder ) != None :
             return None
+        
         else :
             InputFolder.dbDir = self.dbDir
             InputFolder.loadFiles()
             self.folders.append( InputFolder )
             return InputFolder
+        
+    def addFoldersRecursively(self, RootFolder) :
+        """
+        Add a Folder.
+        
+        :param InputFolder: Root folder.
+        :type InputFolder: :class:`api.renameapi.Folder`
+        :returns: On success, returns root Folder.
+        :rtype: :class:`api.renameapi.Folder` or None
+        """
+        #FIXME: If folder is added as a single directory. It cannot be added recursively afterwards.
+        if self.getFolder( RootFolder ) != None :
+            return None
+        
+        for root, dirs, files in os.walk(RootFolder.path, topdown=True):
+            for directory in dirs :
+                self.addFolder(Folder(os.path.join( root, directory )))
+        
+        return RootFolder
         
     def getFolder ( self, InputFolder ) :
         """
@@ -80,7 +101,7 @@ class Rename :
         """
         for Folder in self.folders :
             if InputFolder.path == Folder.path :
-                return Folder
+                return True
         return None
         
     def removeFolder ( self, InputFolder ) :
@@ -92,11 +113,13 @@ class Rename :
         :returns: On success, returns Folder.
         :rtype: :class:`api.renameapi.Folder` or None
         """
-        if self.getFolder( InputFolder ) == None :
+        Folder = self.getFolder( InputFolder )
+        if Folder == None :
             return None
-        else : 
-            self.folders.remove( InputFolder )
-            return InputFolder
+        else :
+            for index, item in enumerate(self.folders[:]) :
+                if item.path == InputFolder.path :
+                    return self.folders.pop(index)
         
     def getMatchingShows(self) :
         """
@@ -497,9 +520,9 @@ class Filesystems :
         Filesystem = self.getFilesystem( InputFilesystem )
         if Filesystem == None :
             return None
-        else : 
-            self.filesystems.remove( Filesystem )
-            return Filesystem
+        else :
+            self.filesystems.remove(Filesystem)
+            return InputFilesystem
 
 class Filesystem :
     """
@@ -554,9 +577,9 @@ class Filesystem :
         Char = self.getChar( InvChar )
         if Char == None :
             return None
-        else : 
-            self.chars.remove( Char )
-            return Char
+        else :
+            self.char.remove(Char)
+            return InvChar
         
     def validateString( self, String ) :
         """
