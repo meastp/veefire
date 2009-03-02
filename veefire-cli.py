@@ -1,21 +1,21 @@
 #!/usr/bin/env python
 
-#    Copyright 2008 Mats Taraldsvik <hallgeir.lien@gmail.com>
+#	Copyright 2008 Mats Taraldsvik <hallgeir.lien@gmail.com>
 
-#    This file is part of veefire.
+#	This file is part of veefire.
 
-#    veefire is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+#	veefire is free software: you can redistribute it and/or modify
+#	it under the terms of the GNU General Public License as published by
+#	the Free Software Foundation, either version 3 of the License, or
+#	(at your option) any later version.
 
-#    veefire is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+#	veefire is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#	GNU General Public License for more details.
 
-#    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#	You should have received a copy of the GNU General Public License
+#	along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 import getopt, sys, os
 from api.dbapi import Show, Episode, Season, Database
@@ -36,9 +36,6 @@ class NewFolder(Folder) :
 				aFileName = NewFileName( afile, self.database )
 				self.fileNames.append( aFileName )
 
-#def rename(rn):
-
-
 def usage():
 	print "Usage: veefire [options]..."
 	print "Options:"
@@ -49,6 +46,7 @@ def usage():
 	print "-l, --showlist\t\t\tPrint all episodes of all shows in database."
 	print "-p, --preview\t\t\tPreview only (no renaming)."
 	print "-D, --DB-path <db-path>\t\tUse this path as the database path. Default: \"database\"."
+	print "-R, --recursive\t\tAdds target folders recursively (with target as root)"
 	print ""
 	print "Example: "
 	print "veefire -f ext3 -t /home/santa/series/battlestar-galactica"
@@ -58,10 +56,11 @@ def version():
 	print "This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 
 def addFolders(rn, folder, recursive, dbdir):
-	#TODO: Add recursive-support
 	f = NewFolder(folder, dbdir)
-	rn.addFolder(f)
-
+	if recursive == True:
+		rn.addFoldersRecursively(f)
+	else:
+		rn.addFolder(f)
 
 def main():
 	#TODO: Missing stuff that should be handled by command line:
@@ -70,7 +69,7 @@ def main():
 
 	try:
 		# Let's get those o'holy command line arguments.
-		opts, args = getopt.getopt(sys.argv[1:], "hvf:lt:D:", ["help", "version", "filesystem=", "showlist", "target=","DB-path"])
+		opts, args = getopt.getopt(sys.argv[1:], "hvf:lt:D:R", ["help", "version", "filesystem=", "showlist", "target=","DB-path", "recursive"])
 	except getopt.GetoptError, err:
 		print str(err)
 		usage()
@@ -81,7 +80,7 @@ def main():
 	printlist = False   # Set to true for those who seek a listing of all shows
 	dbpath = "database" # Path to the great repository of show information
 	#ftdir = "/home/hallgeir/Programming/Python/veefire/filetypes.xml"		# Directory of the filetypes.xml file
-	ftdir = "/home/hallgeir/Programming/Python/veefire/cli-interface/filetypes.xml"		# Directory of the filetypes.xml file	
+	ftdir = "./filetypes.xml"		# Directory of the filetypes.xml file	
 	recursive = False	# Set to true if we want to dig recursively
 	preview = False
 
@@ -102,6 +101,8 @@ def main():
 			printlist = True
 		elif o in ("-p", "--preview"):
 			preview = True
+		elif o in ("-R", "--recursive"):
+			recursive = True
 		else:
 			assert False, "Invalid option."
 
@@ -118,14 +119,8 @@ def main():
 		print "Path to filetypes.xml: " + ftdir
 		rn = Rename(dbpath, ftdir)
 		
-		addFolders(rn, directory, False, dbpath)
-		
-		#ms = rn.getMatchingShows()
-		#for Folder in ms:
-		#	print Folder.path
-		#	for FileName in Folder.fileNames:
-		#		print FileName.CorrectShow.name
-		#		print [ season.name for season in FileName.CorrectShow.seasons ]
+		addFolders(rn, directory, recursive, dbpath)
+	
 		
 		print ""
 		print "Preview"
@@ -133,7 +128,26 @@ def main():
 		pv = rn.generatePreviews(filesystem)
 		for Folder in pv:
 			for item in Folder:
-				print str(item[0]) + " -> " + str(item[1])
+				if item[1] != None:
+					print str(item[0]) + " -> " + str(item[1])
+				
+		ans = raw_input("Is this OK? y or n\n")
+		if ans in ("y", "yes", "Y"):
+			rn.renameAll(filesystem)
+			
+			ans = raw_input("Renaming is complete. Is the result OK? y/n\n")
+			if ans in ("y", "yes", "Y"):
+				print "All OK!!"
+			else:
+				print "Undoing the operation..."
+				rn.undoRenameAll()
+				print "All names should now be reverted back to the original."
+		else:
+			print "Aborting."
+
+		print "See you!"
+
+
 
 if __name__ == "__main__":
 	main()

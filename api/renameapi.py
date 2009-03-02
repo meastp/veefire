@@ -84,12 +84,21 @@ class Rename :
         if self.getFolder( RootFolder ) != None :
             return None
         
+        self.addFolder(RootFolder)
         for root, dirs, files in os.walk(RootFolder.path, topdown=True):
             for directory in dirs :
                 self.addFolder(Folder(os.path.join( root, directory )))
         
         return RootFolder
-        
+    
+    def renameAll(self, fileSystem):
+        for Folder in self.folders:
+            Folder.renameAll(self.filesystemDir, fileSystem)
+    
+    def undoRenameAll(self):
+        for Folder in self.folders:
+            Folder.undoRename()
+    
     def getFolder ( self, InputFolder ) :
         """
         Return a Folder.
@@ -161,6 +170,7 @@ class Folder :
         self.dbDir = dbDir
         self.shows = shows
         self.path = path
+        self.undoHistory = []
         
     def __cmp__(self, other):
         """
@@ -221,6 +231,20 @@ class Folder :
         for FileName in self.fileNames :
             previews.append(FileName.generatePreview(filesystemDir, fileSystem))
         return previews
+        
+    def renameAll(self, filesystemDir, fileSystem):
+        self.undoHistory = []
+        for filename in self.fileNames:
+            preview = filename.generatePreview(filesystemDir, fileSystem)
+            if preview[1] != None:
+                print "Renaming: " + self.path + "/" + str(preview[0]) + " to " + self.path + "/" + str(preview[1])
+                os.rename(self.path + "/" + str(preview[0]), self.path + "/" + str(preview[1]))
+                self.undoHistory.append( (self.path + "/" + str(preview[0]), self.path + "/" + str(preview[1])) )
+                
+    def undoRename(self):
+        for filePair in self.undoHistory:
+            os.rename(filePair[1], filePair[0])
+        self.undoHistory = []
 
 class FileName :
     """
@@ -246,6 +270,7 @@ class FileName :
         self.seepattern1 = re.compile( self.pattern1 )
         
         self.pattern2 = r'(?:[0]+)?([1-9]+)[xX](?:[0]+)?([1-9]+)'
+        #self.pattern2 = r'(([0-9]+)[xX]([0-9]+))'
         self.seepattern2 = re.compile( self.pattern2 )
         
         self.generatedFileName = None
@@ -334,6 +359,7 @@ class FileName :
         
         return self.fileName, self.generatedFileName
     
+  
     def getShowDetails (self, filesystemDir, MatchingShow) :
         """
         Retrieves Show details.
@@ -408,10 +434,14 @@ class FileName :
         :returns: correct regex pattern for this file name
         :rtype: regex string or None
         """
-        if self.seepattern1.search( self.fileName ) != None :
-            return self.pattern1
-        elif self.seepattern2.search( self.fileName ) != None :
+        
+        #if self.seepattern2.search( self.fileName ) != None:
+	     #   print self.seepattern2.search( self.fileName ).groups()
+        
+        if self.seepattern2.search( self.fileName ) != None :
             return self.pattern2
+        elif self.seepattern1.search( self.fileName ) != None :
+            return self.pattern1
         else :
             return None
         
