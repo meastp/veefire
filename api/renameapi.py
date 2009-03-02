@@ -241,10 +241,12 @@ class FileName :
         
         ## Regexes
         #FIXME: Integrate with getpattern() so you don't have to add a new pattern two places.
-        self.seepattern1 = re.compile( r'[sS][0]*([1-9]+)[eE][0]*([1-9]+)' )
-        self.pattern1 = r'[sS][0]*([1-9]+)[eE][0]*([1-9]+)'
-        self.seepattern2 = re.compile( r'[0]*([1-9]+)[xX][0]*([1-9]+)' )
-        self.pattern2 = r'[0]*([1-9]+)[xX][0]*([1-9]+)'
+        
+        self.pattern1 = r'[sS](?:[0]+)?([1-9]+)[eE](?:[0]+)?([1-9]+)'
+        self.seepattern1 = re.compile( self.pattern1 )
+        
+        self.pattern2 = r'(?:[0]+)?([1-9]+)[xX](?:[0]+)?([1-9]+)'
+        self.seepattern2 = re.compile( self.pattern2 )
         
         self.generatedFileName = None
         
