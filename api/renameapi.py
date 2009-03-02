@@ -245,7 +245,7 @@ class FileName :
             return None
         
         ##Get Alias / show name for this file.
-        rawShowName = re.match( r'([^0-9]+)(?=' + self.regexPattern + r').*' , self.fileName ).groups()[0].strip('.')
+        rawShowName = re.match( r'([^0-9]+)(?=' + self.regexPattern + r').*' , self.fileName ).groups()[0].strip(' .-')
         
         if rawShowName == None :
             return None

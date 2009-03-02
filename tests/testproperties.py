@@ -70,6 +70,7 @@ testDatabaseBlackBooks = r'''<?xml version="1.0" encoding="UTF-8"?>
   <showproperties backend="imdbtvbackend" duration="30" name="Black Books" url="tt0262150"/>
   <fileproperties>
     <alias value="blackbooks"/>
+    <alias value="black books"/>
     <alias value="black.books"/>
     <alias value="bb"/>
   </fileproperties>
