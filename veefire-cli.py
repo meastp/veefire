@@ -20,7 +20,8 @@
 import getopt, sys, os
 from api.dbapi import Show, Episode, Season, Database
 from api.renameapi import Rename, Folder, FileName as AbstractFileName, Filesystem
-from backends.imdbtv import Backend
+#from backends.imdbtv import Backend
+from api.backendapi import BackendInterface
 
 class NewFileName(AbstractFileName):
 	def setCorrectShow( self, Shows ) :
@@ -36,17 +37,22 @@ class NewFolder(Folder) :
 				aFileName = NewFileName( afile, self.database )
 				self.fileNames.append( aFileName )
 
+class NewBackendInterface(BackendInterface):
+	def solveEpisodeConflicts(self, firstEpisode, secondEpisode):
+		return firstEpisode
+
 def usage():
 	print "Usage: veefire [options]..."
 	print "Options:"
 	print "-h, --help\t\t\tShow help."
 	print "-v, --version\t\t\tShow version."
-	print "-t, --target\t\tTarget directory for renaming. Default is current directory."
+	print "-t, --target\t\t\tTarget directory for renaming."
 	print "-f, --filesystem <fs-name>\tUse the rules for the assigned filesystem for renaming."
 	print "-l, --showlist\t\t\tPrint all episodes of all shows in database."
 	print "-p, --preview\t\t\tPreview only (no renaming)."
 	print "-D, --DB-path <db-path>\t\tUse this path as the database path. Default: \"database\"."
-	print "-R, --recursive\t\tAdds target folders recursively (with target as root)"
+	print "-R, --recursive\t\t\tAdds target folders recursively (with target as root)"
+	print "-u, --update\t\t\tUpdates the database."
 	print ""
 	print "Example: "
 	print "veefire -f ext3 -t /home/santa/series/battlestar-galactica"
@@ -69,7 +75,7 @@ def main():
 
 	try:
 		# Let's get those o'holy command line arguments.
-		opts, args = getopt.getopt(sys.argv[1:], "hvf:lt:D:R", ["help", "version", "filesystem=", "showlist", "target=","DB-path", "recursive"])
+		opts, args = getopt.getopt(sys.argv[1:], "hvf:lt:D:Ru", ["help", "version", "filesystem=", "showlist", "target=","DB-path", "recursive", "update"])
 	except getopt.GetoptError, err:
 		print str(err)
 		usage()
@@ -83,6 +89,8 @@ def main():
 	ftdir = "./filetypes.xml"		# Directory of the filetypes.xml file	
 	recursive = False	# Set to true if we want to dig recursively
 	preview = False
+	update =  False
+	rename = False
 
 	for o, a in opts:
 		if o in ("-v", "--version"):
@@ -95,6 +103,7 @@ def main():
 			filesystem = a
 		elif o in ("-t", "--target"):
 			directory = a
+			rename = True
 		elif o in ("-D", "--DB-path"):
 			dbpath = a
 		elif o in ("-l", "--showlist"):
@@ -103,16 +112,23 @@ def main():
 			preview = True
 		elif o in ("-R", "--recursive"):
 			recursive = True
+		elif o in ("-u", "--update"):
+			update = True
 		else:
 			assert False, "Invalid option."
 
+	if update == True:
+		se = NewBackendInterface(dbpath)
+		se.updateDatabase()
+
 	print "Database path: " + dbpath
+
 	DB = Database(dbpath)
 	DB.loadDB()
 
 	if printlist:
 		DB.printDb()
-	else:
+	elif rename == True:
 		# Program hasn't exited yet... what can that mean? Maybe it's time to start renaming those episode babies!
 		print "Using filesystem: " + filesystem
 		print "Target directory is: " + directory
@@ -137,7 +153,7 @@ def main():
 			
 			ans = raw_input("Renaming is complete. Is the result OK? y/n\n")
 			if ans in ("y", "yes", "Y"):
-				print "All OK!!"
+				print "All OK!"
 			else:
 				print "Undoing the operation..."
 				rn.undoRenameAll()
