@@ -482,13 +482,13 @@
 </dd></dl>
 
 <div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/move-filesystem/docs/source/modules/model.rst</tt>, line 20)</p>
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/recursive-addfolder/docs/source/modules/model.rst</tt>, line 20)</p>
 autodoc can&#8217;t import/find class &#8216;Filesystems&#8217;, it reported error: &#8220;&#8216;module&#8217; object has no attribute &#8216;Filesystems&#8217;&#8221;,please check your spelling and sys.path</div>
 <div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/move-filesystem/docs/source/modules/model.rst</tt>, line 23)</p>
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/recursive-addfolder/docs/source/modules/model.rst</tt>, line 23)</p>
 autodoc can&#8217;t import/find class &#8216;Filesystem&#8217;, it reported error: &#8220;&#8216;module&#8217; object has no attribute &#8216;Filesystem&#8217;&#8221;,please check your spelling and sys.path</div>
 <div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/move-filesystem/docs/source/modules/model.rst</tt>, line 26)</p>
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/recursive-addfolder/docs/source/modules/model.rst</tt>, line 26)</p>
 autodoc can&#8217;t import/find class &#8216;InvChar&#8217;, it reported error: &#8220;&#8216;module&#8217; object has no attribute &#8216;InvChar&#8217;&#8221;,please check your spelling and sys.path</div>
 <div class="section">
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
@@ -879,6 +879,29 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
+<dt id="api.renameapi.Rename.addFoldersRecursively">
+<!--[api.renameapi.Rename.addFoldersRecursively]--><tt class="descname">addFoldersRecursively</tt><big>(</big><em>RootFolder</em><big>)</big><a class="headerlink" href="#api.renameapi.Rename.addFoldersRecursively" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a Folder.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>InputFolder</em> (api.renameapi.Folder) &#8211; Root folder.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns root Folder.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.renameapi.Folder" class="reference" href="#api.renameapi.Folder"><tt class="xref docutils literal"><span class="pre">api.renameapi.Folder</span></tt></a> or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="api.renameapi.Rename.generatePreviews">
 <!--[api.renameapi.Rename.generatePreviews]--><tt class="descname">generatePreviews</tt><big>(</big><em>fileSystem=None</em><big>)</big><a class="headerlink" href="#api.renameapi.Rename.generatePreviews" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate previews for every Folder-&gt;FileName.</p>
@@ -1006,6 +1029,17 @@ Load the current database files into Python objects, and print a nice formatted 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">me</span><span class="o">.</span><span class="n">addFolder</span><span class="p">(</span><span class="n">NewFolder</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">rootDir</span><span class="p">,</span> <span class="n">tools</span><span class="o">.</span><span class="n">testDirs</span><span class="p">[</span><span class="mf">0</span><span class="p">]),</span> <span class="n">tools</span><span class="o">.</span><span class="n">databaseDir</span><span class="p">))</span><span class="o">.</span><span class="n">path</span>
 <span class="go">&#39;/tmp/veefire/Black Books&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Add folder to rename-object.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Alternatively, folders can be added recursively:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">me</span><span class="o">.</span><span class="n">addFoldersRecursively</span><span class="p">(</span> <span class="n">NewFolder</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">rootDir</span><span class="p">,</span> <span class="n">tools</span><span class="o">.</span><span class="n">databaseDir</span><span class="p">))</span><span class="o">.</span><span class="n">path</span>
+<span class="go">&#39;/tmp/veefire&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="p">[</span> <span class="n">folder</span><span class="o">.</span><span class="n">path</span> <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">me</span><span class="o">.</span><span class="n">folders</span> <span class="p">]</span>
+<span class="go">[&#39;/tmp/veefire/Black Books&#39;, &#39;/tmp/veefire/Spaced&#39;, &#39;/tmp/veefire/CSI&#39;, &#39;/tmp/veefire/database&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">me</span><span class="o">.</span><span class="n">removeFolder</span><span class="p">(</span> <span class="n">NewFolder</span><span class="p">(</span><span class="s">&#39;/tmp/veefire/Spaced&#39;</span><span class="p">)</span> <span class="p">)</span><span class="o">.</span><span class="n">path</span>
+<span class="go">&#39;/tmp/veefire/Spaced&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">me</span><span class="o">.</span><span class="n">removeFolder</span><span class="p">(</span> <span class="n">NewFolder</span><span class="p">(</span><span class="s">&#39;/tmp/veefire/CSI&#39;</span><span class="p">)</span> <span class="p">)</span><span class="o">.</span><span class="n">path</span>
+<span class="go">&#39;/tmp/veefire/CSI&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">me</span><span class="o">.</span><span class="n">removeFolder</span><span class="p">(</span> <span class="n">NewFolder</span><span class="p">(</span><span class="s">&#39;/tmp/veefire/database&#39;</span><span class="p">)</span> <span class="p">)</span><span class="o">.</span><span class="n">path</span>
+<span class="go">&#39;/tmp/veefire/database&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ms</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">getMatchingShows</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Find correct shows from file name.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">Folder</span> <span class="ow">in</span> <span class="n">ms</span> <span class="p">:</span>

@@ -46,6 +46,17 @@ Examples
     >>> me.addFolder(NewFolder(os.path.join(tools.rootDir, tools.testDirs[0]), tools.databaseDir)).path
     '/tmp/veefire/Black Books'
     >>> # Add folder to rename-object.
+    >>> # Alternatively, folders can be added recursively:
+    >>> me.addFoldersRecursively( NewFolder(tools.rootDir, tools.databaseDir)).path
+    '/tmp/veefire'
+    >>> print [ folder.path for folder in me.folders ]
+    ['/tmp/veefire/Black Books', '/tmp/veefire/Spaced', '/tmp/veefire/CSI', '/tmp/veefire/database']
+    >>> me.removeFolder( NewFolder('/tmp/veefire/Spaced') ).path
+    '/tmp/veefire/Spaced'
+    >>> me.removeFolder( NewFolder('/tmp/veefire/CSI') ).path
+    '/tmp/veefire/CSI'
+    >>> me.removeFolder( NewFolder('/tmp/veefire/database') ).path
+    '/tmp/veefire/database'
     >>> ms = me.getMatchingShows()
     >>> # Find correct shows from file name.
     >>> for Folder in ms :

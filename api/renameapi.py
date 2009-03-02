@@ -522,7 +522,7 @@ class Filesystems :
             return None
         else :
             self.filesystems.remove(Filesystem)
-            return InputFilesystem
+            return Filesystem
 
 class Filesystem :
     """
@@ -578,8 +578,8 @@ class Filesystem :
         if Char == None :
             return None
         else :
-            self.char.remove(Char)
-            return InvChar
+            self.chars.remove(Char)
+            return Char
         
     def validateString( self, String ) :
         """

@@ -86,9 +86,9 @@ class testRename :
         rename.addFolder( self.folder1 )
         rename.addFolder( self.folder1 )
         assert rename.getFolder( self.folder1 ) == True
-        assert rename.getFolder( self.folder3 ) == False
-        assert rename.getFolder( Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[1]), self.Tools.databaseDir) ) == False
-        assert rename.getFolder( Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[2]), self.Tools.databaseDir) ) == False
+        assert rename.getFolder( self.folder3 ) == None
+        assert rename.getFolder( Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[1]), self.Tools.databaseDir) ) == None
+        assert rename.getFolder( Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[2]), self.Tools.databaseDir) ) == None
         
     def testRemoveFolder(self) :
         rename = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
