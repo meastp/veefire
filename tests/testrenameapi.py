@@ -57,14 +57,37 @@ class testRename :
         assert rename.addFolder( Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[1]), self.Tools.databaseDir) ) == None
         assert rename.addFolder( self.folder3 ) == self.folder3
         
+    def testAddFoldersRecursively(self) :
+        rename = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+        
+        rename.addFolder( self.folder1 )
+        
+        assert rename.addFoldersRecursively( Folder(self.Tools.rootDir) ) == Folder(self.Tools.rootDir)
+        
+        assert [ folder.path for folder in rename.folders ] == ['/tmp/veefire/Black Books', '/tmp/veefire/Spaced', '/tmp/veefire/CSI', '/tmp/veefire/database']
+        
+        rename.addFolder( self.folder1 )
+        rename.addFolder( self.folder1 )
+        rename.addFolder( Folder('/tmp/veefire/Spaced' ))
+        rename.addFolder( Folder('/tmp/veefire/Spaced' ))
+        rename.addFolder( Folder('/tmp/veefire/Spaced' ))
+        
+        assert [ folder.path for folder in rename.folders ] == ['/tmp/veefire/Black Books', '/tmp/veefire/Spaced', '/tmp/veefire/CSI', '/tmp/veefire/database']
+        
+        assert rename.removeFolder(Folder('/tmp/veefire/Spaced')).path == '/tmp/veefire/Spaced'
+        
+        assert rename.removeFolder(Folder('/tmp/veefire/Spaced')) == None
+        
+        assert [ folder.path for folder in rename.folders ] == ['/tmp/veefire/Black Books', '/tmp/veefire/CSI', '/tmp/veefire/database']
+        
     def testGetFolder(self) :
         rename = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
         
         rename.addFolder( self.folder1 )
         rename.addFolder( self.folder1 )
-        assert rename.getFolder( self.folder1 ) == self.folder1
+        assert rename.getFolder( self.folder1 ) == True
         assert rename.getFolder( self.folder3 ) == None
-        assert rename.getFolder( Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[1]), self.Tools.databaseDir) ) == self.folder1
+        assert rename.getFolder( Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[1]), self.Tools.databaseDir) ) == None
         assert rename.getFolder( Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[2]), self.Tools.databaseDir) ) == None
         
     def testRemoveFolder(self) :
