@@ -265,31 +265,19 @@ class FileName :
         if self.regexPattern == None:
             return None
         
-        ##Get Alias / show name for this file.
-        rawShowName = re.match( r'([^0-9]+)(?=' + self.regexPattern + r').*' , self.fileName ).groups()[0].strip('.')
-        
-        if rawShowName == None :
-            return None
-        
-        ## Search through Shows and try to match Aliases
-        ## PossibleShowMatches could have multiple Show matches.
-        PossibleShowMatches = []
+        PossibleShowMatches = [ ]
         for Show in self.database.database :
             for Alias in Show.alias :
-                if rawShowName.lower() == Alias.name :
-                    
-                    PossibleShowMatches.append( copy.deepcopy( Show ) )
-        
-        #FIXME: Use a function to resolve the conflicts here. Needs to be abstract and overridden.
-        if len( PossibleShowMatches ) == 0 :
-            self.CorrectShow = None
-            return
+                if Show.alias.lower() in self.fileName.lower() :
+                    PossibleShowMatches.append( copy.deepcopy(Show) )
+                    continue # If found, jump to the next show.
         
         if len( PossibleShowMatches ) == 1 :
             self.CorrectShow = PossibleShowMatches[0]
-            return self.CorrectShow
-        
-        self.CorrectShow = self.setCorrectShow( PossibleShowMatches )
+        elif :
+            self.CorrectShow = self.setCorrectShow( PossibleShowMatches )
+        else :
+            self.CorrectShow = None
         
         return self.CorrectShow
         
