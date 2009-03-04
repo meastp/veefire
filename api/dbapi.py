@@ -51,6 +51,7 @@ class Database :
         """
         self.database = []
         
+        #FIXME: Replace <fileproperties> with <aliases> in loadDB and write, and all database files.
         #FIXME: Catch the right exeption. ( when database directory is empty )
         for afile in os.listdir( self.dbDir ) :
             ## We don't want to include temporary files.
