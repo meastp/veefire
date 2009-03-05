@@ -136,8 +136,8 @@ class testRename :
         rename3.addFolder(self.folder3)
         
         assert [ fo for fo in rename1.generatePreviews('ext3') ] == [[('bb.s03e05.avi', 'Black Books - S03E05 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi")], [('CSI.2x12.avi', "C.S.I - S02E12 - You've Got Male.avi"), ('csiS01E11.avi', 'C.S.I - S01E11 - I-15 Murders.avi')]]
-        assert [ fo for fo in rename2.generatePreviews('ntfs') ] == [[('bb.s03e05.avi', 'Black Books - S03E05 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', 'Black Books - S01E02 - Mannys First Day.avi')], [('Spaced.2x4.avi', 'Spaced - S02E04 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - S02E03 - Mettle.avi')]]
-        assert [ fo for fo in rename3.generatePreviews('ext3') ] == [[('Spaced.2x4.avi', 'Spaced - S02E04 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - S02E03 - Mettle.avi')]]
+        assert [ fo for fo in rename2.generatePreviews('ntfs', '%show[%season](%title)') ] ==  [[('bb.s03e05.avi', 'Black Books[03](The Travel Writer).avi'), ('blackbooks.s01e02.avi', 'Black Books[01](Mannys First Day).avi')], [('Spaced.2x4.avi', 'Spaced[02](Help).avi'), ('Spaced.S02E03.avi', 'Spaced[02](Mettle).avi')]]
+        assert [ fo for fo in rename3.generatePreviews('ext3', '%show - %seasonx%episode - %title') ] ==  [[('Spaced.2x4.avi', 'Spaced - 02x04 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - 02x03 - Mettle.avi')]]
         
 class testFolder :
     """
@@ -187,9 +187,9 @@ class testFolder :
         self.folder2.loadFiles()
         self.folder3.loadFiles()
         
-        assert [ fn for fn in self.folder1.generatePreviews(self.Tools.filetypesXML, 'ext3') ] == [('bb.s03e05.avi', 'Black Books - S03E05 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi")]
-        assert [ fn for fn in self.folder2.generatePreviews(self.Tools.filetypesXML, 'ntfs') ] == [('CSI.2x12.avi', 'C.S.I - S02E12 - Youve Got Male.avi'), ('csiS01E11.avi', 'C.S.I - S01E11 - I-15 Murders.avi')]
-        assert [ fn for fn in self.folder3.generatePreviews(self.Tools.filetypesXML, 'ext3') ] == [('Spaced.2x4.avi', 'Spaced - S02E04 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - S02E03 - Mettle.avi')]
+        assert [ fn for fn in self.folder1.generatePreviews(self.Tools.filetypesXML, 'ext3', '%show - S0%sesonE0%episode - %title') ] == [('bb.s03e05.avi', 'Black Books - S0%sesonE005 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', "Black Books - S0%sesonE002 - Manny's First Day.avi")]
+        assert [ fn for fn in self.folder2.generatePreviews(self.Tools.filetypesXML, 'ntfs', '%show - S0%sesonE0%episode - %title') ] == [('CSI.2x12.avi', 'C.S.I - S0%sesonE012 - Youve Got Male.avi'), ('csiS01E11.avi', 'C.S.I - S0%sesonE011 - I-15 Murders.avi')]
+        assert [ fn for fn in self.folder3.generatePreviews(self.Tools.filetypesXML, 'ext3', '%show - S0%sesonE0%episode - %title') ] == [('Spaced.2x4.avi', 'Spaced - S0%sesonE004 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - S0%sesonE003 - Mettle.avi')]
         
 class testFileName :
     """
@@ -237,9 +237,9 @@ class testFileName :
         
     def testGeneratePreview(self):
         
-        assert self.filename1.generatePreview(self.Tools.filetypesXML, 'ext3') == ( 'black.books.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi" )
-        assert self.filename2.generatePreview(self.Tools.filetypesXML, 'ntfs') == ('spaced.2x03.avi', 'Spaced - S02E03 - Mettle.avi')
-        assert self.filename3.generatePreview(self.Tools.filetypesXML, 'ext3') == ('csi.s02E13.avi', 'C.S.I - S02E13 - Identity Crisis.avi')
+        assert self.filename1.generatePreview(self.Tools.filetypesXML, 'ext3', '%show - %seasonx%episode - %title ( %arc - %airdate )') == ('black.books.s01e02.avi', "Black Books - 01x02 - Manny's First Day ( none - 6 October 2000 ).avi")
+        assert self.filename2.generatePreview(self.Tools.filetypesXML, 'ntfs', '%show - %seasonx%episode - %title ( %arc - %airdate )') == ('spaced.2x03.avi', 'Spaced - 02x03 - Mettle ( none - 9 March 2001 ).avi')
+        assert self.filename3.generatePreview(self.Tools.filetypesXML, 'ext3', '%show - %seasonx%episode - %title ( %arc - %airdate )') == ('csi.s02E13.avi', 'C.S.I - 02x13 - Identity Crisis ( none - 17 January 2002 ).avi')
         
     def testGetShowDetails(self):
         show1 = self.filename1.getMatchingShows()
@@ -307,13 +307,13 @@ class testFileName :
         self.FN = FileName('', self.database)
         self.FN.fileSuffix = '.avi'
         
-        fileName1 = self.FN.generateFileName( correctShow1, self.Tools.filetypesXML, 'ext3' )
-        fileName2 = self.FN.generateFileName( correctShow2, self.Tools.filetypesXML, 'ntfs' )
-        fileName3 = self.FN.generateFileName( correctShow3, self.Tools.filetypesXML, 'ext3' )
+        fileName1 = self.FN.generateFileName( correctShow1, self.Tools.filetypesXML, 'ext3', '%show.S%seasonE%episode.%title.%arc.%airdate' )
+        fileName2 = self.FN.generateFileName( correctShow2, self.Tools.filetypesXML, 'ntfs', '%show.S%seasonE%episode.%title.%arc.%airdate'  )
+        fileName3 = self.FN.generateFileName( correctShow3, self.Tools.filetypesXML, 'ext3', '%show.S%seasonE%episode.%title.%arc.%airdate'  )
         
-        assert fileName1 == "Black Books - S01E02 - A test's test' & a test or # a test.avi"
-        assert fileName2 == "Spaced - S02E03 - A tests test and a test or No. a test.avi"
-        assert fileName3 == "C.S.I - S02E13 - Identity Crisis or # 4587.avi"
+        assert fileName1 == "Black Books.S01E02.A test's test' & a test or # a test.none.6 October 2000.avi"
+        assert fileName2 == "Spaced.S02E03.A tests test and a test or No. a test.none.9 March 2001.avi"
+        assert fileName3 == "C.S.I.S02E13.Identity Crisis or # 4587.none.17 January 2002.avi"
         
 class testFilesystems :
     """
