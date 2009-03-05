@@ -206,6 +206,7 @@ class testFileName :
         self.filename1 = FileName( 'black.books.s01e02.avi', self.database )
         self.filename2 = FileName( 'spaced.2x03.avi', self.database )
         self.filename3 = FileName( 'csi.s02E13.avi', self.database )
+        self.filename4 = FileName( 'black books - 03x02 - Six of One.avi', self.database )
         
     def tearDown(self):
         self.Tools.removeTempFiles()
@@ -214,21 +215,25 @@ class testFileName :
         assert self.filename1.getPattern() == self.filename1.pattern1
         assert self.filename2.getPattern() == self.filename2.pattern2
         assert self.filename3.getPattern() == self.filename3.pattern1
+        assert self.filename4.getPattern() == self.filename4.pattern2
         
     def testGetSeason(self):
         assert self.filename1.getSeason() == '1'
         assert self.filename2.getSeason() == '2'
         assert self.filename3.getSeason() == '2'
+        assert self.filename4.getSeason() == '3'
         
     def testGetEpisode(self):
         assert self.filename1.getEpisode() == '2'
         assert self.filename2.getEpisode() == '3'
         assert self.filename3.getEpisode() == '13'
+        assert self.filename4.getEpisode() == '2'
         
     def testGetMatchingShows(self):
         assert self.filename1.getMatchingShows().name == 'Black Books'
         assert self.filename2.getMatchingShows().name == 'Spaced'
         assert self.filename3.getMatchingShows().name == 'C.S.I'
+        assert self.filename4.getMatchingShows().name == 'Black Books'
         
     def testGeneratePreview(self):
         
