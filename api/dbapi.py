@@ -51,7 +51,6 @@ class Database :
         """
         self.database = []
         
-        #FIXME: Replace <fileproperties> with <aliases> in loadDB and write, and all database files.
         #FIXME: Catch the right exeption. ( when database directory is empty )
         for afile in os.listdir( self.dbDir ) :
             ## We don't want to include temporary files.
@@ -63,8 +62,6 @@ class Database :
             ## Root XML Tag
             root = ET.parse( files ).getroot()
             properties = root.find('showproperties')
-            
-            
             
             show = Show( properties.attrib['name'], properties.attrib['duration'], properties.attrib['backend'], properties.attrib['url'] )
             
@@ -79,7 +76,7 @@ class Database :
                 continue
             
             ## Aliases
-            for showname in root.find('fileproperties').findall('alias') :
+            for showname in root.find('aliases').findall('alias') :
                 show.addAlias( Alias( showname.attrib['value'] ) )
             
             ## Seasons and Episodes
@@ -163,18 +160,18 @@ class Database :
                 print Show
                 print Show.name
             rootElement = ET.Element("tvshow")
-            showPropertiesElement = ET.SubElement(rootElement, "showproperties" )
+            showPropertiesElement = ET.SubElement(rootElement,"showproperties")
             showPropertiesElement.set("name", Show.name)
             showPropertiesElement.set("duration", Show.duration)
             showPropertiesElement.set("backend", Show.backend)
             showPropertiesElement.set("url", Show.url)
             if verbose == True :
                 print showPropertiesElement.attrib
-            filePropertiesElement = ET.SubElement(rootElement, "fileproperties" )
+            aliasesElement = ET.SubElement(rootElement,"aliases")
             for Alias in Show.alias :
-                aliasElement = ET.Element( "alias" )
+                aliasElement = ET.Element("alias")
                 aliasElement.set("value", Alias.name )
-                filePropertiesElement.append( aliasElement )
+                aliasesElement.append( aliasElement )
             for Season in Show.seasons :
                 if verbose == True :
                     print '---'

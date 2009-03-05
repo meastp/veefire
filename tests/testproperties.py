@@ -68,11 +68,11 @@ testDatabaseDirectory = os.path.join(testFileDirectory, 'database')
 testDatabaseBlackBooks = r'''<?xml version="1.0" encoding="UTF-8"?>
 <tvshow>
   <showproperties backend="imdbtvbackend" duration="30" name="Black Books" url="tt0262150"/>
-  <fileproperties>
+  <aliases>
     <alias value="blackbooks"/>
     <alias value="black.books"/>
     <alias value="bb"/>
-  </fileproperties>
+  </aliases>
   <season number="1">
     <episode airdate="29 September 2000" arc="none" number="1" title="Cooking the Books"/>
     <episode airdate="6 October 2000" arc="none" number="2" title="Manny's First Day"/>
@@ -103,9 +103,9 @@ testDatabaseBlackBooks = r'''<?xml version="1.0" encoding="UTF-8"?>
 testDatabaseSpaced = r'''<?xml version="1.0" encoding="UTF-8"?>
 <tvshow>
   <showproperties backend="imdbtvbackend" duration="60" name="Spaced" url="tt0187664"/>
-  <fileproperties>
+  <aliases>
     <alias value="spaced"/>
-  </fileproperties>
+  </aliases>
   <season number="1">
     <episode airdate="24 September 1999" arc="none" number="1" title="Beginnings"/>
     <episode airdate="1 October 1999" arc="none" number="2" title="Gatherings"/>
@@ -129,9 +129,9 @@ testDatabaseSpaced = r'''<?xml version="1.0" encoding="UTF-8"?>
 testDatabaseCSI = r'''<?xml version="1.0" encoding="UTF-8"?>
 <tvshow>
   <showproperties backend="imdbtvbackend" duration="60" name="C.S.I" url="tt0247082"/>
-  <fileproperties>
+  <aliases>
     <alias value="csi"/>
-  </fileproperties>
+  </aliases>
   <season number="1">
     <episode airdate="6 October 2000" arc="none" number="1" title="Pilot"/>
     <episode airdate="13 October 2000" arc="none" number="2" title="Cool Change"/>

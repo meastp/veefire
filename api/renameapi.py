@@ -268,13 +268,13 @@ class FileName :
         PossibleShowMatches = [ ]
         for Show in self.database.database :
             for Alias in Show.alias :
-                if Show.alias.lower() in self.fileName.lower() :
+                if Alias.name.lower() in self.fileName.lower() :
                     PossibleShowMatches.append( copy.deepcopy(Show) )
                     continue # If found, jump to the next show.
         
         if len( PossibleShowMatches ) == 1 :
             self.CorrectShow = PossibleShowMatches[0]
-        elif :
+        elif len( PossibleShowMatches ) == 0 :
             self.CorrectShow = self.setCorrectShow( PossibleShowMatches )
         else :
             self.CorrectShow = None
