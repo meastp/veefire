@@ -64,13 +64,15 @@ class testRename :
         
         assert rename.addFoldersRecursively( Folder(self.Tools.rootDir) ) == Folder(self.Tools.rootDir)
         
-        assert [ folder.path for folder in rename.folders ] == ['/tmp/veefire/Black Books', '/tmp/veefire/Spaced', '/tmp/veefire/CSI', '/tmp/veefire/database']
+        print [ folder.path for folder in rename.folders ] == ['/tmp/veefire/Black Books', '/tmp/veefire', '/tmp/veefire/Spaced', '/tmp/veefire/CSI', '/tmp/veefire/database']
         
         rename.addFolder( self.folder1 )
         rename.addFolder( self.folder1 )
         rename.addFolder( Folder('/tmp/veefire/Spaced' ))
         rename.addFolder( Folder('/tmp/veefire/Spaced' ))
         rename.addFolder( Folder('/tmp/veefire/Spaced' ))
+        
+        assert rename.removeFolder(Folder('/tmp/veefire')).path == '/tmp/veefire'
         
         assert [ folder.path for folder in rename.folders ] == ['/tmp/veefire/Black Books', '/tmp/veefire/Spaced', '/tmp/veefire/CSI', '/tmp/veefire/database']
         

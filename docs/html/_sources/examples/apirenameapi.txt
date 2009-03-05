@@ -50,7 +50,9 @@ Examples
     >>> me.addFoldersRecursively( NewFolder(tools.rootDir, tools.databaseDir)).path
     '/tmp/veefire'
     >>> print [ folder.path for folder in me.folders ]
-    ['/tmp/veefire/Black Books', '/tmp/veefire/Spaced', '/tmp/veefire/CSI', '/tmp/veefire/database']
+    ['/tmp/veefire/Black Books', '/tmp/veefire', '/tmp/veefire/Spaced', '/tmp/veefire/CSI', '/tmp/veefire/database']
+    >>> me.removeFolder( NewFolder('/tmp/veefire') ).path
+    '/tmp/veefire'
     >>> me.removeFolder( NewFolder('/tmp/veefire/Spaced') ).path
     '/tmp/veefire/Spaced'
     >>> me.removeFolder( NewFolder('/tmp/veefire/CSI') ).path
