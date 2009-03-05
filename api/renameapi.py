@@ -404,10 +404,10 @@ class FileName :
         episodeAirDate = fs.validateString(Show.seasons[0].episodes[0].airdate)
         
         ##
-        #
-        # Default, example : '%show - S%seasonE%episode - %title'
-        #
-        ## Split and replace with variables.
+        # Styles
+        # 
+        # Default : '%show - S%seasonE%episode - %title'
+        ##
         Style = showName.join(Style.split('%show'))
         Style = str('%02d' % int(seasonNumber)).join(Style.split('%season'))
         Style = str('%02d' % int(episodeNumber)).join(Style.split('%episode'))

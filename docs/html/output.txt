@@ -1,4 +1,4 @@
-Results of doctest builder run on 2009-03-02 18:42:48
+Results of doctest builder run on 2009-03-05 22:40:49
 =====================================================
 
 Document: examples/backendsimdbtv
@@ -12,17 +12,17 @@ Test passed.
 Document: examples/apirenameapi
 -------------------------------
 1 items passed all tests:
-  35 tests in default
-35 tests in 1 items.
-35 passed and 0 failed.
+  37 tests in default
+37 tests in 1 items.
+37 passed and 0 failed.
 Test passed.
 
 Document: modules/model
 -----------------------
 1 items passed all tests:
-  70 tests in default
-70 tests in 1 items.
-70 passed and 0 failed.
+  72 tests in default
+72 tests in 1 items.
+72 passed and 0 failed.
 Test passed.
 
 Document: examples/apidbapi
@@ -51,6 +51,6 @@ Test passed.
 
 Doctest summary
 ===============
-  140 tests
+  144 tests
     0 failures in tests
     0 failures in setup code
