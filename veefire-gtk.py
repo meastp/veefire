@@ -34,7 +34,7 @@ except:
 
 class VeefireGTK:
     """
-    The Veefire Database Editor
+    Veefire GTK Interface
     """
     def __init__(self):
         #Set the Glade file
@@ -43,18 +43,28 @@ class VeefireGTK:
         
         #Create our dictionay and connect it
         dic = { "on_MainWindow_destroy" : gtk.main_quit,
-                "on_mainRevertButton_clicked" : mainRevertButtonClicked,
-                "on_mainRenameButton_clicked" : mainRenameButtonClicked,
-                "on_mainPropertiesButton_clicked" : mainPropertiesButtonClicked,
-                "on_mainAbouttButton_clicked" : mainAboutButtonClicked,
-                "on_previewUpdateButton_clicked" : previewUpdateButtonClicked,
-                "on_previewFolderButton_clicked" : previewFolderButtonClicked,
-                "on_showsEditButton_clicked" : showsEditButtonClicked,
-                "on_showsUpdateButtonClicked" : showsUpdateButtonClicked }
+                "on_mainRevertButton_clicked" : self.mainRevertButtonClicked,
+                "on_mainRenameButton_clicked" : self.mainRenameButtonClicked,
+                "on_mainPreferencesButton_clicked" : self.mainPreferencesButtonClicked,
+                "on_mainAboutButton_clicked" : self.mainAboutButtonClicked,
+                "on_previewUpdateButton_clicked" : self.previewUpdateButtonClicked,
+                "on_previewFolderButton_clicked" : self.previewSelectFolderButtonClicked,
+                "on_showsEditButton_clicked" : self.showsEditShowsButtonClicked,
+                "on_showsUpdateButtonClicked" : self.showsUpdateButtonClicked }
         self.wTree.signal_autoconnect(dic)
         
-        # Load database
-        self.database = Database()
+        ##
+        #
+        # Tools class for testing.
+        #
+        ##
+        from tests.testproperties import Tools
+        
+        self.Tools = Tools()
+        self.Tools.createRootDir()
+        self.Tools.createDatabaseFiles()
+        
+        self.database = Database(self.Tools.databaseDir)
         self.database.loadDB()
         
         #Initialize previewTree
@@ -84,7 +94,7 @@ class VeefireGTK:
             self.showsStore.append( [ Show.name , Show.backend ] )
         
         self.showsView = self.wTree.get_widget("showsTree")
-        self.showsView.set_model(self.store)
+        self.showsView.set_model(self.showsStore)
         
         render=gtk.CellRendererText()
         col=gtk.TreeViewColumn("Name",render,text=0)
@@ -100,22 +110,24 @@ class VeefireGTK:
         #show the treeview
         self.showsView.show()
         
-def mainRevertButtonClicked (self) :
-    pass
-def mainRenameButtonClicked (self) :
-    pass
-def mainPropertiesButtonClicked (self) :
-    pass
-def mainAboutButtonClicked (self) :
-    pass
-def previewUpdateButtonClicked (self) :
-    pass
-def previewFolderButtonClicked (self) :
-    pass
-def showsEditButtonClicked (self) :
-    pass
-def showsUpdateButtonClicked (self) :
-    pass
+    def mainRevertButtonClicked (self, widget) :
+        pass
+    def mainRenameButtonClicked (self, widget) :
+        pass
+    def mainPreferencesButtonClicked (self, widget) :
+        preferencesDlg = PreferencesDialog()
+        preferencesDlg.run()
+    def mainAboutButtonClicked (self, widget) :
+        aboutDlg = AboutDialog()
+        aboutDlg.run()
+    def previewUpdateButtonClicked (self, widget) :
+        pass
+    def previewSelectFolderButtonClicked (self, widget) :
+        pass
+    def showsEditShowsButtonClicked (self, widget) :
+        pass
+    def showsUpdateButtonClicked (self, widget) :
+        pass
 class PreviewPane :
     def __init__ (self) :
         pass
@@ -130,15 +142,26 @@ class ShowsPane :
         pass
     def onUpdateDb (self) :
         pass
-class PropertiesDialog :
-    def __init__ (self) :
-        pass
-    def save (self) :
-        pass
+class PreferencesDialog :
+    def __init__(self) :
+        self.gladefile = "veefire-gtk.glade"
+    def run(self):  
+        self.wTree = gtk.glade.XML( self.gladefile , "preferencesDialog" )
+        self.dlg = self.wTree.get_widget("preferencesDialog")
+        self.result = self.dlg.run()
+        self.dlg.destroy()
+        return self.result
 class AboutDialog :
-    def __init__ (self) :
-        pass
+    def __init__(self) :
+        self.gladefile = "veefire-gtk.glade"
+    def run(self):  
+        self.wTree = gtk.glade.XML( self.gladefile , "aboutDialog" )
+        self.dlg = self.wTree.get_widget("aboutDialog")
+        self.result = self.dlg.run()
+        self.dlg.destroy()
+        return self.result
 
 if __name__ == "__main__":
         hwg = VeefireGTK()
         gtk.main()
+        #self.Tools.removeTempFiles()
