@@ -48,7 +48,7 @@ class VeefireGTK:
                 "on_mainPreferencesButton_clicked" : self.mainPreferencesButtonClicked,
                 "on_mainAboutButton_clicked" : self.mainAboutButtonClicked,
                 "on_previewUpdateButton_clicked" : self.previewUpdateButtonClicked,
-                "on_previewFolderButton_clicked" : self.previewSelectFolderButtonClicked,
+                "on_previewSelectFolderButton_clicked" : self.previewSelectFolderButtonClicked,
                 "on_showsEditButton_clicked" : self.showsEditShowsButtonClicked,
                 "on_showsUpdateButtonClicked" : self.showsUpdateButtonClicked }
         self.wTree.signal_autoconnect(dic)
@@ -123,16 +123,35 @@ class VeefireGTK:
     def previewUpdateButtonClicked (self, widget) :
         pass
     def previewSelectFolderButtonClicked (self, widget) :
-        pass
+        pane = PreviewPane()
+        response, folderlist = pane.onSelectFolder()
+        if response == gtk.RESPONSE_REJECT :
+            self.previewView.clear()
+            
+            ## Convert uris to paths
+            
+            for folder in folderlist :
+                self.previewView.append(  )
     def showsEditShowsButtonClicked (self, widget) :
         pass
     def showsUpdateButtonClicked (self, widget) :
         pass
 class PreviewPane :
     def __init__ (self) :
-        pass
+        self.gladefile = "veefire-gtk.glade"
     def onSelectFolder (self) :
-        pass
+        selectfolder = gtk.FileChooserDialog(title=None, 
+                                            parent=None, 
+                                            action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, 
+                                            buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
+                                            gtk.STOCK_OK, gtk.RESPONSE_ACCEPT), 
+                                            backend=None)
+        
+        selectfolder.set_select_multiple(True)
+        result = selectfolder.run()
+        selected = selectfolder.get_uris()
+        selectfolder.destroy()
+        return result, selected
     def onUpdate (self) :
         pass
 class ShowsPane :
