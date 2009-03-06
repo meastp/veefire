@@ -20,6 +20,7 @@
 import sys
 import os
 from api.dbapi import Database
+from api.renameapi import Rename, Folder, FileName
 
 try:
     import pygtk
@@ -125,13 +126,14 @@ class VeefireGTK:
     def previewSelectFolderButtonClicked (self, widget) :
         pane = PreviewPane()
         response, folderlist = pane.onSelectFolder()
-        if response == gtk.RESPONSE_REJECT :
-            self.previewView.clear()
-            
-            ## Convert uris to paths
-            
+        if response == gtk.RESPONSE_ACCEPT :
+            print folderlist
+            self.previewStore.clear()
+            rename = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
             for folder in folderlist :
-                self.previewView.append(  )
+                rename.addFoldersRecursively( Folder(folder) )
+            for folder in rename.folders :
+                self.previewStore.append( [ folder.path, 'None' ] )
     def showsEditShowsButtonClicked (self, widget) :
         pass
     def showsUpdateButtonClicked (self, widget) :
@@ -149,7 +151,7 @@ class PreviewPane :
         
         selectfolder.set_select_multiple(True)
         result = selectfolder.run()
-        selected = selectfolder.get_uris()
+        selected = selectfolder.get_filenames()
         selectfolder.destroy()
         return result, selected
     def onUpdate (self) :
