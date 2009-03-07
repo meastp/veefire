@@ -92,7 +92,9 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">me</span><span class="o">.</span><span class="n">addFoldersRecursively</span><span class="p">(</span> <span class="n">NewFolder</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">rootDir</span><span class="p">,</span> <span class="n">tools</span><span class="o">.</span><span class="n">databaseDir</span><span class="p">))</span><span class="o">.</span><span class="n">path</span>
 <span class="go">&#39;/tmp/veefire&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="p">[</span> <span class="n">folder</span><span class="o">.</span><span class="n">path</span> <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">me</span><span class="o">.</span><span class="n">folders</span> <span class="p">]</span>
-<span class="go">[&#39;/tmp/veefire/Black Books&#39;, &#39;/tmp/veefire/Spaced&#39;, &#39;/tmp/veefire/CSI&#39;, &#39;/tmp/veefire/database&#39;]</span>
+<span class="go">[&#39;/tmp/veefire/Black Books&#39;, &#39;/tmp/veefire&#39;, &#39;/tmp/veefire/Spaced&#39;, &#39;/tmp/veefire/CSI&#39;, &#39;/tmp/veefire/database&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">me</span><span class="o">.</span><span class="n">removeFolder</span><span class="p">(</span> <span class="n">NewFolder</span><span class="p">(</span><span class="s">&#39;/tmp/veefire&#39;</span><span class="p">)</span> <span class="p">)</span><span class="o">.</span><span class="n">path</span>
+<span class="go">&#39;/tmp/veefire&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">me</span><span class="o">.</span><span class="n">removeFolder</span><span class="p">(</span> <span class="n">NewFolder</span><span class="p">(</span><span class="s">&#39;/tmp/veefire/Spaced&#39;</span><span class="p">)</span> <span class="p">)</span><span class="o">.</span><span class="n">path</span>
 <span class="go">&#39;/tmp/veefire/Spaced&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">me</span><span class="o">.</span><span class="n">removeFolder</span><span class="p">(</span> <span class="n">NewFolder</span><span class="p">(</span><span class="s">&#39;/tmp/veefire/CSI&#39;</span><span class="p">)</span> <span class="p">)</span><span class="o">.</span><span class="n">path</span>
@@ -121,13 +123,22 @@
 <span class="go">[(&#39;bb.s03e05.avi&#39;, &#39;Black Books - S03E05 - The Travel Writer.avi&#39;), (&#39;blackbooks.s01e02.avi&#39;, &quot;Black Books - S01E02 - Manny&#39;s First Day.avi&quot;)]</span>
 <span class="go">(&#39;bb.s03e05.avi&#39;, &#39;Black Books - S03E05 - The Travel Writer.avi&#39;)</span>
 <span class="go">(&#39;blackbooks.s01e02.avi&#39;, &quot;Black Books - S01E02 - Manny&#39;s First Day.avi&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pv</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="n">generatePreviews</span><span class="p">(</span><span class="s">&#39;ext3&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">how - </span><span class="si">%s</span><span class="s">easonX</span><span class="si">%e</span><span class="s">pisode - %title&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># If you want another renaming pattern than the default.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">Folder</span> <span class="ow">in</span> <span class="n">pv</span> <span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">Folder</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">Folder</span> <span class="p">:</span>
+<span class="gp">... </span>        <span class="k">print</span> <span class="n">item</span>
+<span class="go">[(&#39;bb.s03e05.avi&#39;, &#39;Black Books - 03X05 - The Travel Writer.avi&#39;), (&#39;blackbooks.s01e02.avi&#39;, &quot;Black Books - 01X02 - Manny&#39;s First Day.avi&quot;)]</span>
+<span class="go">(&#39;bb.s03e05.avi&#39;, &#39;Black Books - 03X05 - The Travel Writer.avi&#39;)</span>
+<span class="go">(&#39;blackbooks.s01e02.avi&#39;, &quot;Black Books - 01X02 - Manny&#39;s First Day.avi&quot;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">Folder</span> <span class="ow">in</span> <span class="n">ms</span> <span class="p">:</span>
 <span class="gp">... </span>    <span class="k">print</span> <span class="n">Folder</span><span class="o">.</span><span class="n">path</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">FileName</span> <span class="ow">in</span> <span class="n">Folder</span><span class="o">.</span><span class="n">fileNames</span> <span class="p">:</span>
 <span class="gp">... </span>        <span class="k">print</span> <span class="n">FileName</span><span class="o">.</span><span class="n">generatedFileName</span> <span class="p">,</span> <span class="n">FileName</span><span class="o">.</span><span class="n">fileName</span>
 <span class="go">/tmp/veefire/Black Books</span>
-<span class="go">Black Books - S03E05 - The Travel Writer.avi bb.s03e05.avi</span>
-<span class="go">Black Books - S01E02 - Manny&#39;s First Day.avi blackbooks.s01e02.avi</span>
+<span class="go">Black Books - 03X05 - The Travel Writer.avi bb.s03e05.avi</span>
+<span class="go">Black Books - 01X02 - Manny&#39;s First Day.avi blackbooks.s01e02.avi</span>
 </pre></div>
 </div>
 <div class="section">
@@ -209,7 +220,7 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
     </div>
     <div class="footer">
       &copy; Copyright 2008, Mats Taraldsvik.
-      Last updated on Mar 02, 2009.
+      Last updated on Mar 05, 2009.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
     </div>
   </body>

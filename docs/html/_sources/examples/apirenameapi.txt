@@ -50,7 +50,9 @@ Examples
     >>> me.addFoldersRecursively( NewFolder(tools.rootDir, tools.databaseDir)).path
     '/tmp/veefire'
     >>> print [ folder.path for folder in me.folders ]
-    ['/tmp/veefire/Black Books', '/tmp/veefire/Spaced', '/tmp/veefire/CSI', '/tmp/veefire/database']
+    ['/tmp/veefire/Black Books', '/tmp/veefire', '/tmp/veefire/Spaced', '/tmp/veefire/CSI', '/tmp/veefire/database']
+    >>> me.removeFolder( NewFolder('/tmp/veefire') ).path
+    '/tmp/veefire'
     >>> me.removeFolder( NewFolder('/tmp/veefire/Spaced') ).path
     '/tmp/veefire/Spaced'
     >>> me.removeFolder( NewFolder('/tmp/veefire/CSI') ).path
@@ -79,13 +81,22 @@ Examples
     [('bb.s03e05.avi', 'Black Books - S03E05 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi")]
     ('bb.s03e05.avi', 'Black Books - S03E05 - The Travel Writer.avi')
     ('blackbooks.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi")
+    >>> pv = me.generatePreviews('ext3', '%show - %seasonX%episode - %title')
+    >>> # If you want another renaming pattern than the default.
+    >>> for Folder in pv :
+    ...     print Folder
+    ...     for item in Folder :
+    ...         print item
+    [('bb.s03e05.avi', 'Black Books - 03X05 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', "Black Books - 01X02 - Manny's First Day.avi")]
+    ('bb.s03e05.avi', 'Black Books - 03X05 - The Travel Writer.avi')
+    ('blackbooks.s01e02.avi', "Black Books - 01X02 - Manny's First Day.avi")
     >>> for Folder in ms :
     ...     print Folder.path
     ...     for FileName in Folder.fileNames :
     ...         print FileName.generatedFileName , FileName.fileName
     /tmp/veefire/Black Books
-    Black Books - S03E05 - The Travel Writer.avi bb.s03e05.avi
-    Black Books - S01E02 - Manny's First Day.avi blackbooks.s01e02.avi
+    Black Books - 03X05 - The Travel Writer.avi bb.s03e05.avi
+    Black Books - 01X02 - Manny's First Day.avi blackbooks.s01e02.avi
 
 .. _test-directory:
 

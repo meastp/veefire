@@ -33,6 +33,28 @@ try:
 except:
     sys.exit(1)
 
+# FIXME: Temporary overloads.
+
+class NewFileName(FileName):
+    def setCorrectShow( self, Shows ) :
+        return Shows[0]
+
+class NewFolder(Folder) :
+    def loadFiles( self ) :
+        self.database = Database( self.dbDir , self.shows )
+        self.database.loadDB()
+        self.fileNames = []
+        for afile in os.listdir( self.path ) :
+            if os.path.isfile( os.path.join( self.path, afile) ) :
+                aFileName = NewFileName( afile, self.database )
+                self.fileNames.append( aFileName )
+
+#class NewBackendInterface(BackendInterface):
+#    def solveEpisodeConflicts(self, firstEpisode, secondEpisode):
+#        return firstEpisode
+
+# FIXME: Above.
+
 class VeefireGTK:
     """
     Veefire GTK Interface
@@ -48,7 +70,7 @@ class VeefireGTK:
                 "on_mainRenameButton_clicked" : self.mainRenameButtonClicked,
                 "on_mainPreferencesButton_clicked" : self.mainPreferencesButtonClicked,
                 "on_mainAboutButton_clicked" : self.mainAboutButtonClicked,
-                "on_previewUpdateButton_clicked" : self.previewUpdateButtonClicked,
+                "on_previewPreviewButton_clicked" : self.previewPreviewButtonClicked,
                 "on_previewSelectFolderButton_clicked" : self.previewSelectFolderButtonClicked,
                 "on_showsEditButton_clicked" : self.showsEditShowsButtonClicked,
                 "on_showsUpdateButtonClicked" : self.showsUpdateButtonClicked }
@@ -64,11 +86,18 @@ class VeefireGTK:
         self.Tools = Tools()
         self.Tools.createRootDir()
         self.Tools.createDatabaseFiles()
+        self.Tools.createFilesystemXML()
+        self.Tools.createTempFiles()
         
         self.database = Database(self.Tools.databaseDir)
         self.database.loadDB()
         
-        #Initialize previewTree
+        ##
+        #
+        # Initialize previewTree
+        #
+        ##
+        
         self.previewStore = gtk.ListStore( str, str )
         
         self.previewView = self.wTree.get_widget("previewTree")
@@ -88,7 +117,12 @@ class VeefireGTK:
         #Show the treeview
         self.previewView.show()
         
-        #Initialize showsTree
+        ##
+        #
+        # Initialize showsTree
+        #
+        ##
+        
         self.showsStore = gtk.ListStore( str, str )
         
         for Show in self.database.database :
@@ -111,6 +145,14 @@ class VeefireGTK:
         #show the treeview
         self.showsView.show()
         
+        ##
+        #
+        # Rename
+        #
+        ##
+        
+        self.rename = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+        
     def mainRevertButtonClicked (self, widget) :
         pass
     def mainRenameButtonClicked (self, widget) :
@@ -121,19 +163,31 @@ class VeefireGTK:
     def mainAboutButtonClicked (self, widget) :
         aboutDlg = AboutDialog()
         aboutDlg.run()
-    def previewUpdateButtonClicked (self, widget) :
-        pass
     def previewSelectFolderButtonClicked (self, widget) :
+        '''
+        Adds the selected folders to the previewView, and generates previews.
+        '''
         pane = PreviewPane()
         response, folderlist = pane.onSelectFolder()
         if response == gtk.RESPONSE_ACCEPT :
-            print folderlist
             self.previewStore.clear()
-            rename = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+            self.rename = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
             for folder in folderlist :
-                rename.addFoldersRecursively( Folder(folder) )
-            for folder in rename.folders :
-                self.previewStore.append( [ folder.path, 'None' ] )
+                self.rename.addFoldersRecursively( NewFolder(folder) )
+            self.rename.getMatchingShows()
+            for folder in self.rename.folders :
+                for files in folder.fileNames :
+                    if files.CorrectShow != None :
+                        self.previewStore.append( [ files.fileName, files.CorrectShow.name ] )
+        
+    def previewPreviewButtonClicked (self, widget) :
+        #FIXME: Style and filesystem
+        self.previewStore.clear()
+        for folder in self.rename.generatePreviews('ext3') :
+            for files in folder :
+                if files[1] != None :
+                    self.previewStore.append( files )
+        
     def showsEditShowsButtonClicked (self, widget) :
         pass
     def showsUpdateButtonClicked (self, widget) :

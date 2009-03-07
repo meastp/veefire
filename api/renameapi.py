@@ -84,12 +84,21 @@ class Rename :
         if self.getFolder( RootFolder ) != None :
             return None
         
+        self.addFolder(RootFolder)
         for root, dirs, files in os.walk(RootFolder.path, topdown=True):
             for directory in dirs :
                 self.addFolder(Folder(os.path.join( root, directory )))
         
         return RootFolder
-        
+    
+    def renameAll(self, fileSystem):
+        for Folder in self.folders:
+            Folder.renameAll(self.filesystemDir, fileSystem)
+    
+    def undoRenameAll(self):
+        for Folder in self.folders:
+            Folder.undoRename()
+    
     def getFolder ( self, InputFolder ) :
         """
         Return a Folder.
@@ -132,17 +141,21 @@ class Rename :
             Folder.getMatchingShows()
         return self.folders
         
-    def generatePreviews(self, fileSystem=None) :
+    def generatePreviews(self, fileSystem, Style='%show - S%seasonE%episode - %title') :
         """
         Generate previews for every Folder->FileName.
         
+        :param fileSystem: Filesystem to use
+        :type fileSystem: string
+        :param Style: Style to use for the new file name
+        :type Style: string or None
         :returns: previews (oldname, newname) for every file in every folder
         :rtype: list
         """
         
         tfolders = []
         for Folder in self.folders :
-            tfolders.append(Folder.generatePreviews(self.filesystemDir, fileSystem))
+            tfolders.append(Folder.generatePreviews(self.filesystemDir, fileSystem, Style))
         return tfolders
 
 class Folder :
@@ -161,6 +174,7 @@ class Folder :
         self.dbDir = dbDir
         self.shows = shows
         self.path = path
+        self.undoHistory = []
         
     def __cmp__(self, other):
         """
@@ -206,7 +220,7 @@ class Folder :
             FileName.getMatchingShows()
         return self.fileNames
         
-    def generatePreviews(self, filesystemDir, fileSystem) :
+    def generatePreviews(self, filesystemDir, fileSystem, Style) :
         """
         Generate previews for every FileName.
         
@@ -214,13 +228,29 @@ class Folder :
         :type filesystemDir: string
         :param fileSystem: Filesystem to use
         :type fileSystem: string
+        :param Style: Style to use for the new file name
+        :type Style: string or None
         :returns: list of tuples (oldname, newname) for every FileName
         :rtype: list
         """
         previews = []
         for FileName in self.fileNames :
-            previews.append(FileName.generatePreview(filesystemDir, fileSystem))
+            previews.append(FileName.generatePreview(filesystemDir, fileSystem, Style))
         return previews
+        
+    def renameAll(self, filesystemDir, fileSystem):
+        self.undoHistory = []
+        for filename in self.fileNames:
+            preview = filename.generatePreview(filesystemDir, fileSystem)
+            if preview[1] != None:
+                print "Renaming: " + self.path + "/" + str(preview[0]) + " to " + self.path + "/" + str(preview[1])
+                os.rename(self.path + "/" + str(preview[0]), self.path + "/" + str(preview[1]))
+                self.undoHistory.append( (self.path + "/" + str(preview[0]), self.path + "/" + str(preview[1])) )
+                
+    def undoRename(self):
+        for filePair in self.undoHistory:
+            os.rename(filePair[1], filePair[0])
+        self.undoHistory = []
 
 class FileName :
     """
@@ -239,20 +269,16 @@ class FileName :
         self.fileName = fileName
         self.database = Database
         
-        ## Regexes
-        #FIXME: Integrate with getpattern() so you don't have to add a new pattern two places.
-        self.seepattern1 = re.compile( r'[sS][0]*([1-9]+)[eE][0]*([1-9]+)' )
-        self.pattern1 = r'[sS][0]*([1-9]+)[eE][0]*([1-9]+)'
-        self.seepattern2 = re.compile( r'[0]*([1-9]+)[xX][0]*([1-9]+)' )
-        self.pattern2 = r'[0]*([1-9]+)[xX][0]*([1-9]+)'
+        self.pattern1 = r'[sS](?:[0]+)?([1-9]+)[eE](?:[0]+)?([1-9]+)'
+        self.seepattern1 = re.compile( self.pattern1 )
+        
+        self.pattern2 = r'(?:[0]+)?([1-9]+)[xX](?:[0]+)?([1-9]+)'
+        self.seepattern2 = re.compile( self.pattern2 )
         
         self.generatedFileName = None
         
         ##Determine the file's regex pattern.
         self.regexPattern = self.getPattern()
-        
-        ##Styles
-        #TODO: Support multiple Styles.
         
         
     def getMatchingShows(self) :
@@ -263,33 +289,22 @@ class FileName :
         :rtype: list
         """
         if self.regexPattern == None:
-            return None
+            self.CorrectShow = None
+            return self.CorrectShow
         
-        ##Get Alias / show name for this file.
-        rawShowName = re.match( r'([^0-9]+)(?=' + self.regexPattern + r').*' , self.fileName ).groups()[0].strip('.')
-        
-        if rawShowName == None :
-            return None
-        
-        ## Search through Shows and try to match Aliases
-        ## PossibleShowMatches could have multiple Show matches.
-        PossibleShowMatches = []
+        PossibleShowMatches = [ ]
         for Show in self.database.database :
             for Alias in Show.alias :
-                if rawShowName.lower() == Alias.name :
-                    
-                    PossibleShowMatches.append( copy.deepcopy( Show ) )
-        
-        #FIXME: Use a function to resolve the conflicts here. Needs to be abstract and overridden.
-        if len( PossibleShowMatches ) == 0 :
-            self.CorrectShow = None
-            return
+                if Alias.name.lower() in self.fileName.lower() :
+                    PossibleShowMatches.append( copy.deepcopy(Show) )
+                    continue # If found, jump to the next show.
         
         if len( PossibleShowMatches ) == 1 :
             self.CorrectShow = PossibleShowMatches[0]
-            return self.CorrectShow
-        
-        self.CorrectShow = self.setCorrectShow( PossibleShowMatches )
+        elif len( PossibleShowMatches ) == 0 :
+            self.CorrectShow = None
+        else :
+            self.CorrectShow = self.setCorrectShow( PossibleShowMatches )
         
         return self.CorrectShow
         
@@ -308,7 +323,7 @@ class FileName :
         
         raise NotImplemented
         
-    def generatePreview(self, filesystemDir, fileSystem) :
+    def generatePreview(self, filesystemDir, fileSystem, Style) :
         """
         Return current file name and new file name in a tuple.
         
@@ -316,6 +331,8 @@ class FileName :
         :type filesystemDir: string
         :param fileSystem: Filesystem to use
         :type fileSystem: string
+        :param Style: Style to use for the new file name
+        :type Style: string or None
         :returns: tuple (oldname, newname)
         :rtype: tuple
         """
@@ -327,11 +344,11 @@ class FileName :
         if NewShow == None:
             return self.fileName , None
             
-        self.generatedFileName = self.generateFileName(NewShow, filesystemDir, fileSystem)
-        #FIXME: Proper way to use different styles.
+        self.generatedFileName = self.generateFileName(NewShow, filesystemDir, fileSystem, Style)
         
         return self.fileName, self.generatedFileName
     
+  
     def getShowDetails (self, filesystemDir, MatchingShow) :
         """
         Retrieves Show details.
@@ -366,7 +383,7 @@ class FileName :
         
         return NewShow
         
-    def generateFileName( self, Show, fileSystemDir, fileSystem, Style=None ) :
+    def generateFileName( self, Show, fileSystemDir, fileSystem, Style ) :
         """
         Generate and return a file name.
         
@@ -386,18 +403,28 @@ class FileName :
         if len(Show.seasons[0].episodes) != 1 or len(Show.seasons) != 1 :
             print 'error: more than one episode or season in show object.'
             return -1
+        
         seasonNumber = fs.validateString(Show.seasons[0].name)
         episodeNumber = fs.validateString(Show.seasons[0].episodes[0].name)
         episodeTitle = fs.validateString(Show.seasons[0].episodes[0].title)
         episodeArc = fs.validateString(Show.seasons[0].episodes[0].arc)
         episodeAirDate = fs.validateString(Show.seasons[0].episodes[0].airdate)
         
-        #FIXME: Proper way to use different styles.
+        ##
+        # Styles
+        # 
+        # Default : '%show - S%seasonE%episode - %title'
+        ##
+        Style = showName.join(Style.split('%show'))
+        Style = str('%02d' % int(seasonNumber)).join(Style.split('%season'))
+        Style = str('%02d' % int(episodeNumber)).join(Style.split('%episode'))
+        Style = episodeTitle.join(Style.split('%title'))
+        Style = episodeArc.join(Style.split('%arc'))
+        Style = episodeAirDate.join(Style.split('%airdate'))
         
-        ## Temporary default style.
-        Style1 = showName + ' - S' + str('%02d' % int(seasonNumber)) + 'E' + str('%02d' % int(episodeNumber)) + ' - ' + episodeTitle + self.fileSuffix
+        FileName = Style + self.fileSuffix
         
-        return Style1
+        return FileName
         
     def getPattern(self) :
         """
@@ -406,10 +433,14 @@ class FileName :
         :returns: correct regex pattern for this file name
         :rtype: regex string or None
         """
-        if self.seepattern1.search( self.fileName ) != None :
-            return self.pattern1
-        elif self.seepattern2.search( self.fileName ) != None :
+        
+        #if self.seepattern2.search( self.fileName ) != None:
+	     #   print self.seepattern2.search( self.fileName ).groups()
+        
+        if self.seepattern2.search( self.fileName ) != None :
             return self.pattern2
+        elif self.seepattern1.search( self.fileName ) != None :
+            return self.pattern1
         else :
             return None
         
