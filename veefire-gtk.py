@@ -20,6 +20,7 @@
 import sys
 import os
 from api.dbapi import Database
+from api.backendapi import Backends
 from api.renameapi import Rename, Folder, FileName
 
 try:
@@ -55,6 +56,20 @@ class NewFolder(Folder) :
 
 # FIXME: Above.
 
+##
+#
+# Tools class for testing.
+#
+##
+from tests.testproperties import Tools
+
+Tools = Tools()
+Tools.createRootDir()
+Tools.createDatabaseFiles()
+Tools.createFilesystemXML()
+Tools.createTempFiles()
+Tools.createBackendFiles()
+
 class VeefireGTK:
     """
     Veefire GTK Interface
@@ -72,24 +87,12 @@ class VeefireGTK:
                 "on_mainAboutButton_clicked" : self.mainAboutButtonClicked,
                 "on_previewPreviewButton_clicked" : self.previewPreviewButtonClicked,
                 "on_previewSelectFolderButton_clicked" : self.previewSelectFolderButtonClicked,
-                "on_showsEditButton_clicked" : self.showsEditShowsButtonClicked,
-                "on_showsUpdateButtonClicked" : self.showsUpdateButtonClicked }
+                "on_showsEditShowsButton_clicked" : self.showsEditShowsButtonClicked,
+                "on_showsUpdateButton_clicked" : self.showsUpdateButtonClicked }
         self.wTree.signal_autoconnect(dic)
         
-        ##
-        #
-        # Tools class for testing.
-        #
-        ##
-        from tests.testproperties import Tools
         
-        self.Tools = Tools()
-        self.Tools.createRootDir()
-        self.Tools.createDatabaseFiles()
-        self.Tools.createFilesystemXML()
-        self.Tools.createTempFiles()
-        
-        self.database = Database(self.Tools.databaseDir)
+        self.database = Database(Tools.databaseDir)
         self.database.loadDB()
         
         ##
@@ -123,10 +126,13 @@ class VeefireGTK:
         #
         ##
         
-        self.showsStore = gtk.ListStore( str, str )
+        self.showsStore = gtk.ListStore( str, str, object )
         
+        self.showsStore.clear()
+        self.database = Database(Tools.databaseDir)
+        self.database.loadDB()
         for Show in self.database.database :
-            self.showsStore.append( [ Show.name , Show.backend ] )
+            self.showsStore.append([ Show.name, Show.backend, Show ])
         
         self.showsView = self.wTree.get_widget("showsTree")
         self.showsView.set_model(self.showsStore)
@@ -137,6 +143,10 @@ class VeefireGTK:
         render=gtk.CellRendererText()
         col=gtk.TreeViewColumn("Backend",render,text=1)
         self.showsView.append_column(col)
+        render=gtk.CellRendererText()
+        col=gtk.TreeViewColumn()
+        col.set_visible(False)
+        self.showsView.append_column(col)
         
         #set the selection option so that only one row can be selected
         sel=self.showsView.get_selection()
@@ -146,12 +156,17 @@ class VeefireGTK:
         self.showsView.show()
         
         ##
-        #
         # Rename
-        #
         ##
         
-        self.rename = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+        self.rename = Rename( Tools.databaseDir, Tools.filetypesXML )
+        
+        ##
+        # Database Pane
+        ##
+        
+        
+        
         
     def mainRevertButtonClicked (self, widget) :
         pass
@@ -167,11 +182,22 @@ class VeefireGTK:
         '''
         Adds the selected folders to the previewView, and generates previews.
         '''
-        pane = PreviewPane()
-        response, folderlist = pane.onSelectFolder()
-        if response == gtk.RESPONSE_ACCEPT :
+        
+        selectfolder = gtk.FileChooserDialog(title=None, 
+                                            parent=None, 
+                                            action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, 
+                                            buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
+                                            gtk.STOCK_OK, gtk.RESPONSE_ACCEPT), 
+                                            backend=None)
+        
+        selectfolder.set_select_multiple(True)
+        result = selectfolder.run()
+        folderlist = selectfolder.get_filenames()
+        selectfolder.destroy()
+        
+        if result == gtk.RESPONSE_ACCEPT :
             self.previewStore.clear()
-            self.rename = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+            self.rename = Rename( Tools.databaseDir, Tools.filetypesXML )
             for folder in folderlist :
                 self.rename.addFoldersRecursively( NewFolder(folder) )
             self.rename.getMatchingShows()
@@ -189,34 +215,22 @@ class VeefireGTK:
                     self.previewStore.append( files )
         
     def showsEditShowsButtonClicked (self, widget) :
-        pass
+        model, row = self.showsView.get_selection().get_selected()
+        show = model.get_value( row, 2 ) # 2 is our object column.
+        
+        showDialog = EditShowDialog(show)
+        result = showDialog.run()
+        
+        if result == gtk.RESPONSE_ACCEPT :
+            pass
+        
     def showsUpdateButtonClicked (self, widget) :
         pass
 class PreviewPane :
     def __init__ (self) :
         self.gladefile = "veefire-gtk.glade"
     def onSelectFolder (self) :
-        selectfolder = gtk.FileChooserDialog(title=None, 
-                                            parent=None, 
-                                            action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, 
-                                            buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                                            gtk.STOCK_OK, gtk.RESPONSE_ACCEPT), 
-                                            backend=None)
         
-        selectfolder.set_select_multiple(True)
-        result = selectfolder.run()
-        selected = selectfolder.get_filenames()
-        selectfolder.destroy()
-        return result, selected
-    def onUpdate (self) :
-        pass
-class ShowsPane :
-    def __init__ (self) :
-        pass
-    def onEditShows (self) :
-        pass
-    def onUpdateDb (self) :
-        pass
 class PreferencesDialog :
     def __init__(self) :
         self.gladefile = "veefire-gtk.glade"
@@ -235,8 +249,42 @@ class AboutDialog :
         self.result = self.dlg.run()
         self.dlg.destroy()
         return self.result
+class EditShowDialog :
+    def __init__(self, Show) :
+        self.gladefile = "veefire-gtk.glade"
+        self.wTree = gtk.glade.XML( self.gladefile , "editShowDialog" )
+        self.dlg = self.wTree.get_widget("editShowDialog")
+        
+        self.name = self.wTree.get_widget("editShowGeneralName")
+        self.name.set_text(Show.name)
+        self.url = self.wTree.get_widget("editShowGeneralURL")
+        self.url.set_text(Show.url)
+        
+        self.backend = self.wTree.get_widget("editShowGeneralBackend")
+        self.liststore = gtk.ListStore(str)
+        self.backend.set_model(self.liststore)
+        
+        cellrenderer = gtk.CellRendererText()
+        self.backend.pack_start(cellrenderer)
+        self.backend.add_attribute(cellrenderer, 'text', 0)
+        
+        for backend in Backends().getBackends(Tools.BackendDirectory) :
+            if backend == Show.backend :
+                self.liststore.prepend([ backend ])
+            else :
+                self.liststore.append([ backend ])
+        self.backend.set_active(0)
+        
+        self.duration = self.wTree.get_widget("editShowGeneralDuration")
+        self.duration.set_value(float(Show.duration))
+        
+    def run(self):  
+        
+        self.result = self.dlg.run()
+        self.dlg.destroy()
+        return self.result
 
 if __name__ == "__main__":
         hwg = VeefireGTK()
         gtk.main()
-        #self.Tools.removeTempFiles()
+        hwg.Tools.removeTempFiles()
