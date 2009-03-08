@@ -19,7 +19,7 @@
 
 import sys
 import os
-from api.dbapi import Database
+from api.dbapi import Database, Alias
 from api.backendapi import Backends
 from api.renameapi import Rename, Folder, FileName
 
@@ -143,7 +143,6 @@ class VeefireGTK:
         render=gtk.CellRendererText()
         col=gtk.TreeViewColumn("Backend",render,text=1)
         self.showsView.append_column(col)
-        render=gtk.CellRendererText()
         col=gtk.TreeViewColumn()
         col.set_visible(False)
         self.showsView.append_column(col)
@@ -160,13 +159,6 @@ class VeefireGTK:
         ##
         
         self.rename = Rename( Tools.databaseDir, Tools.filetypesXML )
-        
-        ##
-        # Database Pane
-        ##
-        
-        
-        
         
     def mainRevertButtonClicked (self, widget) :
         pass
@@ -218,7 +210,7 @@ class VeefireGTK:
         model, row = self.showsView.get_selection().get_selected()
         show = model.get_value( row, 2 ) # 2 is our object column.
         
-        showDialog = EditShowDialog(show)
+        showDialog = EditShowDialog(show, self.database)
         result = showDialog.run()
         
         if result == gtk.RESPONSE_ACCEPT :
@@ -230,7 +222,7 @@ class PreviewPane :
     def __init__ (self) :
         self.gladefile = "veefire-gtk.glade"
     def onSelectFolder (self) :
-        
+        pass
 class PreferencesDialog :
     def __init__(self) :
         self.gladefile = "veefire-gtk.glade"
@@ -250,7 +242,11 @@ class AboutDialog :
         self.dlg.destroy()
         return self.result
 class EditShowDialog :
-    def __init__(self, Show) :
+    def __init__(self, Show, database) :
+        
+        self.database = database
+        self.Show = Show
+        
         self.gladefile = "veefire-gtk.glade"
         self.wTree = gtk.glade.XML( self.gladefile , "editShowDialog" )
         self.dlg = self.wTree.get_widget("editShowDialog")
@@ -278,8 +274,163 @@ class EditShowDialog :
         self.duration = self.wTree.get_widget("editShowGeneralDuration")
         self.duration.set_value(float(Show.duration))
         
-    def run(self):  
+        ##
+        # editShowAliases
+        ##
         
+        self.editShowAliasesStore = gtk.ListStore( str, object )
+        
+        self.editShowAliasesView = self.wTree.get_widget("editShowAliasesView")
+        self.editShowAliasesView.set_model(self.editShowAliasesStore)
+        
+        render=gtk.CellRendererText()
+        col=gtk.TreeViewColumn("Alias",render,text=0)
+        self.editShowAliasesView.append_column(col)
+        col=gtk.TreeViewColumn()
+        col.set_visible(False)
+        self.editShowAliasesView.append_column(col)
+        col=gtk.TreeViewColumn()
+        col.set_visible(False)
+        self.editShowAliasesView.append_column(col)
+        
+        #Set the selection option so that only one row can be selected
+        sel=self.editShowAliasesView.get_selection()
+        sel.set_mode(gtk.SELECTION_SINGLE)
+        
+        #Show the treeview
+        self.editShowAliasesView.show()
+        self.editShowAliasesStore.clear()
+        for Alias in Show.alias :
+            self.editShowAliasesStore.append([ Alias.name , Alias ])
+        
+        ##
+        # editShowEpisodes
+        ##
+        
+        self.editShowEpisodesStore = gtk.ListStore( str, str, str, object, object )
+        
+        self.editShowEpisodesView = self.wTree.get_widget("editShowEpisodesView")
+        self.editShowEpisodesView.set_model(self.editShowEpisodesStore)
+        
+        render=gtk.CellRendererText()
+        col=gtk.TreeViewColumn("Season",render,text=0)
+        self.editShowEpisodesView.append_column(col)
+        render=gtk.CellRendererText()
+        col=gtk.TreeViewColumn("Episode",render,text=1)
+        self.editShowEpisodesView.append_column(col)
+        render=gtk.CellRendererText()
+        col=gtk.TreeViewColumn("Title",render,text=2)
+        self.editShowEpisodesView.append_column(col)
+        col=gtk.TreeViewColumn()
+        col.set_visible(False)
+        self.editShowEpisodesView.append_column(col)
+        col=gtk.TreeViewColumn()
+        col.set_visible(False)
+        self.editShowEpisodesView.append_column(col)
+        
+        #Set the selection option so that only one row can be selected
+        sel=self.editShowEpisodesView.get_selection()
+        sel.set_mode(gtk.SELECTION_SINGLE)
+        
+        #Show the treeview
+        self.editShowEpisodesView.show()
+        self.editShowEpisodesStore.clear()
+        for Season in Show.seasons :
+            for Episode in Season.episodes :
+                self.editShowEpisodesStore.append( [ Season.name, Episode.name, Episode.title, Season, Episode ])
+        
+        #Enable the selection callback
+        self.wTree = gtk.glade.XML( self.gladefile , "editShowEpisodesMenu" )
+        self.editShowEpisodesMenu = self.wTree.get_widget("editShowEpisodesMenu")
+        self.editShowEpisodesMenuAdd = self.wTree.get_widget("editShowEpisodesMenuAdd")
+        self.editShowEpisodesMenuRemove = self.wTree.get_widget("editShowEpisodesMenuRemove")
+        
+        self.editShowEpisodesView.connect('button_press_event', self.showEpisodesMenu )
+        
+        self.editShowEpisodesMenuAdd.connect('activate', self.showEpisodesMenuAdd )
+        self.editShowEpisodesMenuRemove.connect('activate', self.showEpisodesMenuRemove )
+        
+        #Enable the selection callback
+        self.wTree = gtk.glade.XML( self.gladefile , "editShowAliasesMenu" )
+        self.editShowAliasesMenu = self.wTree.get_widget("editShowAliasesMenu")
+        self.editShowAliasesMenuAdd = self.wTree.get_widget("editShowAliasesMenuAdd")
+        self.editShowAliasesMenuRemove = self.wTree.get_widget("editShowAliasesMenuRemove")
+        
+        self.editShowAliasesView.connect('button_press_event', self.showAliasesMenu )
+        
+        self.editShowAliasesMenuAdd.connect('activate', self.showAliasesMenuAdd )
+        self.editShowAliasesMenuRemove.connect('activate', self.showAliasesMenuRemove )
+        
+    def showEpisodesMenu(self, treeview, event):
+        if event.button == 3:
+            x = int(event.x)
+            y = int(event.y)
+            time = event.time
+            pthinfo = treeview.get_path_at_pos(x, y)
+            if pthinfo is not None:
+                path, col, cellx, celly = pthinfo
+                treeview.grab_focus()
+                treeview.set_cursor( path, col, 0)
+                self.editShowEpisodesMenu.popup( None, None, None, event.button, time)
+            return 1
+        
+    def showEpisodesMenuAdd( self, widget ):
+        pass
+        
+    def showEpisodesMenuRemove( self, widget ):
+        model, row = self.editShowEpisodesView.get_selection().get_selected()
+        self.editShowEpisodesStore.remove(row)
+        
+    def showAliasesMenu(self, treeview, event):
+        if event.button == 3:
+            x = int(event.x)
+            y = int(event.y)
+            time = event.time
+            pthinfo = treeview.get_path_at_pos(x, y)
+            if pthinfo is not None:
+                path, col, cellx, celly = pthinfo
+                treeview.grab_focus()
+                treeview.set_cursor( path, col, 0)
+                self.editShowAliasesMenu.popup( None, None, None, event.button, time)
+            return 1
+        
+    def showAliasesMenuAdd( self, widget ):
+        #base this on a message dialog  
+        dialog = gtk.MessageDialog( None,
+                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,  
+                                    gtk.MESSAGE_QUESTION,  
+                                    gtk.BUTTONS_OK,  
+                                    None)
+        #dialog.set_markup('Please enter the alias:')  
+        #create the text input field  
+        entry = gtk.Entry()  
+        #allow the user to press enter to do ok  
+        #entry.connect("activate", responseToDialog, dialog, gtk.RESPONSE_OK)  
+        #create a horizontal box to pack the entry and a label  
+        hbox = gtk.HBox()  
+        hbox.pack_start(gtk.Label("New Alias :"), False, 5, 5)  
+        hbox.pack_end(entry)  
+        #some secondary text  
+        #dialog.format_secondary_markup("This will be used for <i>identification</i> purposes")  
+        #add it and show it  
+        dialog.vbox.pack_end(hbox, True, True, 0)  
+        dialog.show_all()  
+        #go go go  
+        dialog.run()  
+        text = entry.get_text()  
+        dialog.destroy()  
+        
+        alias = Alias(text)
+        result = self.Show.addAlias( alias )
+        print result
+        if result != None :
+            self.editShowAliasesStore.append( [ alias.name, alias ] )
+        
+    def showAliasesMenuRemove( self, widget ):
+        model, row = self.editShowAliasesView.get_selection().get_selected()
+        self.editShowAliasesStore.remove(row)
+        
+    def run(self):  
         self.result = self.dlg.run()
         self.dlg.destroy()
         return self.result
@@ -287,4 +438,4 @@ class EditShowDialog :
 if __name__ == "__main__":
         hwg = VeefireGTK()
         gtk.main()
-        hwg.Tools.removeTempFiles()
+        Tools.removeTempFiles()
