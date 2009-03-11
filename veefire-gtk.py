@@ -259,6 +259,7 @@ class VeefireGTK:
             pass
         
     def showsUpdateButtonClicked (self, widget) :
+        self.database.writeDB()
         se = NewBackendInterface(Tools.databaseDir)
         se.updateDatabase()
         self.database.loadDB()
