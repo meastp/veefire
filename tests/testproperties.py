@@ -24,7 +24,7 @@ import shutil
 
 testFileDirectory = '/tmp/veefire'
 testSubDirectories = [ 'Black Books', 'CSI', 'Spaced']
-testFileNames = [   [ 'blackbooks.s01e02.avi', 'bb.s03e05.avi'],
+testFileNames = [   [ 'blackbooks.s01e02.spaced.avi', 'bb.s03e05.csi.avi'],
                     [ 'csiS01E11.avi', 'CSI.2x12.avi' ],
                     [ 'Spaced.2x4.avi', 'Spaced.S02E03.avi']   ]
 
@@ -123,7 +123,7 @@ testDatabaseSpaced = r'''<?xml version="1.0" encoding="UTF-8"?>
     <episode airdate="23 March 2001" arc="none" number="4" title="Help"/>
     <episode airdate="None" arc="none" number="5" title="Gone"/>
     <episode airdate="6 April 2001" arc="none" number="6" title="Dissolution"/>
-    <episode airdate="13 April 2001" arc="none" number="7" title="Leaves"/>
+    <episode airdate="13 April 2001" arc="none" number="7" title="Testkonflikt"/>
   </season>
 </tvshow>'''
 

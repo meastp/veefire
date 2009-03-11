@@ -36,14 +36,12 @@ except:
 
 class NewFileName(FileName):
     def setCorrectShow( self, Shows ) :
-        dialog = gtk.Dialog(title=None, parent=None, flags=0, buttons=None)
+        dialog = gtk.Dialog(title='Conflict', parent=None, flags=0, buttons=None)
+        dialog.vbox.pack_start(gtk.Label(self.fileName))
         for index, show in enumerate(Shows) :
             print str(index) + str(show.name)
             dialog.add_button(button_text=show.name, response_id=index )
-#        vbox = gtk.VBox()
-#        for show in Shows :
-#            vbox.pack_start(gtk.Button(label=show.name, stock=None, use_underline=True), expand=True, fill=True, padding=5 )
-#         
+        dialog.show_all()
         responseid = dialog.run()
         dialog.destroy()
         print 'responseid: ' + str(responseid)
@@ -64,7 +62,9 @@ class NewBackendInterface(BackendInterface):
         dlg = ChooseEpisodeDialog(firstEpisode, secondEpisode)
         result = dlg.run()
         if result == 1 :
+            print 'result1'
             return secondEpisode
+        print 'result0'
         return firstEpisode
 
 # FIXME: Above.
@@ -259,7 +259,9 @@ class VeefireGTK:
             pass
         
     def showsUpdateButtonClicked (self, widget) :
-        pass
+        se = NewBackendInterface(Tools.databaseDir)
+        se.updateDatabase()
+        self.database.loadDB()
 class PreviewPane :
     def __init__ (self) :
         self.gladefile = "veefire-gtk.glade"
@@ -299,7 +301,7 @@ class ChooseEpisodeDialog :
         self.dbTitle = self.wTree.get_widget("dbTitle")
         self.dbTitle.set_label('<i>' + self.dbEp.title + '</i>')
         
-        self.dbEpisode = self.wTree.get_widget("dbTitle")
+        self.dbEpisode = self.wTree.get_widget("dbEpisode")
         self.dbEpisode.set_label('Episode ' + self.dbEp.name)
         
         self.dbArc = self.wTree.get_widget("dbArc")
@@ -315,7 +317,7 @@ class ChooseEpisodeDialog :
         self.upTitle = self.wTree.get_widget("upTitle")
         self.upTitle.set_label('<i>' + self.upEp.title + '</i>')
         
-        self.upEpisode = self.wTree.get_widget("upTitle")
+        self.upEpisode = self.wTree.get_widget("upEpisode")
         self.upEpisode.set_label('Episode ' + self.upEp.name)
         
         self.upArc = self.wTree.get_widget("upArc")
@@ -326,6 +328,8 @@ class ChooseEpisodeDialog :
         
         self.result = self.dlg.run()
         self.dlg.destroy()
+        
+        print self.result
         
         return self.result
 class EditShowDialog :
