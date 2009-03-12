@@ -19,7 +19,8 @@
 
 import sys
 import os
-from api.dbapi import Database, Alias
+import copy
+from api.dbapi import Database, Alias, Season
 from api.backendapi import Backends, BackendInterface
 from api.renameapi import Rename, Folder, FileName
 
@@ -34,20 +35,45 @@ try:
 except:
     sys.exit(1)
 
+##
+#
+# Tools class for testing.
+#
+##
+
+from tests.testproperties import Tools
+
+Tools = Tools()
+Tools.createRootDir()
+Tools.createDatabaseFiles()
+Tools.createFilesystemXML()
+Tools.createTempFiles()
+Tools.createBackendFiles()
+
+##
+#
+# Overloads.
+#
+##
+
 class NewFileName(FileName):
     def setCorrectShow( self, Shows ) :
+        '''
+        If there is an Episode conflict, resolve it with a dialog.
+        '''
         dialog = gtk.Dialog(title='Conflict', parent=None, flags=0, buttons=None)
         dialog.vbox.pack_start(gtk.Label(self.fileName))
         for index, show in enumerate(Shows) :
-            print str(index) + str(show.name)
             dialog.add_button(button_text=show.name, response_id=index )
         dialog.show_all()
         responseid = dialog.run()
         dialog.destroy()
-        print 'responseid: ' + str(responseid)
         return Shows[responseid]
 
 class NewFolder(Folder) :
+    '''
+    Overload the Folder class to use NewFileName.
+    '''
     def loadFiles( self ) :
         self.database = Database( self.dbDir , self.shows )
         self.database.loadDB()
@@ -58,61 +84,52 @@ class NewFolder(Folder) :
                 self.fileNames.append( aFileName )
 
 class NewBackendInterface(BackendInterface):
+    '''
+    If there is an episode conflict, resolve it with a dialog.
+    '''
     def solveEpisodeConflicts(self, firstEpisode, secondEpisode):
         dlg = ChooseEpisodeDialog(firstEpisode, secondEpisode)
         result = dlg.run()
         if result == 1 :
-            print 'result1'
             return secondEpisode
-        print 'result0'
         return firstEpisode
-
-# FIXME: Above.
-
-##
-#
-# Tools class for testing.
-#
-##
-from tests.testproperties import Tools
-
-Tools = Tools()
-Tools.createRootDir()
-Tools.createDatabaseFiles()
-Tools.createFilesystemXML()
-Tools.createTempFiles()
-Tools.createBackendFiles()
 
 class VeefireGTK:
     """
     Veefire GTK Interface
     """
     def __init__(self):
-        #Set the Glade file
+        
+        ##
+        # Initialize Glade file
+        ##
+        
         self.gladefile = "veefire-gtk.glade"
         self.wTree = gtk.glade.XML(self.gladefile)
         
-        #Create our dictionay and connect it
-        dic = { "on_MainWindow_destroy" : gtk.main_quit,
-                "on_mainRevertButton_clicked" : self.mainRevertButtonClicked,
-                "on_mainRenameButton_clicked" : self.mainRenameButtonClicked,
-                "on_mainPreferencesButton_clicked" : self.mainPreferencesButtonClicked,
-                "on_mainAboutButton_clicked" : self.mainAboutButtonClicked,
-                "on_previewPreviewButton_clicked" : self.previewPreviewButtonClicked,
-                "on_previewSelectFolderButton_clicked" : self.previewSelectFolderButtonClicked,
-                "on_showsEditShowsButton_clicked" : self.showsEditShowsButtonClicked,
-                "on_showsUpdateButton_clicked" : self.showsUpdateButtonClicked }
+        dic = {  "on_MainWindow_destroy" : gtk.main_quit,
+                  "on_mainRevertButton_clicked" : self.mainRevertButtonClicked,
+                 "on_mainRenameButton_clicked" : self.mainRenameButtonClicked,
+                 "on_mainPreferencesButton_clicked" : self.mainPreferencesButtonClicked,
+                 "on_mainAboutButton_clicked" : self.mainAboutButtonClicked,
+                 "on_previewPreviewButton_clicked" : self.previewPreviewButtonClicked,
+                 "on_previewSelectFolderButton_clicked" : self.previewSelectFolderButtonClicked,
+                 "on_showsEditShowsButton_clicked" : self.showsEditShowsButtonClicked,
+                 "on_showsUpdateButton_clicked" : self.showsUpdateButtonClicked }
+        
         self.wTree.signal_autoconnect(dic)
         
         ##
-        # Initialize Database
+        # Initialize Database and Rename
         ##
         
         self.database = Database(Tools.databaseDir)
         self.database.loadDB()
         
+        self.rename = Rename( Tools.databaseDir, Tools.filetypesXML )
+        
         ##
-        # Main Buttons
+        # Main Buttons (Disable those buttons that depends on other functions)
         ##
         
         self.mainRevertButton = self.wTree.get_widget("mainRevertButton")
@@ -122,7 +139,7 @@ class VeefireGTK:
         self.mainRenameButton.set_sensitive(False)
         
         ##
-        # Preview Buttons
+        # Preview Buttons (Disable those buttons that depends on other functions)
         ##
         
         self.previewPreviewButton = self.wTree.get_widget("previewPreviewButton")
@@ -142,6 +159,7 @@ class VeefireGTK:
         render=gtk.CellRendererText()
         col=gtk.TreeViewColumn("Current",render,text=0)
         self.previewView.append_column(col)
+        
         render=gtk.CellRendererText()
         col=gtk.TreeViewColumn("New",render,text=1)
         self.previewView.append_column(col)
@@ -150,7 +168,6 @@ class VeefireGTK:
         sel=self.previewView.get_selection()
         sel.set_mode(gtk.SELECTION_SINGLE)
         
-        #Show the treeview
         self.previewView.show()
         
         ##
@@ -173,9 +190,11 @@ class VeefireGTK:
         render=gtk.CellRendererText()
         col=gtk.TreeViewColumn("Name",render,text=0)
         self.showsView.append_column(col)
+        
         render=gtk.CellRendererText()
         col=gtk.TreeViewColumn("Backend",render,text=1)
         self.showsView.append_column(col)
+        
         col=gtk.TreeViewColumn()
         col.set_visible(False)
         self.showsView.append_column(col)
@@ -184,19 +203,14 @@ class VeefireGTK:
         sel=self.showsView.get_selection()
         sel.set_mode(gtk.SELECTION_SINGLE)
         
-        #show the treeview
         self.showsView.show()
-        
-        ##
-        # Rename
-        ##
-        
-        self.rename = Rename( Tools.databaseDir, Tools.filetypesXML )
         
     def mainRevertButtonClicked (self, widget) :
         pass
+        
     def mainRenameButtonClicked (self, widget) :
         self.mainRevertButton.set_sensitive(True)
+        
     def mainPreferencesButtonClicked (self, widget) :
         preferencesDlg = PreferencesDialog()
         preferencesDlg.run()
@@ -209,7 +223,6 @@ class VeefireGTK:
         '''
         Adds the selected folders to the previewView, and generates previews.
         '''
-        
         selectfolder = gtk.FileChooserDialog(title=None, 
                                             parent=None, 
                                             action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER, 
@@ -255,45 +268,73 @@ class VeefireGTK:
         showDialog = EditShowDialog(show, self.database)
         result = showDialog.run()
         
-        if result == gtk.RESPONSE_ACCEPT :
-            pass
+        self.showsStore.clear()
+        self.database.loadDB()
+        for Show in self.database.database :
+            self.showsStore.append([ Show.name, Show.backend, Show ])
         
     def showsUpdateButtonClicked (self, widget) :
         self.database.writeDB()
         se = NewBackendInterface(Tools.databaseDir)
         se.updateDatabase()
         self.database.loadDB()
-class PreviewPane :
-    def __init__ (self) :
-        self.gladefile = "veefire-gtk.glade"
-    def onSelectFolder (self) :
-        pass
+        
 class PreferencesDialog :
+    '''
+    Preferences.
+    '''
+    #TODO: Implement.
     def __init__(self) :
         self.gladefile = "veefire-gtk.glade"
-    def run(self):  
+        
+        ##
+        # Initialize dialog from Glade file.
+        ##
+        
         self.wTree = gtk.glade.XML( self.gladefile , "preferencesDialog" )
         self.dlg = self.wTree.get_widget("preferencesDialog")
+        
+    def run(self):
         self.result = self.dlg.run()
         self.dlg.destroy()
         return self.result
+        
 class AboutDialog :
+    '''
+    Information about veefire.
+    '''
     def __init__(self) :
         self.gladefile = "veefire-gtk.glade"
-    def run(self):  
+        
+        ##
+        # Initialize dialog from Glade file.
+        ##
+        
         self.wTree = gtk.glade.XML( self.gladefile , "aboutDialog" )
         self.dlg = self.wTree.get_widget("aboutDialog")
+        
+    def run(self):  
         self.result = self.dlg.run()
         self.dlg.destroy()
         return self.result
+        
 class ChooseEpisodeDialog :
+    '''
+    The dialog for episode conflict in the updateDatabase-function.
+    '''
     def __init__(self, firstEpisode, secondEpisode) :
         self.gladefile = "veefire-gtk.glade"
         self.dbEp = firstEpisode
         self.upEp = secondEpisode
-    def run(self):  
+        
+        ##
+        # Initialize dialog from Glade file.
+        ##
+        
         self.wTree = gtk.glade.XML( self.gladefile , "chooseEpisodeDialog" )
         self.dlg = self.wTree.get_widget("chooseEpisodeDialog")
+        
+    def run(self):  
         
         ##
         # Set dbEpisode
@@ -327,24 +368,36 @@ class ChooseEpisodeDialog :
         self.upAirdate = self.wTree.get_widget("upAirdate")
         self.upAirdate.set_label('( <b>Aired:</b> <i>' + self.upEp.airdate + '</i> )')
         
+        
         self.result = self.dlg.run()
         self.dlg.destroy()
         
-        print self.result
-        
         return self.result
+        
 class EditShowDialog :
+    '''
+    Database/Show editor.
+    '''
     def __init__(self, Show, database) :
         
-        self.database = database
-        self.Show = Show
+        ##
+        # Initialize dialog from Glade file.
+        ##
         
         self.gladefile = "veefire-gtk.glade"
         self.wTree = gtk.glade.XML( self.gladefile , "editShowDialog" )
         self.dlg = self.wTree.get_widget("editShowDialog")
         
+        ##
+        # Global variables, load values
+        ##
+        
+        self.database = database
+        self.Show = Show
+        
         self.name = self.wTree.get_widget("editShowGeneralName")
         self.name.set_text(Show.name)
+        
         self.url = self.wTree.get_widget("editShowGeneralURL")
         self.url.set_text(Show.url)
         
@@ -378,9 +431,7 @@ class EditShowDialog :
         render=gtk.CellRendererText()
         col=gtk.TreeViewColumn("Alias",render,text=0)
         self.editShowAliasesView.append_column(col)
-        col=gtk.TreeViewColumn()
-        col.set_visible(False)
-        self.editShowAliasesView.append_column(col)
+        
         col=gtk.TreeViewColumn()
         col.set_visible(False)
         self.editShowAliasesView.append_column(col)
@@ -407,15 +458,19 @@ class EditShowDialog :
         render=gtk.CellRendererText()
         col=gtk.TreeViewColumn("Season",render,text=0)
         self.editShowEpisodesView.append_column(col)
+        
         render=gtk.CellRendererText()
         col=gtk.TreeViewColumn("Episode",render,text=1)
         self.editShowEpisodesView.append_column(col)
+        
         render=gtk.CellRendererText()
         col=gtk.TreeViewColumn("Title",render,text=2)
         self.editShowEpisodesView.append_column(col)
+        
         col=gtk.TreeViewColumn()
         col.set_visible(False)
         self.editShowEpisodesView.append_column(col)
+        
         col=gtk.TreeViewColumn()
         col.set_visible(False)
         self.editShowEpisodesView.append_column(col)
@@ -454,6 +509,9 @@ class EditShowDialog :
         self.editShowAliasesMenuRemove.connect('activate', self.showAliasesMenuRemove )
         
     def showEpisodesMenu(self, treeview, event):
+        '''
+        Right-click menu for Episodes.
+        '''
         if event.button == 3:
             x = int(event.x)
             y = int(event.y)
@@ -474,6 +532,9 @@ class EditShowDialog :
         self.editShowEpisodesStore.remove(row)
         
     def showAliasesMenu(self, treeview, event):
+        '''
+        Right-click menu for Aliases.
+        '''
         if event.button == 3:
             x = int(event.x)
             y = int(event.y)
@@ -512,10 +573,17 @@ class EditShowDialog :
         text = entry.get_text()  
         dialog.destroy()  
         
+        exists = False
         alias = Alias(text)
-        result = self.Show.addAlias( alias )
-        print result
-        if result != None :
+        #result = self.Show.addAlias( alias )
+        for row in self.editShowAliasesStore :
+            print row[0]
+            print alias.name
+            if row[0] == alias.name :
+                exists = True
+        
+        print exists
+        if exists == False :
             self.editShowAliasesStore.append( [ alias.name, alias ] )
         
     def showAliasesMenuRemove( self, widget ):
@@ -532,17 +600,26 @@ class EditShowDialog :
         
         self.dlg.destroy()
         
-        if result == gtk.RESPONSE_ACCEPT :
+        GTK_RESPONSE_SAVE = 0
+        GTK_RESPONSE_REVERT = -1
+        
+        if result == GTK_RESPONSE_SAVE :
             
             self.Show.name = name
             self.Show.url = url
             self.Show.duration = duration
             self.Show.backend = backend
             
+            self.Show.alias = [ ]
+            for row in self.editShowAliasesStore :
+                self.Show.addAlias( row[1] )
+            
+            self.Show.seasons = [ ]
+            for row in self.editShowEpisodesStore :
+                self.Show.addEpisode( copy.deepcopy(row[4]), Season(row[3].name) )
+            
             self.database.write()
-            
-            # FIXME: The treeviews should also be here.
-            
+        
         return result
 
 if __name__ == "__main__":
