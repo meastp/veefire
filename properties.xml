@@ -1,0 +1,7 @@
+<properties>
+<naming-style>
+    <value key="1" />
+    <value key="2" />
+</naming-style>
+<confirm-on-rename value="true" />
+</properties>
