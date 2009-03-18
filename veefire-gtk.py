@@ -15,7 +15,7 @@
 #    GNU General Public License for more details.
 
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with veefire.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
 import os
@@ -293,7 +293,6 @@ class PreferencesDialog :
         
         self.wTree = gtk.glade.XML( self.gladefile , "preferencesDialog" )
         self.dlg = self.wTree.get_widget("preferencesDialog")
-        
     def run(self):
         self.result = self.dlg.run()
         self.dlg.destroy()
