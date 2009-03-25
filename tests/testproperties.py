@@ -191,13 +191,18 @@ testDatabase = { testDatabaseBlackBooks : 'blackbooks.show', testDatabaseSpaced 
 # CONTENTS FOR PREFERENCES.XML
 
 testPreferencesFile = os.path.join(testFileDirectory, 'preferences.xml')
-testPreferencesContent = r'''<properties>
+testPreferencesContent = r'''<root>
+<preferences>
+    <naming-style value="2" />
+    <confirm-on-rename value="true" />
+</preferences>
+<options>
     <naming-style>
-        <key value="1" />
-        <key value="2" />
+        <option value="1" />
+        <option value="2" />
     </naming-style>
-    <confirm-on-rename key="true" />
-</properties>
+</options>
+</root>
 '''
 
 

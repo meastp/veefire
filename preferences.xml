@@ -1,7 +1,12 @@
+<root>
 <preferences>
-<naming-style>
-    <key value="1" />
-    <key value="2" />
-</naming-style>
-<confirm-on-rename key="true" />
+    <naming-style value="2" />
+    <confirm-on-rename value="true" />
 </preferences>
+<options>
+    <naming-style>
+        <option value="1" />
+        <option value="2" />
+    </naming-style>
+</options>
+</root>

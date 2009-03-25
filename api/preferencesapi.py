@@ -29,9 +29,15 @@ import os
 
 class Preferences :
     def __init__(self, filename ):
+        '''
+        Initialize.
+        
+        :param filename: path to preferences file
+        :type filename: string
+        '''
         self.filename = os.path.abspath(filename)
         self.elementTree = None
-        self.root = None
+        
     def load(self):
         '''
         Loads the Preferencesfile into the dict.
@@ -39,104 +45,95 @@ class Preferences :
         :param filename: Path to Preferences file.
         :type filename: string
         '''
-        ## Root XML Tag
         self.elementTree = ET.parse( self.filename )
-        self.root = self.elementTree.getroot()
         
-    def getPreference(self, propertyName, keyName='key', valueName='value' ) :
+        self.Preferences = self.elementTree.getroot().find('preferences')
+        self.Options = self.elementTree.getroot().find('options')
+        
+    def __getitem__(self, key) :
         '''
-        Get property value(s).
+        Get property value.
         
-        :param propertyName: Name of property.
-        :type propertyName: string
-        :param keyName: Key name to get the value from ( single ).
-        :type keyName: string or "key"
-        :param valueName: Key name to get the values from ( list of values ).
-        :type valueName: string or "key"
-        :returns: Returns value of the key, or list of values.
-        :rtype: string or list
+        :param key: Name of property.
+        :type key: string
+        :rtype: string or None
         '''
-        Element = self.root.find( propertyName )
+        Element = self.Preferences.find( key )
         
-        if Element.getchildren() == [] :
-            return Element.get(keyName)
+        return Element.get('value')
+        
+    def __setitem__(self, key, value) :
+        '''
+        Set property value.
+        
+        :param key: Name of property.
+        :type key: string
+        :param value: Value of option.
+        :type value: string
+        :rtype: string or None
+        '''
+        Element = self.Preferences.find( key )
+        OptionElement = self.Options.find( key )
+        
+        if OptionElement == None :
+            Element.set('value', str(value))
+            return value
+        elif OptionElement != None and OptionElement.getchildren() != [] :
+            Element.set('value', str(value))
+            return value
         else :
-            return self.getPreferences( Element, valueName )
+            return None
         
-    def getPreferences(self, Element, valueName ) :
-        
-        return [ element.get(valueName) for element in Element.getchildren() ]
-        
-    def setPreference(self, propertyName, value, keyName='key') :
+    def getOptions(self, key ) :
         '''
-        Set a property value.
+        Get option value(s).
         
-        :param propertyName: Name of property.
-        :type propertyName: string
-        :param value: New value.
+        :param key: Name of property/option.
+        :type key: string
+        :rtype: list or None
+        '''
+        Element = self.Options.find(key)
+        
+        return [ element.get('value') for element in Element.getchildren() ]
+        
+    def addOption(self, key, value ) :
+        '''
+        Add option value.
+        
+        :param key: Name of property/option.
+        :type key: string
+        :param value: Value of option.
         :type value: string
-        :param keyName: Key to modify.
-        :type keyName: string or "key"
+        :rtype: list or None
         '''
-        Element = self.root.find( propertyName )
-        Element.set(keyName, value)
+        Element = self.Options.find(key)
         
-    def addPreferencesKey(self, propertyName, value, key='value') :
+        if self.Preferences.find(key) == None :
+            return None
+        
+        if value not in [ value for key, value in Element.items() ] :
+            ET.SubElement(Element, 'option', { 'value' : str(value) })
+            return self.getOptions(key)
+        
+    def removeOption(self, key, value) :
         '''
-        Add a key value to a property with list of values.
+        Remove option value.
         
-        :param propertyName: Name of property.
-        :type propertyName: string
-        :param value: New value.
+        :param key: Name of property/option.
+        :type key: string
+        :param value: Value of option.
         :type value: string
-        :param key: Key name.
-        :type key: string or "value"
+        :rtype: list or None
         '''
-        Element = self.root.find( propertyName )
+        Element = self.Options.find(key)
+        
         for element in Element.getchildren() :
-            if element.get(key) == value :
-                return None
-        ET.SubElement(Element, 'key', { key : value })
-        
-    def editPreferencesKey(self, propertyName, oldValue, newValue, key='value') :
-        '''
-        Edit a key value from a property with list of values.
-        
-        :param propertyName: Name of property.
-        :type propertyName: string
-        :param oldValue: Current value.
-        :type oldValue: string
-        :param newValue: New value.
-        :type newValue: string
-        :param key: Key name.
-        :type key: string or "value"
-        '''
-        Element = self.root.find( propertyName )
-        for element in Element.getchildren() :
-            if element.get(key) == oldValue :
-                element.set(key, newValue)
-                return
-        
-    def removePreferencesKey(self, propertyName, value, key='value') :
-        '''
-        Remove a key value from a property with list of values.
-        
-        :param propertyName: Name of property.
-        :type propertyName: string
-        :param value: Value.
-        :type value: string
-        :param key: Key name.
-        :type key: string or "value"
-        '''
-        Element = self.root.find( propertyName )
-        for element in Element.getchildren() :
-            if element.get(key) == value :
+            if element.get('value') == value :
                 Element.remove(element)
-                return
+                return self.getOptions(key)
         
     def save(self):
         '''
         Saves the dict to the Preferencesfile.
         '''
         self.elementTree.write( self.filename )
-        
