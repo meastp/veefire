@@ -24,7 +24,7 @@ import shutil
 
 testFileDirectory = '/tmp/veefire'
 testSubDirectories = [ 'Black Books', 'CSI', 'Spaced']
-testFileNames = [   [ 'blackbooks.s01e02.spaced.avi', 'bb.s03e05.csi.avi'],
+testFileNames = [   [ 'blackbooks.s01e02.avi', 'bb.s03e05.avi'],
                     [ 'csiS01E11.avi', 'CSI.2x12.avi' ],
                     [ 'Spaced.2x4.avi', 'Spaced.S02E03.avi']   ]
 
@@ -188,6 +188,19 @@ testDatabaseCSI = r'''<?xml version="1.0" encoding="UTF-8"?>
 
 testDatabase = { testDatabaseBlackBooks : 'blackbooks.show', testDatabaseSpaced : 'spaced.show', testDatabaseCSI : 'csi.show' }
 
+# CONTENTS FOR PREFERENCES.XML
+
+testPreferencesFile = os.path.join(testFileDirectory, 'preferences.xml')
+testPreferencesContent = r'''<properties>
+    <naming-style>
+        <key value="1" />
+        <key value="2" />
+    </naming-style>
+    <confirm-on-rename key="true" />
+</properties>
+'''
+
+
 # CREATE FILE NAMES FOR TESTING
 #TODO: Create checks if directories exist.
 
@@ -199,6 +212,8 @@ class Tools :
         self.testFiles = testFileNames
         
         self.filetypesXML = testFiletypesFile
+        
+        self.preferencesXML = testPreferencesFile
         
         self.databaseDir = testDatabaseDirectory
         self.databaseFiles = testDatabase
@@ -232,6 +247,11 @@ class Tools :
     def createFilesystemXML(self):
         testfile = open(self.filetypesXML ,"w")
         testfile.writelines(testFiletypesContent)
+        testfile.close()
+    
+    def createPreferencesXML(self):
+        testfile = open(self.preferencesXML ,"w")
+        testfile.writelines(testPreferencesContent)
         testfile.close()
     
     def createDatabaseFiles(self):

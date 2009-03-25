@@ -189,20 +189,20 @@ class BackendInterface :
             
             currentEpisode = currentSeason.getEpisode( newEpisode )
             
-            print '##S'
-            print currentEpisode.title
-            print currentEpisode
-            print '##E'
+#            print '##S'
+#            print currentEpisode.title
+#            print currentEpisode
+#            print '##E'
             
             if currentEpisode == None :
                 editedSeason.addEpisode( newEpisode )
-                print '## ## None'
+#                print '## ## None'
             else :
                 ny = editedSeason.addEpisode( self.compareEpisodes( currentEpisode, newEpisode ) )
-                print '  ###'
-            print '     ' + ny.title
-            print '     ' + str(ny)
-            print '  ###'
+#                print '  ###'
+#            print '     ' + ny.title
+#            print '     ' + str(ny)
+#            print '  ###'
             
         return editedSeason
         

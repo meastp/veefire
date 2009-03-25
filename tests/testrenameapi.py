@@ -64,7 +64,7 @@ class testRename :
         
         assert rename.addFoldersRecursively( Folder(self.Tools.rootDir) ) == Folder(self.Tools.rootDir)
         
-        print [ folder.path for folder in rename.folders ] == ['/tmp/veefire/Black Books', '/tmp/veefire', '/tmp/veefire/Spaced', '/tmp/veefire/CSI', '/tmp/veefire/database']
+        assert [ folder.path for folder in rename.folders ] == ['/tmp/veefire/Black Books', '/tmp/veefire', '/tmp/veefire/Spaced', '/tmp/veefire/CSI', '/tmp/veefire/database']
         
         rename.addFolder( self.folder1 )
         rename.addFolder( self.folder1 )
