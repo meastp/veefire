@@ -216,11 +216,41 @@ class VeefireGTK:
         
         self.showsView.show()
         
+    def to_boolean(self, string ) :
+        if string == "True" or string == "true" or string == True or string == 1 :
+            return True
+        else :
+            return False
+        
     def mainRevertButtonClicked (self, widget) :
-        pass
+        self.rename.revert()
+        self.mainRevertButton.set_sensitive(False)
+        self.mainRenameButton.set_sensitive(True)
         
     def mainRenameButtonClicked (self, widget) :
+        preferences = Preferences(Tools.preferencesXML)
+        preferences.load()
+        if self.to_boolean(preferences['confirm-on-rename']) == True :
+            #base this on a message dialog  
+            dialog = gtk.MessageDialog( None,
+                                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,  
+                                        gtk.MESSAGE_QUESTION,  
+                                        gtk.BUTTONS_OK_CANCEL,  
+                                        None)
+            hbox = gtk.HBox()  
+            hbox.pack_start(gtk.Label("Do You Really Want To Rename?"), False, 5, 5)  
+            dialog.vbox.pack_end(hbox, True, True, 0)  
+            dialog.show_all()  
+            result = dialog.run()
+            dialog.destroy()
+            
+            if result == gtk.RESPONSE_CANCEL :
+                return
+            
+        self.rename.rename()
+        self.mainRenameButton.set_sensitive(False)
         self.mainRevertButton.set_sensitive(True)
+        self.previewPreviewButton.set_sensitive(False)
         
     def mainPreferencesButtonClicked (self, widget) :
         preferencesDlg = PreferencesDialog()
@@ -276,6 +306,7 @@ class VeefireGTK:
                 if files[1] != None :
                     self.previewStore.append( files )
         self.mainRenameButton.set_sensitive(True)
+        self.previewPreviewButton.set_sensitive(False)
         
     def showsEditShowsButtonClicked (self, widget) :
         model, row = self.showsView.get_selection().get_selected()
