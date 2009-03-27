@@ -24,7 +24,12 @@ Examples
     >>> # testSession.addNewShow( Show( "Black Books", "30", "ext3" , "BaseBackend", "tt0262150" ) ) 
     >>> print [ show.name for show in se.currentDB.database ]
     ['C.S.I', 'Spaced', 'Black Books']
-    >>> se.updateDatabase()
+    >>> # Automatically (dummy) solve conflicts.
+    >>> class NewBackendInterface(BackendInterface):
+    ...     def solveEpisodeConflicts(self, firstEpisode, secondEpisode):
+    ...         return firstEpisode
+    >>> re = NewBackendInterface(tools.databaseDir) #database directory
+    >>> re.updateDatabase()
     >>> # Updates the database, and writes it to the database directory.
 
 **Example:**

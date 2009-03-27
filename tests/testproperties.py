@@ -123,7 +123,7 @@ testDatabaseSpaced = r'''<?xml version="1.0" encoding="UTF-8"?>
     <episode airdate="23 March 2001" arc="none" number="4" title="Help"/>
     <episode airdate="None" arc="none" number="5" title="Gone"/>
     <episode airdate="6 April 2001" arc="none" number="6" title="Dissolution"/>
-    <episode airdate="13 April 2001" arc="none" number="7" title="Leaves"/>
+    <episode airdate="13 April 2001" arc="none" number="7" title="Testkonflikt"/>
   </season>
 </tvshow>'''
 
@@ -188,6 +188,27 @@ testDatabaseCSI = r'''<?xml version="1.0" encoding="UTF-8"?>
 
 testDatabase = { testDatabaseBlackBooks : 'blackbooks.show', testDatabaseSpaced : 'spaced.show', testDatabaseCSI : 'csi.show' }
 
+# CONTENTS FOR PREFERENCES.XML
+
+testPreferencesFile = os.path.join(testFileDirectory, 'preferences.xml')
+testPreferencesContent = r'''<root>
+  <preferences>
+    <naming-style value="%show - S%seasonE%episode - %title"/>
+    <confirm-on-rename value="true"/>
+    <update-on-startup value="false"/>
+    <imdbtv-with-tests value="false"/>
+    <filesystem value="ext3" />
+  </preferences>
+  <options>
+    <naming-style>
+      <option value="%show - S%seasonE%episode - %title"/>
+      <option value="%show.%seasonx%episode.%title"/>
+    </naming-style>
+  </options>
+</root>
+'''
+
+
 # CREATE FILE NAMES FOR TESTING
 #TODO: Create checks if directories exist.
 
@@ -199,6 +220,8 @@ class Tools :
         self.testFiles = testFileNames
         
         self.filetypesXML = testFiletypesFile
+        
+        self.preferencesXML = testPreferencesFile
         
         self.databaseDir = testDatabaseDirectory
         self.databaseFiles = testDatabase
@@ -232,6 +255,11 @@ class Tools :
     def createFilesystemXML(self):
         testfile = open(self.filetypesXML ,"w")
         testfile.writelines(testFiletypesContent)
+        testfile.close()
+    
+    def createPreferencesXML(self):
+        testfile = open(self.preferencesXML ,"w")
+        testfile.writelines(testPreferencesContent)
         testfile.close()
     
     def createDatabaseFiles(self):

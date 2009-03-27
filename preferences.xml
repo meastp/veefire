@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <preferences>
+    <naming-style value="%show - S%seasonE%episode - %title"/>
+    <confirm-on-rename value="true"/>
+    <update-on-startup value="false"/>
+    <imdbtv-with-tests value="false"/>
+    <filesystem value="ext3" />
+  </preferences>
+  <options>
+    <naming-style>
+      <option value="%show - S%seasonE%episode - %title"/>
+      <option value="%show.%seasonx%episode.%title"/>
+    </naming-style>
+  </options>
+</root>

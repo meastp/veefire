@@ -482,13 +482,13 @@
 </dd></dl>
 
 <div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/fix-testsdoc/docs/source/modules/model.rst</tt>, line 20)</p>
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/gtk-interface/docs/source/modules/model.rst</tt>, line 20)</p>
 autodoc can&#8217;t import/find class &#8216;Filesystems&#8217;, it reported error: &#8220;&#8216;module&#8217; object has no attribute &#8216;Filesystems&#8217;&#8221;,please check your spelling and sys.path</div>
 <div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/fix-testsdoc/docs/source/modules/model.rst</tt>, line 23)</p>
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/gtk-interface/docs/source/modules/model.rst</tt>, line 23)</p>
 autodoc can&#8217;t import/find class &#8216;Filesystem&#8217;, it reported error: &#8220;&#8216;module&#8217; object has no attribute &#8216;Filesystem&#8217;&#8221;,please check your spelling and sys.path</div>
 <div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/fix-testsdoc/docs/source/modules/model.rst</tt>, line 26)</p>
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/gtk-interface/docs/source/modules/model.rst</tt>, line 26)</p>
 autodoc can&#8217;t import/find class &#8216;InvChar&#8217;, it reported error: &#8220;&#8216;module&#8217; object has no attribute &#8216;InvChar&#8217;&#8221;,please check your spelling and sys.path</div>
 <div class="section">
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
@@ -578,7 +578,7 @@ Load the current database files into Python objects, and print a nice formatted 
 <span class="go">               Episode: Help</span>
 <span class="go">               Episode: Gone</span>
 <span class="go">               Episode: Dissolution</span>
-<span class="go">               Episode: Leaves</span>
+<span class="go">               Episode: Testkonflikt</span>
 <span class="go">####   Black Books   ####</span>
 <span class="go">       Season: 1</span>
 <span class="go">               Episode: Cooking the Books</span>
@@ -744,6 +744,46 @@ Load the current database files into Python objects, and print a nice formatted 
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><em>filesystemDir</em> (string) &#8211; Path to filetypes.xml</li>
 <li><em>Show</em> (api.dbapi.Show) &#8211; Show object to add file name details to.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="api.renameapi.FileName.renameFile">
+<!--[api.renameapi.FileName.renameFile]--><tt class="descname">renameFile</tt><big>(</big><em>root</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.renameFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename file according to generated file name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>root</em> (string) &#8211; path to file, excluding file name.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple with (absolute path) ( oldname, newname )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="api.renameapi.FileName.revertFile">
+<!--[api.renameapi.FileName.revertFile]--><tt class="descname">revertFile</tt><big>(</big><em>root</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.revertFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Revert file name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>root</em> (string) &#8211; path to file, excluding file name.</li>
 </ul>
 </td>
 </tr>
@@ -1090,6 +1130,10 @@ Load the current database files into Python objects, and print a nice formatted 
 <span class="go">/tmp/veefire/Black Books</span>
 <span class="go">Black Books - 03X05 - The Travel Writer.avi bb.s03e05.avi</span>
 <span class="go">Black Books - 01X02 - Manny&#39;s First Day.avi blackbooks.s01e02.avi</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Rename files</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">me</span><span class="o">.</span><span class="n">rename</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Revert / Undo previous rename</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">me</span><span class="o">.</span><span class="n">revert</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="section">
@@ -1128,6 +1172,151 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fs2</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getFilesystem</span><span class="p">(</span> <span class="n">Filesystem</span><span class="p">(</span><span class="s">&quot;ntfs&quot;</span><span class="p">)</span> <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">fs2</span><span class="o">.</span><span class="n">validateString</span><span class="p">(</span><span class="s">&quot;thisis/324sdf/@$3?+&quot;</span><span class="p">)</span>
 <span class="go">thisisor324sdforatUSD3Qoplus</span>
+</pre></div>
+</div>
+</div>
+<div class="section">
+<h1 id="module-api.preferencesapi"><tt class="xref docutils literal"><span class="pre">api.preferencesapi</span></tt> &#8211; Preferences<a class="headerlink" href="#module-api.preferencesapi" title="Permalink to this headline">¶</a></h1>
+<p>Contains classes for the Preferences.</p>
+<dl class="class">
+<dt id="api.preferencesapi.Preferences">
+<!--[api.preferencesapi.Preferences]-->class <tt class="descclassname">api.preferencesapi.</tt><tt class="descname">Preferences</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#api.preferencesapi.Preferences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>filename</em> (string) &#8211; path to preferences file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="api.preferencesapi.Preferences.addOption">
+<!--[api.preferencesapi.Preferences.addOption]--><tt class="descname">addOption</tt><big>(</big><em>key</em>, <em>value</em><big>)</big><a class="headerlink" href="#api.preferencesapi.Preferences.addOption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add option value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>key</em> (string) &#8211; Name of property/option.</li>
+<li><em>value</em> (string) &#8211; Value of option.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="api.preferencesapi.Preferences.getOptions">
+<!--[api.preferencesapi.Preferences.getOptions]--><tt class="descname">getOptions</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#api.preferencesapi.Preferences.getOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get option value(s).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>key</em> (string) &#8211; Name of property/option.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="api.preferencesapi.Preferences.load">
+<!--[api.preferencesapi.Preferences.load]--><tt class="descname">load</tt><big>(</big><big>)</big><a class="headerlink" href="#api.preferencesapi.Preferences.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the Preferencesfile into the dict.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>filename</em> (string) &#8211; Path to Preferences file.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="api.preferencesapi.Preferences.removeOption">
+<!--[api.preferencesapi.Preferences.removeOption]--><tt class="descname">removeOption</tt><big>(</big><em>key</em>, <em>value</em><big>)</big><a class="headerlink" href="#api.preferencesapi.Preferences.removeOption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove option value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>key</em> (string) &#8211; Name of property/option.</li>
+<li><em>value</em> (string) &#8211; Value of option.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="api.preferencesapi.Preferences.save">
+<!--[api.preferencesapi.Preferences.save]--><tt class="descname">save</tt><big>(</big><big>)</big><a class="headerlink" href="#api.preferencesapi.Preferences.save" title="Permalink to this definition">¶</a></dt>
+<dd>Saves the dict to the Preferencesfile.</dd></dl>
+
+</dd></dl>
+
+<div class="section">
+<h2 id="id3">Examples<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For testing the examples in the Python interpreter, start your Python interactive shell, and do the following.</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s">&#39;&lt;path/to/veefire&gt;&#39;</span><span class="p">)</span> <span class="c"># path to your veefire directory</span>
+</pre></div>
+</div>
+<p><strong>Example:</strong></p>
+<blockquote>
+Manipulate the preferences.xml file ( <a class="reference" href="../misc/preferences.html#preferences-xml"><em>Preferences in veefire</em></a> ).</blockquote>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.preferencesapi</span> <span class="k">import</span> <span class="n">Preferences</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span> <span class="o">=</span> <span class="n">Tools</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createRootDir</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createPreferencesXML</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">preferences</span> <span class="o">=</span> <span class="n">Preferences</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">preferencesXML</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># load preferences from preferences.xml</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">preferences</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># get property</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">preferences</span><span class="p">[</span><span class="s">&#39;confirm-on-rename&#39;</span><span class="p">]</span>
+<span class="go">true</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># set property</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">preferences</span><span class="p">[</span><span class="s">&#39;confirm-on-rename&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;false&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># list options, if any</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">preferences</span><span class="o">.</span><span class="n">getOptions</span><span class="p">(</span><span class="s">&#39;naming-style&#39;</span><span class="p">)</span>
+<span class="go">[&#39;%show - S%seasonE%episode - %title&#39;, &#39;%show.%seasonx%episode.%title&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># add option</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">preferences</span><span class="o">.</span><span class="n">addOption</span><span class="p">(</span><span class="s">&#39;naming-style&#39;</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">)</span>
+<span class="go">[&#39;%show - S%seasonE%episode - %title&#39;, &#39;%show.%seasonx%episode.%title&#39;, &#39;3&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># remove option</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">preferences</span><span class="o">.</span><span class="n">removeOption</span><span class="p">(</span><span class="s">&#39;naming-style&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">how - S</span><span class="si">%s</span><span class="s">easonE</span><span class="si">%e</span><span class="s">pisode - %title&#39;</span><span class="p">)</span>
+<span class="go">[&#39;%show.%seasonx%episode.%title&#39;, &#39;3&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># save xml-file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">preferences</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1341,7 +1530,7 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 </dd></dl>
 
 <div class="section">
-<h2 id="id3">Examples<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<h2 id="id4">Examples<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>For testing the examples in the Python interpreter, start your Python interactive shell, and do the following.</p>
@@ -1364,7 +1553,12 @@ Update the Database, using the backends to retrieve information. In this example
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># testSession.addNewShow( Show( &quot;Black Books&quot;, &quot;30&quot;, &quot;ext3&quot; , &quot;BaseBackend&quot;, &quot;tt0262150&quot; ) )</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="p">[</span> <span class="n">show</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">show</span> <span class="ow">in</span> <span class="n">se</span><span class="o">.</span><span class="n">currentDB</span><span class="o">.</span><span class="n">database</span> <span class="p">]</span>
 <span class="go">[&#39;C.S.I&#39;, &#39;Spaced&#39;, &#39;Black Books&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">se</span><span class="o">.</span><span class="n">updateDatabase</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Automatically (dummy) solve conflicts.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">NewBackendInterface</span><span class="p">(</span><span class="n">BackendInterface</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">solveEpisodeConflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">firstEpisode</span><span class="p">,</span> <span class="n">secondEpisode</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">firstEpisode</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">re</span> <span class="o">=</span> <span class="n">NewBackendInterface</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">databaseDir</span><span class="p">)</span> <span class="c">#database directory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">re</span><span class="o">.</span><span class="n">updateDatabase</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Updates the database, and writes it to the database directory.</span>
 </pre></div>
 <p><strong>Example:</strong></p>
@@ -1422,7 +1616,7 @@ Get backend names.</blockquote>
 </dd></dl>
 
 <div class="section">
-<h2 id="id4">Examples<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<h2 id="id5">Examples<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>For testing the examples in the Python interpreter, start your Python interactive shell, and do the following.</p>
@@ -1579,7 +1773,7 @@ A backend must be able to get data based on Show objects.</blockquote>
 </dd></dl>
 
 <div class="section">
-<h2 id="id5">Examples<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<h2 id="id6">Examples<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>For testing the examples in the Python interpreter, start your Python interactive shell, and do the following.</p>
@@ -1669,16 +1863,20 @@ A backend must be able to get data based on Show objects.</blockquote>
 <li><a class="reference" href="#id2">Test Directory</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#module-api.backendapi"><tt class="docutils literal"><span class="pre">api.backendapi</span></tt> &#8211; Backends and BackendInterface</a><ul>
+<li><a class="reference" href="#module-api.preferencesapi"><tt class="docutils literal"><span class="pre">api.preferencesapi</span></tt> &#8211; Preferences</a><ul>
 <li><a class="reference" href="#id3">Examples</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#module-backends.base"><tt class="docutils literal"><span class="pre">backends.base</span></tt> &#8211; Backend Superclass</a><ul>
+<li><a class="reference" href="#module-api.backendapi"><tt class="docutils literal"><span class="pre">api.backendapi</span></tt> &#8211; Backends and BackendInterface</a><ul>
 <li><a class="reference" href="#id4">Examples</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#module-backends.imdbtv"><tt class="docutils literal"><span class="pre">backends.imdbtv</span></tt> &#8211; Backend to imdb.com&#8217;s tv section</a><ul>
+<li><a class="reference" href="#module-backends.base"><tt class="docutils literal"><span class="pre">backends.base</span></tt> &#8211; Backend Superclass</a><ul>
 <li><a class="reference" href="#id5">Examples</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#module-backends.imdbtv"><tt class="docutils literal"><span class="pre">backends.imdbtv</span></tt> &#8211; Backend to imdb.com&#8217;s tv section</a><ul>
+<li><a class="reference" href="#id6">Examples</a></li>
 </ul>
 </li>
 </ul>
@@ -1721,7 +1919,7 @@ A backend must be able to get data based on Show objects.</blockquote>
     </div>
     <div class="footer">
       &copy; Copyright 2008, Mats Taraldsvik.
-      Last updated on Mar 05, 2009.
+      Last updated on Mar 27, 2009.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
     </div>
   </body>

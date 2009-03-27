@@ -45,6 +45,16 @@
 .. include::
     ../examples/apirenameapi.rst
 
+:mod:`api.preferencesapi` -- Preferences
+================================================
+
+..  automodule:: api.preferencesapi
+..  autoclass::     Preferences
+                    :members:
+
+.. include::
+    ../examples/preferencesapi.rst
+
 :mod:`api.backendapi` -- Backends and BackendInterface
 ==========================================================
 

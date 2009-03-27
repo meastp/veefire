@@ -24,7 +24,7 @@ Contains classes for interfacing with the backends.
 
 '''
 
-from dbapi import Database, Show
+from dbapi import Database, Show, Season, Episode
 from backends.imdbtv import Backend as imdbtvbackend
 import os
 import sys
@@ -87,9 +87,11 @@ class BackendInterface :
         
         :rtype: None
         """
-        self.fillUpdateDB()
+        newdb = self.fillUpdateDB()
         
-        self.mergeDB.write()
+        #self.mergeDB.printDb()
+        
+        newdb.write()
     
     def fillUpdateDB( self ) :
         """
@@ -123,7 +125,7 @@ class BackendInterface :
                 for Season in Show.seasons :
                     show.addSeason( Season )
         
-        self.incrementalUpdate()
+        return self.incrementalUpdate()
         
     def incrementalUpdate( self ) :
         """
@@ -133,23 +135,17 @@ class BackendInterface :
         """
         self.mergeDB = Database(self.dbDir)
         
-        for Show in self.updateDB.database :
-#            print 'Show: ' + Show.name + str(Show)
-#            Show.printShow()
-            show = self.currentDB.getShow( Show )
-#            print 'show: ' + show.name + str(show)
-#            show.printShow()
-            if show == None :
-                self.mergeDB.addShow( Show )
+        for newShow in self.updateDB.database :
             
-            result = self.compareDetails( show , Show )
-#            print '-' + str(result)
+            currentShow = self.currentDB.getShow( newShow )
             
-            if result == None :
-                self.mergeDB.addShow( Show )
+            if currentShow == None :
+                self.mergeDB.addShow( newShow )
+            
             else :
-                show = result
-                self.mergeDB.addShow( show )
+                self.mergeDB.addShow( self.compareDetails( currentShow , newShow ) )
+                
+        return self.mergeDB
     
     def compareDetails( self, currentShow, newShow ) :
         """
@@ -162,23 +158,19 @@ class BackendInterface :
         :returns: Updated show.
         :rtype: :class:`api.dbapi.Show`
         """
-        for Season in newShow.seasons :
-#            print '   Season: ' + Season.name + str(Season)
-            season = currentShow.getSeason( Season )
-#            if season != None :
-#                print '   season: ' + season.name + str(season)
-            if season == None :
-                currentShow.addSeason( Season )
-                continue
-            result = self.compareSeasons( season, Season )
-#            print '      -' + str(result)
-            if result == None :
-                currentShow.addSeason( Season )
+        editedShow = Show( currentShow.name, currentShow.duration, currentShow.backend, currentShow.url )
+        
+        for newSeason in newShow.seasons :
+            
+            currentSeason = currentShow.getSeason( newSeason )
+            
+            if currentSeason == None :
+                editedShow.addSeason( newSeason )
+            
             else :
-                season = result
-        
-        return newShow
-        
+                editedShow.addSeason( self.compareSeasons( currentSeason, newSeason ) )
+                
+        return editedShow
         
     def compareSeasons( self, currentSeason, newSeason) :
         """
@@ -191,22 +183,28 @@ class BackendInterface :
         :returns: Updated season.
         :rtype: :class:`api.dbapi.Season`
         """
-        for Episode in newSeason.episodes :
-#            print '      Episode: ' + Episode.name + str(Episode)
-            episode = currentSeason.getEpisode( Episode )
-#            if episode != None :
-#                print '      episode :' + episode.name + str(episode)
-            if episode == None :
-                currentSeason.addEpisode( Episode )
-                continue
-            result = self.compareEpisodes( episode, Episode )
-#            print '          episode result :' + str(result)
-            if result == None :
-                currentSeason.addEpisode( Episode )
-            else :
-                episode = result
+        editedSeason = Season(currentSeason.name)
         
-        return newSeason
+        for newEpisode in newSeason.episodes :
+            
+            currentEpisode = currentSeason.getEpisode( newEpisode )
+            
+#            print '##S'
+#            print currentEpisode.title
+#            print currentEpisode
+#            print '##E'
+            
+            if currentEpisode == None :
+                editedSeason.addEpisode( newEpisode )
+#                print '## ## None'
+            else :
+                ny = editedSeason.addEpisode( self.compareEpisodes( currentEpisode, newEpisode ) )
+#                print '  ###'
+#            print '     ' + ny.title
+#            print '     ' + str(ny)
+#            print '  ###'
+            
+        return editedSeason
         
     def compareEpisodes ( self, currentEpisode, newEpisode ) :
         """
@@ -235,7 +233,7 @@ class BackendInterface :
         if conflict == True :
             return self.solveEpisodeConflicts( currentEpisode, newEpisode )
         else :
-            return None
+            return currentEpisode
         
     def solveEpisodeConflicts ( self, firstEpisode, secondEpisode ) :
         """

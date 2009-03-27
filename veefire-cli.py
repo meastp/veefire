@@ -149,14 +149,14 @@ def main():
 				
 		ans = raw_input("Is this OK? y or n\n")
 		if ans in ("y", "yes", "Y"):
-			rn.renameAll(filesystem)
+			rn.rename()
 			
 			ans = raw_input("Renaming is complete. Is the result OK? y/n\n")
 			if ans in ("y", "yes", "Y"):
 				print "All OK!"
 			else:
 				print "Undoing the operation..."
-				rn.undoRenameAll()
+				rn.revert()
 				print "All names should now be reverted back to the original."
 		else:
 			print "Aborting."

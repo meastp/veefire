@@ -97,6 +97,10 @@ Examples
     /tmp/veefire/Black Books
     Black Books - 03X05 - The Travel Writer.avi bb.s03e05.avi
     Black Books - 01X02 - Manny's First Day.avi blackbooks.s01e02.avi
+    >>> # Rename files
+    >>> me.rename()
+    >>> # Revert / Undo previous rename
+    >>> me.revert()
 
 .. _test-directory:
 

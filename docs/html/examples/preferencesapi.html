@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Examples &mdash; veefire v1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+          URL_ROOT:    '../',
+          VERSION:     '1.0',
+          COLLAPSE_MODINDEX: false,
+          FILE_SUFFIX: ''
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/interface.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="contents" title="Global table of contents" href="../contents.html" />
+    <link rel="index" title="Global index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="veefire v1.0 documentation" href="../index.html" />
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li><a href="../index.html">veefire v1.0 documentation</a> &raquo;</li>
+      </ul>
+    </div>
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  
+  <div class="section">
+<h1 id="examples">Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For testing the examples in the Python interpreter, start your Python interactive shell, and do the following.</p>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s">&#39;&lt;path/to/veefire&gt;&#39;</span><span class="p">)</span> <span class="c"># path to your veefire directory</span>
+</pre></div>
+</div>
+<p><strong>Example:</strong></p>
+<blockquote>
+Manipulate the preferences.xml file ( <a class="reference" href="../misc/preferences.html#preferences-xml"><em>Preferences in veefire</em></a> ).</blockquote>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.preferencesapi</span> <span class="k">import</span> <span class="n">Preferences</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span> <span class="o">=</span> <span class="n">Tools</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createRootDir</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tools</span><span class="o">.</span><span class="n">createPreferencesXML</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">preferences</span> <span class="o">=</span> <span class="n">Preferences</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">preferencesXML</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># load preferences from preferences.xml</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">preferences</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># get property</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">preferences</span><span class="p">[</span><span class="s">&#39;confirm-on-rename&#39;</span><span class="p">]</span>
+<span class="go">true</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># set property</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">preferences</span><span class="p">[</span><span class="s">&#39;confirm-on-rename&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;false&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># list options, if any</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">preferences</span><span class="o">.</span><span class="n">getOptions</span><span class="p">(</span><span class="s">&#39;naming-style&#39;</span><span class="p">)</span>
+<span class="go">[&#39;%show - S%seasonE%episode - %title&#39;, &#39;%show.%seasonx%episode.%title&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># add option</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">preferences</span><span class="o">.</span><span class="n">addOption</span><span class="p">(</span><span class="s">&#39;naming-style&#39;</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">)</span>
+<span class="go">[&#39;%show - S%seasonE%episode - %title&#39;, &#39;%show.%seasonx%episode.%title&#39;, &#39;3&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># remove option</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">preferences</span><span class="o">.</span><span class="n">removeOption</span><span class="p">(</span><span class="s">&#39;naming-style&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">how - S</span><span class="si">%s</span><span class="s">easonE</span><span class="si">%e</span><span class="s">pisode - %title&#39;</span><span class="p">)</span>
+<span class="go">[&#39;%show.%seasonx%episode.%title&#39;, &#39;3&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># save xml-file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">preferences</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/examples/preferencesapi.txt">Show Source</a></li>
+            </ul>
+            <h3>Quick search</h3>
+            <form class="search" action="../search.html" method="get">
+              <input type="text" name="q" size="18" /> <input type="submit" value="Go" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li><a href="../index.html">veefire v1.0 documentation</a> &raquo;</li>
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2008, Mats Taraldsvik.
+      Last updated on Mar 27, 2009.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+    </div>
+  </body>
+</html>
