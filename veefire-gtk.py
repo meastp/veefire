@@ -20,9 +20,11 @@
 import sys
 import os
 import copy
-from api.dbapi import Database, Alias, Season
+
+from api.dbapi import Database, Alias, Season, Show, Episode, Season
 from api.backendapi import Backends, BackendInterface
-from api.renameapi import Rename, Folder, FileName
+from api.renameapi import Rename, Folder, FileName, Filesystems
+from api.preferencesapi import Preferences
 
 try:
     import pygtk
@@ -41,6 +43,8 @@ except:
 #
 ##
 
+#When this is removed, the paths used in the program must also be modified.
+
 from tests.testproperties import Tools
 
 Tools = Tools()
@@ -49,6 +53,7 @@ Tools.createDatabaseFiles()
 Tools.createFilesystemXML()
 Tools.createTempFiles()
 Tools.createBackendFiles()
+Tools.createPreferencesXML()
 
 ##
 #
@@ -93,6 +98,12 @@ class NewBackendInterface(BackendInterface):
         if result == 1 :
             return secondEpisode
         return firstEpisode
+
+##
+#
+# VeefireGTK.
+#
+##
 
 class VeefireGTK:
     """
@@ -213,7 +224,12 @@ class VeefireGTK:
         
     def mainPreferencesButtonClicked (self, widget) :
         preferencesDlg = PreferencesDialog()
-        preferencesDlg.run()
+        result, preferences = preferencesDlg.run()
+        
+        GTK_RESPONSE_SAVE = 0
+        GTK_RESPONSE_REVERT = -1
+        if result == GTK_RESPONSE_SAVE :
+            preferences.save()
         
     def mainAboutButtonClicked (self, widget) :
         aboutDlg = AboutDialog()
@@ -293,10 +309,134 @@ class PreferencesDialog :
         
         self.wTree = gtk.glade.XML( self.gladefile , "preferencesDialog" )
         self.dlg = self.wTree.get_widget("preferencesDialog")
+        
+    def to_boolean(self, string ) :
+        if string == "True" or string == "true" or string == True or string == 1 :
+            return True
+        else :
+            return False
+        
+    def changeNamingStyleLabel(self, widget ) :
+        self.namingStyleComboBoxEntry = self.wTree.get_widget("naming-styleEntry")
+        self.namingStyleLabel = self.wTree.get_widget("naming-styleLabel")
+        
+        Style = self.namingStyleComboBoxEntry.get_text()
+        
+        fileName = FileName( 'dummyName', 'dummyDB')
+        fileName.fileSuffix = '' # generateFileName needs this attribute to be set.
+        
+        aShow = Show( "Black Books", "dummyDuration", "dummyBackend", "dummyUrl" )
+        aShow.addEpisode( Episode( "2", "Sample Title", "6 November, 2008"), Season("1") )
+        
+        newLabel = fileName.generateFileName( aShow, Tools.filetypesXML, 'ext3', Style )
+        self.namingStyleLabel.set_text(newLabel)
+        
+    def editFilesystem(self, widget ) :
+        
+        pass
+        
+    def initPreferences(self) :
+        '''
+        Get values from preferences.xml
+        '''
+        
+        self.preferences = Preferences(Tools.preferencesXML)
+        self.preferences.load()
+        
+        ##
+        # Set General
+        ##
+        
+        self.namingStyleComboBoxEntry = self.wTree.get_widget("naming-styleComboBoxEntry")
+        
+        
+        self.namingStyleListstore = gtk.ListStore(str)
+        self.namingStyleComboBoxEntry.set_model(self.namingStyleListstore)
+        self.namingStyleComboBoxEntry.set_text_column(0)
+        
+#        cellrenderer = gtk.CellRendererText()
+#        self.namingStyleComboBoxEntry.pack_start(cellrenderer)
+#        self.namingStyleComboBoxEntry.add_attribute(cellrenderer, 'text', 0)
+        
+        for style in self.preferences.getOptions('naming-style') :
+            if style == self.preferences['naming-style'] :
+                self.namingStyleListstore.prepend([ style ])
+            else :
+                self.namingStyleListstore.append([ style ])
+        
+        self.namingStyleEntry = self.wTree.get_widget("naming-styleEntry")
+        self.namingStyleEntry.set_text( self.namingStyleListstore[0][0] )
+        
+        self.namingStyleComboBoxEntry.connect('changed', self.changeNamingStyleLabel )
+        
+        self.confirmOnRenameCheckButton = self.wTree.get_widget("confirm-on-renameCheckButton")
+        self.confirmOnRenameCheckButton.set_active( self.to_boolean(self.preferences['confirm-on-rename']) )
+        
+        # Filesystem
+        
+        self.preferencesSelectFilesystemComboBox = self.wTree.get_widget("preferencesSelectFilesystemComboBox")
+        
+        
+        self.preferencesSelectFilesystemListstore = gtk.ListStore(str)
+        self.preferencesSelectFilesystemComboBox.set_model(self.preferencesSelectFilesystemListstore)
+        
+        for fs in Filesystems(Tools.filetypesXML).loadFilesystems() :
+            if fs.name == self.preferences['filesystem'] :
+                self.preferencesSelectFilesystemListstore.prepend([ fs.name ])
+            else :
+                self.preferencesSelectFilesystemListstore.append([ fs.name ])
+        
+        self.preferencesSelectFilesystemComboBox.set_active(0)
+        
+        self.preferencesEditFilesystemButton = self.wTree.get_widget("preferencesEditFilesystemButton")
+        self.preferencesEditFilesystemButton.connect('clicked', self.editFilesystem )
+        
+        ##
+        # Set Database
+        ##
+        
+        self.updateOnStartupCheckButton = self.wTree.get_widget("update-on-startupCheckButton")
+        self.updateOnStartupCheckButton.set_active( self.to_boolean(self.preferences['update-on-startup']) )
+        
+        ##
+        # Set Backends
+        ##
+        
+        self.imdbtvWithTestsCheckButton = self.wTree.get_widget("imdbtv-with-testsCheckButton")
+        self.imdbtvWithTestsCheckButton.set_active( self.to_boolean(self.preferences['imdbtv-with-tests']) )
+        
+        
     def run(self):
+        self.initPreferences()
         self.result = self.dlg.run()
+        
+        ##
+        # Get General
+        ##
+        
+        namingStyle = self.namingStyleEntry.get_text()
+        if namingStyle != self.namingStyleListstore[0][0] :
+            self.preferences['naming-style'] = namingStyle
+        
+        self.preferences['confirm-on-rename'] = str(self.confirmOnRenameCheckButton.get_active())
+        
+        self.preferences['filesystem'] = self.preferencesSelectFilesystemListstore[self.preferencesSelectFilesystemComboBox.get_active()][0]
+        
+        ##
+        # Get Database
+        ##
+        
+        self.preferences['update-on-startup'] = str(self.updateOnStartupCheckButton.get_active())
+        
+        ##
+        # Get Backends
+        ##
+        
+        self.preferences['imdbtv-with-tests'] = str(self.imdbtvWithTestsCheckButton.get_active())
+        
         self.dlg.destroy()
-        return self.result
+        
+        return self.result, self.preferences
         
 class AboutDialog :
     '''
@@ -576,12 +716,9 @@ class EditShowDialog :
         alias = Alias(text)
         #result = self.Show.addAlias( alias )
         for row in self.editShowAliasesStore :
-            print row[0]
-            print alias.name
             if row[0] == alias.name :
                 exists = True
         
-        print exists
         if exists == False :
             self.editShowAliasesStore.append( [ alias.name, alias ] )
         

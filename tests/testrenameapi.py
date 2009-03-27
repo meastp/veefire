@@ -141,6 +141,38 @@ class testRename :
         assert [ fo for fo in rename2.generatePreviews('ntfs', '%show[%season](%title)') ] ==  [[('bb.s03e05.avi', 'Black Books[03](The Travel Writer).avi'), ('blackbooks.s01e02.avi', 'Black Books[01](Mannys First Day).avi')], [('Spaced.2x4.avi', 'Spaced[02](Help).avi'), ('Spaced.S02E03.avi', 'Spaced[02](Mettle).avi')]]
         assert [ fo for fo in rename3.generatePreviews('ext3', '%show - %seasonx%episode - %title') ] ==  [[('Spaced.2x4.avi', 'Spaced - 02x04 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - 02x03 - Mettle.avi')]]
         
+    def testRename(self):
+        
+        self.folder1.loadFiles()
+        
+        rename1 = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+        
+        rename1.addFolder(self.folder1)
+        rename1.addFolder(self.folder2)
+        
+        rename1.generatePreviews('ext3')
+        
+        assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']
+        rename1.rename()
+        assert os.listdir(self.folder1.path) == ["Black Books - S01E02 - Manny's First Day.avi", 'Black Books - S03E05 - The Travel Writer.avi']
+        
+    def testRevert(self):
+        
+        self.folder1.loadFiles()
+        
+        rename1 = Rename( self.Tools.databaseDir, self.Tools.filetypesXML )
+        
+        rename1.addFolder(self.folder1)
+        rename1.addFolder(self.folder2)
+        
+        rename1.generatePreviews('ext3')
+        
+        assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']
+        rename1.rename()
+        assert os.listdir(self.folder1.path) == ["Black Books - S01E02 - Manny's First Day.avi", 'Black Books - S03E05 - The Travel Writer.avi']
+        rename1.revert()
+        assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']
+        
 class testFolder :
     """
     Test Folder Class
@@ -193,6 +225,26 @@ class testFolder :
         assert [ fn for fn in self.folder2.generatePreviews(self.Tools.filetypesXML, 'ntfs', '%show - S0%sesonE0%episode - %title') ] == [('CSI.2x12.avi', 'C.S.I - S0%sesonE012 - Youve Got Male.avi'), ('csiS01E11.avi', 'C.S.I - S0%sesonE011 - I-15 Murders.avi')]
         assert [ fn for fn in self.folder3.generatePreviews(self.Tools.filetypesXML, 'ext3', '%show - S0%sesonE0%episode - %title') ] == [('Spaced.2x4.avi', 'Spaced - S0%sesonE004 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - S0%sesonE003 - Mettle.avi')]
         
+    def testRename(self):
+        
+        self.folder1.loadFiles()
+        self.folder1.generatePreviews(self.Tools.filetypesXML, 'ext3', '%show - S0%sesonE0%episode - %title')
+        
+        assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']
+        self.folder1.rename()
+        assert os.listdir(self.folder1.path) == ["Black Books - S0%sesonE002 - Manny's First Day.avi", 'Black Books - S0%sesonE005 - The Travel Writer.avi']
+        
+    def testRevert(self):
+        
+        self.folder1.loadFiles()
+        self.folder1.generatePreviews(self.Tools.filetypesXML, 'ext3', '%show - S0%sesonE0%episode - %title')
+        
+        assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']
+        self.folder1.rename()
+        assert os.listdir(self.folder1.path) == ["Black Books - S0%sesonE002 - Manny's First Day.avi", 'Black Books - S0%sesonE005 - The Travel Writer.avi']
+        self.folder1.revert()
+        assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']
+        
 class testFileName :
     """
     Test FileName Class
@@ -200,12 +252,13 @@ class testFileName :
     def setUp(self) :
         self.Tools = Tools()
         self.Tools.createRootDir()
+        self.Tools.createTempFiles()
         self.Tools.createDatabaseFiles()
         self.Tools.createFilesystemXML()
         
         self.database = Database(self.Tools.databaseDir)
         self.database.loadDB()
-        self.filename1 = FileName( 'black.books.s01e02.avi', self.database )
+        self.filename1 = FileName( 'blackbooks.s01e02.avi', self.database )
         self.filename2 = FileName( 'spaced.2x03.avi', self.database )
         self.filename3 = FileName( 'csi.s02E13.avi', self.database )
         self.filename4 = FileName( 'black books - 03x02 - Six of One.avi', self.database )
@@ -239,7 +292,7 @@ class testFileName :
         
     def testGeneratePreview(self):
         
-        assert self.filename1.generatePreview(self.Tools.filetypesXML, 'ext3', '%show - %seasonx%episode - %title ( %arc - %airdate )') == ('black.books.s01e02.avi', "Black Books - 01x02 - Manny's First Day ( none - 6 October 2000 ).avi")
+        assert self.filename1.generatePreview(self.Tools.filetypesXML, 'ext3', '%show - %seasonx%episode - %title ( %arc - %airdate )') == ('blackbooks.s01e02.avi', "Black Books - 01x02 - Manny's First Day ( none - 6 October 2000 ).avi")
         assert self.filename2.generatePreview(self.Tools.filetypesXML, 'ntfs', '%show - %seasonx%episode - %title ( %arc - %airdate )') == ('spaced.2x03.avi', 'Spaced - 02x03 - Mettle ( none - 9 March 2001 ).avi')
         assert self.filename3.generatePreview(self.Tools.filetypesXML, 'ext3', '%show - %seasonx%episode - %title ( %arc - %airdate )') == ('csi.s02E13.avi', 'C.S.I - 02x13 - Identity Crisis ( none - 17 January 2002 ).avi')
         
@@ -316,6 +369,30 @@ class testFileName :
         assert fileName1 == "Black Books.S01E02.A test's test' & a test or # a test.none.6 October 2000.avi"
         assert fileName2 == "Spaced.S02E03.A tests test and a test or No. a test.none.9 March 2001.avi"
         assert fileName3 == "C.S.I.S02E13.Identity Crisis or # 4587.none.17 January 2002.avi"
+        
+    def testRenameFile(self) :
+        
+        self.folder1 = Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[0]), self.Tools.databaseDir)
+        self.folder1.loadFiles()
+        
+        self.filename1.generatePreview(self.Tools.filetypesXML, 'ext3', '%show - %seasonx%episode - %title ( %arc - %airdate )')
+        
+        assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']
+        self.filename1.renameFile(self.folder1.path)
+        assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', "Black Books - 01x02 - Manny's First Day ( none - 6 October 2000 ).avi"]
+        
+    def testRevertFile(self) :
+        
+        self.folder1 = Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[0]), self.Tools.databaseDir)
+        self.folder1.loadFiles()
+        
+        self.filename1.generatePreview(self.Tools.filetypesXML, 'ext3', '%show - %seasonx%episode - %title ( %arc - %airdate )')
+        
+        assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']
+        self.filename1.renameFile(self.folder1.path)
+        assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', "Black Books - 01x02 - Manny's First Day ( none - 6 October 2000 ).avi"]
+        self.filename1.revertFile(self.folder1.path)
+        assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']
         
 class testFilesystems :
     """

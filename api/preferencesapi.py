@@ -79,6 +79,7 @@ class Preferences :
             Element.set('value', str(value))
             return value
         elif OptionElement != None and OptionElement.getchildren() != [] :
+            self.addOption(key, value)
             Element.set('value', str(value))
             return value
         else :
@@ -111,7 +112,12 @@ class Preferences :
         if self.Preferences.find(key) == None :
             return None
         
-        if value not in [ value for key, value in Element.items() ] :
+        exists = False
+        for listValue in Element.getchildren() :
+            if listValue.get('value') == value :
+                exists = True
+        
+        if not exists :
             ET.SubElement(Element, 'option', { 'value' : str(value) })
             return self.getOptions(key)
         

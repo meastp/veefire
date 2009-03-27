@@ -48,44 +48,44 @@ class testPreferences :
     def testGetPreference(self):
         self.preferences.load()
         assert self.preferences['confirm-on-rename'] == 'true'
-        assert self.preferences['naming-style'] == '2'
+        assert self.preferences['naming-style'] == '%show - S%seasonE%episode - %title'
         
     def testSetPreference(self):
         self.preferences.load()
         assert self.preferences['confirm-on-rename'] == 'true'
-        assert self.preferences['naming-style'] == '2'
+        assert self.preferences['naming-style'] == '%show - S%seasonE%episode - %title'
         
         self.preferences['confirm-on-rename'] = 'false'
-        self.preferences['naming-style'] = '1'
+        self.preferences['naming-style'] = '%show.%seasonx%episode.%title'
         
         assert self.preferences['confirm-on-rename'] == 'false'
-        assert self.preferences['naming-style'] == '1'
+        assert self.preferences['naming-style'] == '%show.%seasonx%episode.%title'
         
-    def testGetOption(self):
+    def testGetOptions(self):
         self.preferences.load()
-        assert self.preferences.getOptions('naming-style') == ['1', '2']
+        assert self.preferences.getOptions('naming-style') == ['%show - S%seasonE%episode - %title', '%show.%seasonx%episode.%title']
         
     def testAddOption(self):
         self.preferences.load()
-        assert self.preferences.addOption('naming-style', '3') == ['1', '2', '3']
+        assert self.preferences.addOption('naming-style', '3') == ['%show - S%seasonE%episode - %title', '%show.%seasonx%episode.%title', '3']
         
     def testRemoveOption(self):
         self.preferences.load()
-        assert self.preferences.removeOption('naming-style', '2') == ['1']
+        assert self.preferences.removeOption('naming-style', '%show - S%seasonE%episode - %title') == ['%show.%seasonx%episode.%title']
         
     def testSave(self):
         self.preferences.load()
         self.preferences['confirm-on-rename'] = 'false'
-        self.preferences['naming-style'] = '1'
+        self.preferences['naming-style'] = '%show.%seasonx%episode.%title'
         self.preferences.addOption('naming-style', '3')
-        self.preferences.removeOption('naming-style', '2')
+        self.preferences.removeOption('naming-style', '%show - S%seasonE%episode - %title')
         self.preferences.save()
         self.preferences.load()
-        assert self.preferences.getOptions('naming-style') == ['1', '3']
+        assert self.preferences.getOptions('naming-style') == ['%show.%seasonx%episode.%title', '3']
         assert self.preferences['confirm-on-rename'] == 'false'
-        assert self.preferences['naming-style'] == '1'
+        assert self.preferences['naming-style'] == '%show.%seasonx%episode.%title'
         self.preferences2 = Preferences(self.Tools.preferencesXML)
         self.preferences2.load()
-        assert self.preferences2.getOptions('naming-style') == ['1', '3']
+        assert self.preferences2.getOptions('naming-style') == ['%show.%seasonx%episode.%title', '3']
         assert self.preferences2['confirm-on-rename'] == 'false'
-        assert self.preferences2['naming-style'] == '1'
+        assert self.preferences2['naming-style'] == '%show.%seasonx%episode.%title'

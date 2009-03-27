@@ -32,8 +32,6 @@ import copy
 
 class Error(Exception): pass
 
-#        fileSystem3 = Filesystems(self.Tools.filetypesXML).getFilesystem( Filesystem( 'ntfs' ) )
-
 class Rename :
     """
     Rename files. Contains Folders.
@@ -91,13 +89,13 @@ class Rename :
         
         return RootFolder
     
-    def renameAll(self, fileSystem):
+    def rename(self):
         for Folder in self.folders:
-            Folder.renameAll(self.filesystemDir, fileSystem)
+            Folder.rename()
     
-    def undoRenameAll(self):
+    def revert(self):
         for Folder in self.folders:
-            Folder.undoRename()
+            Folder.revert()
     
     def getFolder ( self, InputFolder ) :
         """
@@ -174,7 +172,6 @@ class Folder :
         self.dbDir = dbDir
         self.shows = shows
         self.path = path
-        self.undoHistory = []
         
     def __cmp__(self, other):
         """
@@ -238,19 +235,13 @@ class Folder :
             previews.append(FileName.generatePreview(filesystemDir, fileSystem, Style))
         return previews
         
-    def renameAll(self, filesystemDir, fileSystem):
-        self.undoHistory = []
+    def rename(self):
         for filename in self.fileNames:
-            preview = filename.generatePreview(filesystemDir, fileSystem)
-            if preview[1] != None:
-                print "Renaming: " + self.path + "/" + str(preview[0]) + " to " + self.path + "/" + str(preview[1])
-                os.rename(self.path + "/" + str(preview[0]), self.path + "/" + str(preview[1]))
-                self.undoHistory.append( (self.path + "/" + str(preview[0]), self.path + "/" + str(preview[1])) )
+            filename.renameFile( self.path )
                 
-    def undoRename(self):
-        for filePair in self.undoHistory:
-            os.rename(filePair[1], filePair[0])
-        self.undoHistory = []
+    def revert(self):
+        for filename in self.fileNames:
+            filename.revertFile( self.path )
 
 class FileName :
     """
@@ -348,7 +339,7 @@ class FileName :
         
         return self.fileName, self.generatedFileName
     
-  
+    
     def getShowDetails (self, filesystemDir, MatchingShow) :
         """
         Retrieves Show details.
@@ -425,6 +416,40 @@ class FileName :
         FileName = Style + self.fileSuffix
         
         return FileName
+        
+    def renameFile(self, root) :
+        '''
+        Rename file according to generated file name.
+        
+        :param root: path to file, excluding file name.
+        :type root: string
+        :returns: tuple with (absolute path) ( oldname, newname )
+        :rtype: tuple
+        '''
+        oldName = self.fileName
+        newName = self.generatedFileName
+        
+        old = os.path.join( root, oldName )
+        new = os.path.join( root, newName )
+        
+        os.rename( old, new )
+        
+        return old, new
+        
+    def revertFile(self, root) :
+        '''
+        Revert file name.
+        
+        :param root: path to file, excluding file name.
+        :type root: string
+        '''
+        oldName = self.fileName
+        newName = self.generatedFileName
+        
+        old = os.path.join( root, oldName )
+        new = os.path.join( root, newName )
+        
+        os.rename( new, old )
         
     def getPattern(self) :
         """

@@ -64,7 +64,12 @@ Update the Database, using the backends to retrieve information. In this example
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># testSession.addNewShow( Show( &quot;Black Books&quot;, &quot;30&quot;, &quot;ext3&quot; , &quot;BaseBackend&quot;, &quot;tt0262150&quot; ) )</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="p">[</span> <span class="n">show</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">show</span> <span class="ow">in</span> <span class="n">se</span><span class="o">.</span><span class="n">currentDB</span><span class="o">.</span><span class="n">database</span> <span class="p">]</span>
 <span class="go">[&#39;C.S.I&#39;, &#39;Spaced&#39;, &#39;Black Books&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">se</span><span class="o">.</span><span class="n">updateDatabase</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Automatically (dummy) solve conflicts.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">NewBackendInterface</span><span class="p">(</span><span class="n">BackendInterface</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">solveEpisodeConflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">firstEpisode</span><span class="p">,</span> <span class="n">secondEpisode</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">firstEpisode</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">re</span> <span class="o">=</span> <span class="n">NewBackendInterface</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">databaseDir</span><span class="p">)</span> <span class="c">#database directory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">re</span><span class="o">.</span><span class="n">updateDatabase</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Updates the database, and writes it to the database directory.</span>
 </pre></div>
 <p><strong>Example:</strong></p>
@@ -119,7 +124,7 @@ Get backend names.</blockquote>
     </div>
     <div class="footer">
       &copy; Copyright 2008, Mats Taraldsvik.
-      Last updated on Mar 05, 2009.
+      Last updated on Mar 27, 2009.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
     </div>
   </body>
