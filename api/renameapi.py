@@ -258,6 +258,7 @@ class FileName :
         """
         #TODO: (optional) Remove invalidphrases from fileName (from invalidphrases)
         self.fileName = fileName
+        self.currentFileName = None
         self.database = Database
         
         self.pattern1 = r'[sS](?:[0]+)?([1-9]+)[eE](?:[0]+)?([1-9]+)'
@@ -426,15 +427,18 @@ class FileName :
         :returns: tuple with (absolute path) ( oldname, newname )
         :rtype: tuple
         '''
-        oldName = self.fileName
+        if self.currentFileName == None :
+            self.currentFileName = self.fileName
         newName = self.generatedFileName
         
-        old = os.path.join( root, oldName )
+        current = os.path.join( root, self.currentFileName )
         new = os.path.join( root, newName )
         
-        os.rename( old, new )
+        os.rename( current, new )
         
-        return old, new
+        self.currentFileName = newName
+        
+        return self.currentFileName, self.fileName # last, current and original file name
         
     def revertFile(self, root) :
         '''
@@ -443,13 +447,15 @@ class FileName :
         :param root: path to file, excluding file name.
         :type root: string
         '''
-        oldName = self.fileName
-        newName = self.generatedFileName
+        currentFileName = self.currentFileName
+        originalFileName = self.fileName
         
-        old = os.path.join( root, oldName )
-        new = os.path.join( root, newName )
+        current = os.path.join( root, currentFileName )
+        original = os.path.join( root, originalFileName )
         
-        os.rename( new, old )
+        os.rename( current, original )
+        
+        self.currentFileName = originalFileName
         
     def getPattern(self) :
         """

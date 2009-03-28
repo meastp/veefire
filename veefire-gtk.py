@@ -26,6 +26,9 @@ from api.backendapi import Backends, BackendInterface
 from api.renameapi import Rename, Folder, FileName, Filesystems
 from api.preferencesapi import Preferences
 
+from tests.testimdbtv import testBackend
+from backends.imdbtv import Backend
+
 try:
     import pygtk
     pygtk.require("2.0")
@@ -98,6 +101,24 @@ class NewBackendInterface(BackendInterface):
         if result == 1 :
             return secondEpisode
         return firstEpisode
+
+class imdbtvtest(testBackend) :
+    """
+    Test imdbtvbackend
+    """
+    def setUp(self) :
+        self.backend = Backend()
+        
+        validShows1 = [ Show(  "Spaced", "60", "imdbtvbackend", "tt0187664" ) ]
+        self.database1 = Database(Tools.databaseDir, validShows1)
+        self.database1.loadDB()
+        
+        validShows2 = [ Show(  "Black Books", "30", "imdbtvbackend", "tt0262150" ) ]
+        self.database2 = Database(Tools.databaseDir, validShows2)
+        self.database2.loadDB()
+        
+    def tearDown(self):
+        pass
 
 ##
 #
@@ -192,6 +213,37 @@ class VeefireGTK:
         self.showsStore.clear()
         self.database = Database(Tools.databaseDir)
         self.database.loadDB()
+        preferences = Preferences(Tools.preferencesXML)
+        preferences.load()
+        
+        if self.to_boolean(preferences['update-on-startup']) == True :
+            #update warning
+            dialog = gtk.MessageDialog( None,
+                                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,  
+                                        gtk.MESSAGE_QUESTION,  
+                                        gtk.BUTTONS_OK,  
+                                        None)
+            hbox = gtk.HBox()  
+            hbox.pack_start(gtk.Label("The Database will be updated."), False, 5, 5)  
+            dialog.vbox.pack_end(hbox, True, True, 0)
+            dialog.show_all()
+            
+            dialog.run()  
+            dialog.destroy()
+              
+            
+            if self.to_boolean(preferences['imdbtv-with-tests']) == True :
+                testimdbtv = imdbtvtest()
+                testimdbtv.setUp()
+                testimdbtv.testDownloadShowList()
+                testimdbtv.testGetShowDetails()
+                testimdbtv.tearDown()
+            
+            se = NewBackendInterface(Tools.databaseDir)
+            se.updateDatabase()
+            self.database.loadDB()
+        
+        
         for Show in self.database.database :
             self.showsStore.append([ Show.name, Show.backend, Show ])
         
@@ -215,6 +267,7 @@ class VeefireGTK:
         sel.set_mode(gtk.SELECTION_SINGLE)
         
         self.showsView.show()
+       
         
     def to_boolean(self, string ) :
         if string == "True" or string == "true" or string == True or string == 1 :
@@ -250,7 +303,6 @@ class VeefireGTK:
         self.rename.rename()
         self.mainRenameButton.set_sensitive(False)
         self.mainRevertButton.set_sensitive(True)
-        self.previewPreviewButton.set_sensitive(False)
         
     def mainPreferencesButtonClicked (self, widget) :
         preferencesDlg = PreferencesDialog()
@@ -301,12 +353,14 @@ class VeefireGTK:
     def previewPreviewButtonClicked (self, widget) :
         #FIXME: Style and filesystem
         self.previewStore.clear()
-        for folder in self.rename.generatePreviews('ext3') :
+        preferences = Preferences(Tools.preferencesXML)
+        preferences.load()
+        for folder in self.rename.generatePreviews(preferences['filesystem'], preferences['naming-style']) :
             for files in folder :
                 if files[1] != None :
                     self.previewStore.append( files )
         self.mainRenameButton.set_sensitive(True)
-        self.previewPreviewButton.set_sensitive(False)
+        
         
     def showsEditShowsButtonClicked (self, widget) :
         model, row = self.showsView.get_selection().get_selected()
@@ -321,7 +375,16 @@ class VeefireGTK:
             self.showsStore.append([ Show.name, Show.backend, Show ])
         
     def showsUpdateButtonClicked (self, widget) :
-        self.database.writeDB()
+        self.database.write()
+        preferences = Preferences(Tools.preferencesXML)
+        preferences.load()
+        if self.to_boolean(preferences['imdbtv-with-tests']) == True :
+            testimdbtv = imdbtvtest()
+            testimdbtv.setUp()
+            testimdbtv.testDownloadShowList()
+            testimdbtv.testGetShowDetails()
+            testimdbtv.tearDown()
+        
         se = NewBackendInterface(Tools.databaseDir)
         se.updateDatabase()
         self.database.loadDB()
@@ -399,6 +462,20 @@ class PreferencesDialog :
         self.namingStyleEntry.set_text( self.namingStyleListstore[0][0] )
         
         self.namingStyleComboBoxEntry.connect('changed', self.changeNamingStyleLabel )
+        
+        # set example to current preference.
+        self.namingStyleLabel = self.wTree.get_widget("naming-styleLabel")
+        
+        Style = self.namingStyleEntry.get_text()
+        
+        fileName = FileName( 'dummyName', 'dummyDB')
+        fileName.fileSuffix = '' # generateFileName needs this attribute to be set.
+        
+        aShow = Show( "Black Books", "dummyDuration", "dummyBackend", "dummyUrl" )
+        aShow.addEpisode( Episode( "2", "Sample Title", "6 November, 2008"), Season("1") )
+        
+        newLabel = fileName.generateFileName( aShow, Tools.filetypesXML, 'ext3', Style )
+        self.namingStyleLabel.set_text(newLabel)
         
         self.confirmOnRenameCheckButton = self.wTree.get_widget("confirm-on-renameCheckButton")
         self.confirmOnRenameCheckButton.set_active( self.to_boolean(self.preferences['confirm-on-rename']) )
