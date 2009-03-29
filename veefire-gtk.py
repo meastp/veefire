@@ -183,17 +183,36 @@ class VeefireGTK:
         #
         ##
         
-        self.previewStore = gtk.ListStore( str, str )
+        self.previewStore = gtk.ListStore( str, str, str, str, object )
         
         self.previewView = self.wTree.get_widget("previewTree")
         self.previewView.set_model(self.previewStore)
         
         render=gtk.CellRendererText()
-        col=gtk.TreeViewColumn("Current",render,text=0)
+        col=gtk.TreeViewColumn("Original Name",render,text=0)
+        col.set_resizable(True)
         self.previewView.append_column(col)
         
         render=gtk.CellRendererText()
-        col=gtk.TreeViewColumn("New",render,text=1)
+        col=gtk.TreeViewColumn("Current Name",render,text=1)
+        col.set_resizable(True)
+        col.set_visible(False)
+        self.previewView.append_column(col)
+        
+        render=gtk.CellRendererText()
+        col=gtk.TreeViewColumn("Show",render,text=2)
+        col.set_resizable(True)
+        col.set_visible(False)
+        self.previewView.append_column(col)
+        
+        render=gtk.CellRendererText()
+        col=gtk.TreeViewColumn("Preview",render,text=3)
+        col.set_resizable(True)
+        col.set_visible(False)
+        self.previewView.append_column(col)
+        
+        col=gtk.TreeViewColumn()
+        col.set_visible(False)
         self.previewView.append_column(col)
         
         #Set the selection option so that only one row can be selected
@@ -277,6 +296,24 @@ class VeefireGTK:
         
     def mainRevertButtonClicked (self, widget) :
         self.rename.revert()
+        row = self.previewStore.get_iter_first()
+        while( row != None ) :
+            
+            fileName = self.previewStore.get_value(row, 0)
+            currentFileName = self.previewStore.get_value(row, 1)
+            correctShowName = self.previewStore.get_value(row, 2)
+            generatedFileName = self.previewStore.get_value(row, 3)
+            FileName = self.previewStore.get_value(row, 4)
+            
+            self.previewStore.set_value(row, 0, FileName.fileName)
+            self.previewStore.set_value(row, 1, FileName.currentFileName)
+            self.previewStore.set_value(row, 2, FileName.CorrectShow.name)
+            self.previewStore.set_value(row, 3, FileName.generatedFileName)
+            
+            row = self.previewStore.iter_next(row)
+        
+        self.previewView.columns_autosize()
+        
         self.mainRevertButton.set_sensitive(False)
         self.mainRenameButton.set_sensitive(True)
         
@@ -301,6 +338,28 @@ class VeefireGTK:
                 return
             
         self.rename.rename()
+        
+        row = self.previewStore.get_iter_first()
+        while( row != None ) :
+            
+            fileName = self.previewStore.get_value(row, 0)
+            currentFileName = self.previewStore.get_value(row, 1)
+            correctShowName = self.previewStore.get_value(row, 2)
+            generatedFileName = self.previewStore.get_value(row, 3)
+            FileName = self.previewStore.get_value(row, 4)
+            
+            self.previewStore.set_value(row, 0, FileName.fileName)
+            self.previewStore.set_value(row, 1, FileName.currentFileName)
+            self.previewStore.set_value(row, 2, FileName.CorrectShow.name)
+            self.previewStore.set_value(row, 3, FileName.generatedFileName)
+            
+            row = self.previewStore.iter_next(row)
+        
+        currentNameColumn = self.previewView.get_column(1)
+        currentNameColumn.set_visible(True)
+        
+        self.previewView.columns_autosize()
+        
         self.mainRenameButton.set_sensitive(False)
         self.mainRevertButton.set_sensitive(True)
         
@@ -342,25 +401,56 @@ class VeefireGTK:
             for folder in self.rename.folders :
                 for files in folder.fileNames :
                     if files.CorrectShow != None :
-                        self.previewStore.append( [ files.fileName, files.CorrectShow.name ] )
-            if len(self.previewStore) > 0 : # Keep button disables if there are no entries.
+                        self.previewStore.append( [ files.fileName, files.currentFileName, files.CorrectShow.name, files.generatedFileName, files ] )
+            
+            showNameColumn = self.previewView.get_column(2)
+            showNameColumn.set_visible(True)
+            
+            self.previewView.columns_autosize()
+            
+            if len(self.previewStore) > 0 : 
                 self.previewPreviewButton.set_sensitive(True)
-            else :
+            else : # Keep button disables if there are no entries.
                 self.previewPreviewButton.set_sensitive(False)
                 self.mainRenameButton.set_sensitive(False)
                 self.mainRevertButton.set_sensitive(False)
         
     def previewPreviewButtonClicked (self, widget) :
-        #FIXME: Style and filesystem
-        self.previewStore.clear()
+        #self.previewStore.clear()
         preferences = Preferences(Tools.preferencesXML)
         preferences.load()
-        for folder in self.rename.generatePreviews(preferences['filesystem'], preferences['naming-style']) :
-            for files in folder :
-                if files[1] != None :
-                    self.previewStore.append( files )
-        self.mainRenameButton.set_sensitive(True)
+#        for folder in self.rename.generatePreviews(preferences['filesystem'], preferences['naming-style']) :
+#            for files in folder :
+#                fileName = files[0]
+#                generatedFileName = files[1]
+#                if files[1] != None :
+#                    self.previewStore.append( files )
+        self.rename.generatePreviews(preferences['filesystem'], preferences['naming-style'])
         
+        row = self.previewStore.get_iter_first()
+        while( row != None ) :
+            
+            fileName = self.previewStore.get_value(row, 0)
+            currentFileName = self.previewStore.get_value(row, 1)
+            correctShowName = self.previewStore.get_value(row, 2)
+            generatedFileName = self.previewStore.get_value(row, 3)
+            FileName = self.previewStore.get_value(row, 4)
+            
+            self.previewStore.set_value(row, 0, FileName.fileName)
+            self.previewStore.set_value(row, 1, FileName.currentFileName)
+            self.previewStore.set_value(row, 2, FileName.CorrectShow.name)
+            self.previewStore.set_value(row, 3, FileName.generatedFileName)
+            
+            row = self.previewStore.iter_next(row)
+        
+        showNameColumn = self.previewView.get_column(2)
+        showNameColumn.set_visible(False)
+        previewNameColumn = self.previewView.get_column(3)
+        previewNameColumn.set_visible(True)
+        
+        self.previewView.columns_autosize()
+        
+        self.mainRenameButton.set_sensitive(True)
         
     def showsEditShowsButtonClicked (self, widget) :
         model, row = self.showsView.get_selection().get_selected()
