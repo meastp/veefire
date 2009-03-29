@@ -1,12 +1,14 @@
+### TODO ###
 
-Update tests in documentation.
+## GTK Interface
 
-Make main gtk program.
-- Check date modified on update?
+- Remove 'import nose' from imdbtv's updatedb test.
 
-Make cli / daemon interface. Could be used in headless torrent server setup.
+- Fix proper treeview manipulation.
+
+## CLI Interface
+
+## Packaging
 
 Make setup file for Linux, Windows, Mac
     - should run unittests on install?
-    
-    Blkasfjqwjeiorqwjiorqw

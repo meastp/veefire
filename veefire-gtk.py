@@ -416,15 +416,8 @@ class VeefireGTK:
                 self.mainRevertButton.set_sensitive(False)
         
     def previewPreviewButtonClicked (self, widget) :
-        #self.previewStore.clear()
         preferences = Preferences(Tools.preferencesXML)
         preferences.load()
-#        for folder in self.rename.generatePreviews(preferences['filesystem'], preferences['naming-style']) :
-#            for files in folder :
-#                fileName = files[0]
-#                generatedFileName = files[1]
-#                if files[1] != None :
-#                    self.previewStore.append( files )
         self.rename.generatePreviews(preferences['filesystem'], preferences['naming-style'])
         
         row = self.previewStore.get_iter_first()
@@ -453,6 +446,8 @@ class VeefireGTK:
         self.mainRenameButton.set_sensitive(True)
         
     def showsEditShowsButtonClicked (self, widget) :
+        
+        #FIXME: Proper treeview
         model, row = self.showsView.get_selection().get_selected()
         show = model.get_value( row, 2 ) # 2 is our object column.
         
@@ -483,7 +478,6 @@ class PreferencesDialog :
     '''
     Preferences.
     '''
-    #TODO: Implement.
     def __init__(self) :
         self.gladefile = "veefire-gtk.glade"
         
@@ -537,10 +531,6 @@ class PreferencesDialog :
         self.namingStyleListstore = gtk.ListStore(str)
         self.namingStyleComboBoxEntry.set_model(self.namingStyleListstore)
         self.namingStyleComboBoxEntry.set_text_column(0)
-        
-#        cellrenderer = gtk.CellRendererText()
-#        self.namingStyleComboBoxEntry.pack_start(cellrenderer)
-#        self.namingStyleComboBoxEntry.add_attribute(cellrenderer, 'text', 0)
         
         for style in self.preferences.getOptions('naming-style') :
             if style == self.preferences['naming-style'] :
@@ -779,7 +769,6 @@ class EditShowDialog :
         
         #Show the treeview
         self.editShowAliasesView.show()
-        self.editShowAliasesStore.clear()
         for Alias in Show.alias :
             self.editShowAliasesStore.append([ Alias.name , Alias ])
         
