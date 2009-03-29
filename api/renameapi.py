@@ -259,6 +259,7 @@ class FileName :
         #TODO: (optional) Remove invalidphrases from fileName (from invalidphrases)
         self.fileName = fileName
         self.currentFileName = None
+        self.generatedFileName = None
         self.database = Database
         
         self.pattern1 = r'[sS](?:[0]+)?([1-9]+)[eE](?:[0]+)?([1-9]+)'
