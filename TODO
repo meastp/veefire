@@ -4,7 +4,11 @@
 
 - Remove 'import nose' from imdbtv's updatedb test.
 
-- Fix proper treeview manipulation.
+- fix shows -> remove, add. (edit is implemented)
+
+- fix right-click menu -> edit
+
+- fix directories ( Tools() )
 
 ## CLI Interface
 

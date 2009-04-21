@@ -20,7 +20,7 @@
 import nose
 import os
 
-from api.dbapi import Database, Show, Season, Episode
+from api.dbapi import Database, Show, Season, Episode, Alias
 from api.renameapi import FileName, Folder, Rename, Filesystem, Filesystems, InvChar
 from testproperties import Tools
 
@@ -37,9 +37,6 @@ class testRename :
         
         self.database = Database(self.Tools.databaseDir)
         self.database.loadDB()
-        self.filename1 = FileName( 'black.books.s01e02.avi', self.database )
-        self.filename2 = FileName( 'spaced.2x03.avi', self.database )
-        self.filename3 = FileName( 'csi.s02E13.avi', self.database )
         
         self.folder1 = Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[0]), self.Tools.databaseDir)
         self.folder2 = Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[1]), self.Tools.databaseDir)
@@ -186,9 +183,6 @@ class testFolder :
         
         self.database = Database(self.Tools.databaseDir)
         self.database.loadDB()
-        self.filename1 = FileName( 'black.books.s01e02.avi', self.database )
-        self.filename2 = FileName( 'spaced.2x03.avi', self.database )
-        self.filename3 = FileName( 'csi.s02E13.avi', self.database )
         
         self.folder1 = Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[0]), self.Tools.databaseDir)
         self.folder2 = Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[1]), self.Tools.databaseDir)
@@ -258,77 +252,78 @@ class testFileName :
         
         self.database = Database(self.Tools.databaseDir)
         self.database.loadDB()
-        self.filename1 = FileName( 'blackbooks.s01e02.avi', self.database )
-        self.filename2 = FileName( 'spaced.2x03.avi', self.database )
-        self.filename3 = FileName( 'csi.s02E13.avi', self.database )
-        self.filename4 = FileName( 'black books - 03x02 - Six of One.avi', self.database )
+        
+        smallville = Show('Smallville', '60', 'dummy', 'dummy')
+        smallville.addAlias(Alias('smallville'))
+        smallville.addEpisode( Episode('10', 'Bizarro', 'dummy'), Season('7') )
+        self.database.addShow( smallville )
+        
+        self.files = [ 'blackbooks.s01e02.avi', 'spaced.2x03.avi', 'csi.s02E13.avi', 'black books - 03x02 - Six of One.avi', 'Smallville.S07E10.HDTV.XviD-XOR.avi' ]
+        self.filenames = [ FileName( files, self.database ) for files in self.files ]
         
     def tearDown(self):
         self.Tools.removeTempFiles()
         
     def testGetPattern(self):
-        assert self.filename1.getPattern() == self.filename1.pattern1
-        assert self.filename2.getPattern() == self.filename2.pattern2
-        assert self.filename3.getPattern() == self.filename3.pattern1
-        assert self.filename4.getPattern() == self.filename4.pattern2
+        
+        dummydb = Database()
+        dummyFN = FileName( 'dummy', dummydb )
+        
+        assert [ fn.getPattern() for fn in self.filenames ] == \
+        [ dummyFN.pattern1, dummyFN.pattern2, dummyFN.pattern1, dummyFN.pattern2, dummyFN.pattern1 ]
         
     def testGetSeason(self):
-        assert self.filename1.getSeason() == '1'
-        assert self.filename2.getSeason() == '2'
-        assert self.filename3.getSeason() == '2'
-        assert self.filename4.getSeason() == '3'
+        
+        assert [ fn.getSeason() for fn in self.filenames ] == \
+        [ '1', '2', '2', '3', '7' ]
         
     def testGetEpisode(self):
-        assert self.filename1.getEpisode() == '2'
-        assert self.filename2.getEpisode() == '3'
-        assert self.filename3.getEpisode() == '13'
-        assert self.filename4.getEpisode() == '2'
+        
+        assert [ fn.getEpisode() for fn in self.filenames ] == \
+        [ '2', '3', '13', '2', '10' ]
         
     def testGetMatchingShows(self):
-        assert self.filename1.getMatchingShows().name == 'Black Books'
-        assert self.filename2.getMatchingShows().name == 'Spaced'
-        assert self.filename3.getMatchingShows().name == 'C.S.I'
-        assert self.filename4.getMatchingShows().name == 'Black Books'
+        
+        assert [ fn.getMatchingShows().name for fn in self.filenames ] == \
+        [ 'Black Books', 'Spaced', 'C.S.I', 'Black Books', 'Smallville' ]
         
     def testGeneratePreview(self):
         
-        assert self.filename1.generatePreview(self.Tools.filetypesXML, 'ext3', '%show - %seasonx%episode - %title ( %arc - %airdate )') == ('blackbooks.s01e02.avi', "Black Books - 01x02 - Manny's First Day ( none - 6 October 2000 ).avi")
-        assert self.filename2.generatePreview(self.Tools.filetypesXML, 'ntfs', '%show - %seasonx%episode - %title ( %arc - %airdate )') == ('spaced.2x03.avi', 'Spaced - 02x03 - Mettle ( none - 9 March 2001 ).avi')
-        assert self.filename3.generatePreview(self.Tools.filetypesXML, 'ext3', '%show - %seasonx%episode - %title ( %arc - %airdate )') == ('csi.s02E13.avi', 'C.S.I - 02x13 - Identity Crisis ( none - 17 January 2002 ).avi')
+        assert [ fn.generatePreview(self.Tools.filetypesXML,
+                 'ext3', 
+                 '%show - %seasonx%episode - %title ( %arc - %airdate )'
+                 ) for fn in self.filenames ] == [
+              ('blackbooks.s01e02.avi', "Black Books - 01x02 - Manny's First Day ( none - 6 October 2000 ).avi"), 
+              ('spaced.2x03.avi', 'Spaced - 02x03 - Mettle ( none - 9 March 2001 ).avi'), 
+              ('csi.s02E13.avi', 'C.S.I - 02x13 - Identity Crisis ( none - 17 January 2002 ).avi'), 
+              ('black books - 03x02 - Six of One.avi', 'Black Books - 03x02 - Elephants and Hens ( none - 18 March 2004 ).avi'), 
+              ('Smallville.S07E10.HDTV.XviD-XOR.avi', 'Smallville - 07x10 - Bizarro ( none - dummy ).avi')]
+        
+        assert [ fn.generatePreview(self.Tools.filetypesXML,
+                 'ntfs', 
+                 '%show - S%seasonE%episode - %title ( %arc - %airdate )'
+                 ) for fn in self.filenames ] == [
+              ('blackbooks.s01e02.avi', 'Black Books - S01E02 - Mannys First Day ( none - 6 October 2000 ).avi'), 
+              ('spaced.2x03.avi', 'Spaced - S02E03 - Mettle ( none - 9 March 2001 ).avi'), 
+              ('csi.s02E13.avi', 'C.S.I - S02E13 - Identity Crisis ( none - 17 January 2002 ).avi'), 
+              ('black books - 03x02 - Six of One.avi', 'Black Books - S03E02 - Elephants and Hens ( none - 18 March 2004 ).avi'), 
+              ('Smallville.S07E10.HDTV.XviD-XOR.avi', 'Smallville - S07E10 - Bizarro ( none - dummy ).avi')]
         
     def testGetShowDetails(self):
-        show1 = self.filename1.getMatchingShows()
-        show2 = self.filename2.getMatchingShows()
-        show3 = self.filename3.getMatchingShows()
         
-        testShow1 = self.filename1.getShowDetails( self.Tools.filetypesXML, show1 )
-        testShow2 = self.filename2.getShowDetails( self.Tools.filetypesXML, show2 )
-        testShow3 = self.filename3.getShowDetails( self.Tools.filetypesXML, show3 )
         
-        assert len(testShow1.seasons) == 1
-        assert len(testShow2.seasons) == 1
-        assert len(testShow3.seasons) == 1
+        testShows = [ fn.getShowDetails( self.Tools.filetypesXML, fn.getMatchingShows() ) for fn in self.filenames ]
         
-        assert len(testShow1.seasons[0].episodes) == 1
-        assert len(testShow2.seasons[0].episodes) == 1
-        assert len(testShow3.seasons[0].episodes) == 1
+        assert [ len(ts.seasons) for ts in testShows ] == [1, 1, 1, 1, 1]
+        assert [ len(ts.seasons[0].episodes) for ts in testShows ] == [1, 1, 1, 1, 1]
         
-#        show = testShow3
-#        print 'show: ' + show.name + ' - ' + show.duration + ' - ' + show.filesystem.name + ' - ' + show.backend + ' - ' + show.url
-#        for season in show.seasons :
-#            print '  season: ' + season.name
-#            for episode in season.episodes :
-#                print '    episode: ' + episode.name + ' - ' + episode.title + ' - ' + episode.airdate + ' - ' + episode.arc
         
-        fileSystem1 = Filesystems(self.Tools.filetypesXML).getFilesystem( Filesystem( 'ext3' ) )
         correctShow1 = Show( 'Black Books', '30', 'imdbtvbackend', 'tt0262150' )
         correctShow1.addEpisode( Episode( '2', "Manny's First Day", '6 October 2000', 'none'), Season('1') )
         
-        fileSystem2 = Filesystems(self.Tools.filetypesXML).getFilesystem( Filesystem( 'ext3' ) )
         correctShow2 = Show( 'Spaced', '60', 'imdbtvbackend', 'tt0187664' )
         correctShow2.addEpisode( Episode( '3', 'Mettle', '9 March 2001', 'none'), Season('2') )
         
-        fileSystem3 = Filesystems(self.Tools.filetypesXML).getFilesystem( Filesystem( 'ext3' ) )
         correctShow3 = Show( 'C.S.I', '60', 'imdbtvbackend', 'tt0247082' )
         correctShow3.addEpisode( Episode( '13', 'Identity Crisis', '17 January 2002', 'none'), Season('2') )
         
@@ -341,10 +336,10 @@ class testFileName :
                 assert False
             else :
                 return True
-                
-        assert compareShows( testShow1, correctShow1 )
-        assert compareShows( testShow2, correctShow2 )
-        assert compareShows( testShow3, correctShow3 )
+        
+        assert compareShows( testShows[0], correctShow1 )
+        assert compareShows( testShows[1], correctShow2 )
+        assert compareShows( testShows[2], correctShow3 )
         
     def testGenerateFileName(self):
         #FIXME: More than one Style, different file suffixes, arcs.
@@ -375,9 +370,11 @@ class testFileName :
         self.folder1 = Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[0]), self.Tools.databaseDir)
         self.folder1.loadFiles()
         
+        self.filename1 = FileName( 'blackbooks.s01e02.avi', self.database )
         self.filename1.generatePreview(self.Tools.filetypesXML, 'ext3', '%show - %seasonx%episode - %title ( %arc - %airdate )')
         
         assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']
+        
         self.filename1.renameFile(self.folder1.path)
         assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', "Black Books - 01x02 - Manny's First Day ( none - 6 October 2000 ).avi"]
         
@@ -386,6 +383,7 @@ class testFileName :
         self.folder1 = Folder(os.path.join(self.Tools.rootDir, self.Tools.testDirs[0]), self.Tools.databaseDir)
         self.folder1.loadFiles()
         
+        self.filename1 = FileName( 'blackbooks.s01e02.avi', self.database )
         self.filename1.generatePreview(self.Tools.filetypesXML, 'ext3', '%show - %seasonx%episode - %title ( %arc - %airdate )')
         
         assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']
