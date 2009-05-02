@@ -144,6 +144,26 @@ class Database :
                 for episode in season.episodes :
                     print '               Episode: ' + episode.title
     
+    def delete( self, Show ) :
+        """
+        Delete a show from disk.
+        
+        :param Show: The show to be deleted.
+        :type Show: :class:`api.dbapi.Show`
+        :returns: On success, returns Show. Else, returns None.
+        :rtype: :class:`api.dbapi.Show`
+        """
+        #FIXME: Get correct filesystem string instead of hardcoding filename?
+        showName = Show.name.replace(" ", "")
+        showName2 = showName.replace(".", "")
+        showName3 = showName2.replace("*", "")
+        showName4 = showName3.replace("'", "")
+        showName5 = showName4.replace("/", "")
+        if os.path.isfile(os.path.join( self.dbDir, showName5.lower() + ".show")) :
+            os.remove(os.path.join( self.dbDir, showName5.lower() + ".show") )
+            return Show
+        return None
+        
     def write( self, verbose = False ) :
         """
         Write the Database (XML) to the 'database' folder.

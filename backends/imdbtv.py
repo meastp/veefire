@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: latin-1 -*-
 
 #    Copyright 2008 Mats Taraldsvik <mats.taraldsvik@gmail.com>
 
@@ -32,7 +33,8 @@ import httplib
 import StringIO
 import gzip
 import sys
-
+    
+    
 class Backend ( BaseBackend ) :
     '''
     Backend to fetch data from imdb.com's tv section ( imdbtv ). Uses BeautifulSoup library for parsing html.
@@ -112,7 +114,7 @@ class Backend ( BaseBackend ) :
                     ## Extract info in every episode/item, and add to one tuple
                     merge = regexp.extractEpSeTitle( str(item.find('h3')) ) + regexp.extractAirDate( str( item.find('strong') ) )
                     if ( len(merge) == 4 ) : ## If merge is proper
-                        Show.addEpisode( Episode( merge[1], merge[2], merge[3] ), Season( merge[0] ) )
+                        Show.addEpisode( Episode( merge[1], regexp.removeEntities(merge[2]), merge[3] ), Season( merge[0] ) )
             updateDB.addShow( Show )
         
         return updateDB
@@ -126,6 +128,21 @@ class Regexes :
         self.septi = re.compile(r'<h3>Season (?:[0]+)?([12]?[0-9]+), Episode (?:[0]+)?([12]?[0-9]+): <a href="/title/[a-z0-9]+/">([^<]+)?</a></h3>')
         self.removetags = re.compile(r'<[^>]*>([^<]*)<[^>]*>')
         self.invalidtitle = re.compile(r'(Episode #[1-9]+.[1-9]([0-9]+)?)') #FIXME: Not Used?
+        
+        self.htmlentities = re.compile(r'(&#x\d+;)')
+        
+    def removeEntities( self, string ) :
+        """
+        Removes XML entities from a string.
+        
+        :type string: string
+        :rtype: string
+        """
+        ct = CleanupTools()
+        result = self.htmlentities.sub(ct.removeEntities, string )
+        if result == None :
+            return string
+        return result
         
     def removeTags( self, string ) :
         '''
@@ -160,6 +177,23 @@ class Regexes :
             return self.septi.match( string ).groups()
         except :
             return 'None',
+
+    
+class CleanupTools :
+    def __init__(self) :
+        #FIXME: Need more entities...
+        self.htmlEntities = { "&#x22;" : '"',
+                              "&#x27;" : "'",
+                              "&#x26;" : "&",
+                              "&#x3C;" : "<",
+                              "&#187;" : "»",
+                              "&#171;" : "«",
+                              "&#x23;" : "#",
+                              "&#x2b;" : "+",
+                              "&#x3E;" : ">"   }
+    def removeEntities(self, string) :
+        return self.htmlEntities[string.group(1)]
+        
 
 if __name__ == '__main__':
     

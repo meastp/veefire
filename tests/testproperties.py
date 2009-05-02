@@ -138,7 +138,7 @@ testDatabaseCSI = r'''<?xml version="1.0" encoding="UTF-8"?>
     <episode airdate="13 October 2000" arc="none" number="2" title="Cool Change"/>
     <episode airdate="20 October 2000" arc="none" number="3" title="Crate 'n' Burial"/>
     <episode airdate="27 October 2000" arc="none" number="4" title="Pledging Mr. Johnson"/>
-    <episode airdate="3 November 2000" arc="none" number="5" title="Friends &amp;#38; Lovers"/>
+    <episode airdate="3 November 2000" arc="none" number="5" title="Friends &amp; Lovers"/>
     <episode airdate="10 November 2000" arc="none" number="6" title="Who Are You?"/>
     <episode airdate="17 November 2000" arc="none" number="7" title="Blood Drops"/>
     <episode airdate="24 November 2000" arc="none" number="8" title="Anonymous"/>

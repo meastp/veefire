@@ -96,6 +96,8 @@ class NewBackendInterface(BackendInterface):
     If there is an episode conflict, resolve it with a dialog.
     '''
     def solveEpisodeConflicts(self, firstEpisode, secondEpisode):
+        print firstEpisode.name, firstEpisode.title, firstEpisode.airdate, firstEpisode.arc
+        print secondEpisode.name, secondEpisode.title, secondEpisode.airdate, secondEpisode.arc
         dlg = ChooseEpisodeDialog(firstEpisode, secondEpisode)
         result = dlg.run()
         if result == 1 :
@@ -146,6 +148,8 @@ class VeefireGTK:
                  "on_mainAboutButton_clicked" : self.mainAboutButtonClicked,
                  "on_previewPreviewButton_clicked" : self.previewPreviewButtonClicked,
                  "on_previewSelectFolderButton_clicked" : self.previewSelectFolderButtonClicked,
+                 "on_showsNewShowButton_clicked" : self.showsNewShowButtonClicked,
+                 "on_showsDeleteShowButton_clicked" : self.showsDeleteShowButtonClicked,
                  "on_showsEditShowsButton_clicked" : self.showsEditShowsButtonClicked,
                  "on_showsUpdateButton_clicked" : self.showsUpdateButtonClicked }
         
@@ -447,17 +451,37 @@ class VeefireGTK:
         
     def showsEditShowsButtonClicked (self, widget) :
         
-        #FIXME: Proper treeview
         model, row = self.showsView.get_selection().get_selected()
         show = model.get_value( row, 2 ) # 2 is our object column.
         
         showDialog = EditShowDialog(show, self.database)
         result = showDialog.run()
         
-        self.showsStore.clear()
-        self.database.loadDB()
-        for Show in self.database.database :
-            self.showsStore.append([ Show.name, Show.backend, Show ])
+        #Fix treeview. Should manipulate, if necessary.
+        #self.showsStore.clear()
+        #self.database.loadDB()
+        #for Show in self.database.database :
+        #    self.showsStore.append([ Show.name, Show.backend, Show ])
+        
+    def showsNewShowButtonClicked (self, widget) :
+        
+        show = Show('', '30', '', '')
+        
+        showDialog = EditShowDialog(show, self.database)
+        result = showDialog.run()
+        
+        self.database.addShow(show)
+        self.database.write()
+        self.showsStore.append([ show.name, show.backend, show ])
+        
+    def showsDeleteShowButtonClicked (self, widget) :
+        
+        model, row = self.showsView.get_selection().get_selected()
+        show = self.showsStore[row][2] # 2 is our object column.
+        
+        self.database.removeShow(show)
+        self.database.delete(show)
+        self.showsStore.remove(row)
         
     def showsUpdateButtonClicked (self, widget) :
         self.database.write()
@@ -510,7 +534,6 @@ class PreferencesDialog :
         self.namingStyleLabel.set_text(newLabel)
         
     def editFilesystem(self, widget ) :
-        
         pass
         
     def initPreferences(self) :
@@ -526,7 +549,6 @@ class PreferencesDialog :
         ##
         
         self.namingStyleComboBoxEntry = self.wTree.get_widget("naming-styleComboBoxEntry")
-        
         
         self.namingStyleListstore = gtk.ListStore(str)
         self.namingStyleComboBoxEntry.set_model(self.namingStyleListstore)
@@ -632,11 +654,6 @@ class AboutDialog :
     '''
     def __init__(self) :
         self.gladefile = "veefire-gtk.glade"
-        
-        ##
-        # Initialize dialog from Glade file.
-        ##
-        
         self.wTree = gtk.glade.XML( self.gladefile , "aboutDialog" )
         self.dlg = self.wTree.get_widget("aboutDialog")
         
@@ -666,6 +683,7 @@ class ChooseEpisodeDialog :
         ##
         # Set dbEpisode
         ##
+        
         
         self.dbTitle = self.wTree.get_widget("dbTitle")
         self.dbTitle.set_label('<i>' + self.dbEp.title + '</i>')
@@ -701,6 +719,46 @@ class ChooseEpisodeDialog :
         
         return self.result
         
+class AddEpisodeDialog :
+    '''
+    The dialog for episode conflict in the updateDatabase-function.
+    '''
+    def __init__(self) :
+        self.gladefile = "veefire-gtk.glade"
+        
+        ##
+        # Initialize dialog from Glade file.
+        ##
+        
+        self.wTree = gtk.glade.XML( self.gladefile , "addEpisodeDialog" )
+        self.dlg = self.wTree.get_widget("addEpisodeDialog")
+        
+    def run(self):  
+        
+        self.result = self.dlg.run()
+        
+        self.Name = self.wTree.get_widget("addEpisodeNumberSpin")
+        name = str(int(self.Name.get_value()))
+        
+        self.Title = self.wTree.get_widget("addEpisodeTitleEntry")
+        title = self.Title.get_text()
+        
+        self.Arc = self.wTree.get_widget("addEpisodeArcEntry")
+        arc = self.Arc.get_text()
+        
+        self.Airdate = self.wTree.get_widget("addEpisodeAirdateEntry")
+        airdate = self.Airdate.get_text()
+        
+        self.SeasonName = self.wTree.get_widget("addEpisodeSeasonNumberSpin")
+        seasonname = str(int(self.SeasonName.get_value()))
+        
+        self.dlg.destroy()
+        
+        episode = Episode( name, title, airdate, arc )
+        season = seasonname
+        
+        return self.result, episode, season
+
 class EditShowDialog :
     '''
     Database/Show editor.
@@ -724,6 +782,9 @@ class EditShowDialog :
         
         self.name = self.wTree.get_widget("editShowGeneralName")
         self.name.set_text(Show.name)
+        # Name should not be editable - only if it's a new show.
+        if self.Show.name != '' :
+            self.name.set_editable(False)
         
         self.url = self.wTree.get_widget("editShowGeneralURL")
         self.url.set_text(Show.url)
@@ -807,7 +868,6 @@ class EditShowDialog :
         
         #Show the treeview
         self.editShowEpisodesView.show()
-        self.editShowEpisodesStore.clear()
         for Season in Show.seasons :
             for Episode in Season.episodes :
                 self.editShowEpisodesStore.append( [ Season.name, Episode.name, Episode.title, Season, Episode ])
@@ -838,6 +898,7 @@ class EditShowDialog :
         '''
         Right-click menu for Episodes.
         '''
+        
         if event.button == 3:
             x = int(event.x)
             y = int(event.y)
@@ -848,14 +909,29 @@ class EditShowDialog :
                 treeview.grab_focus()
                 treeview.set_cursor( path, col, 0)
                 self.editShowEpisodesMenu.popup( None, None, None, event.button, time)
+            else :
+                treeview.grab_focus()
+                self.editShowEpisodesMenu.popup( None, None, None, event.button, time)
             return 1
         
     def showEpisodesMenuAdd( self, widget ):
-        pass
+        episodeDlg = AddEpisodeDialog()
+        result, Episode, season = episodeDlg.run()
+        #FIXME:Does this work? correct season?
+        GTK_RESPONSE_ADD = 0
+        GTK_RESPONSE_REVERT = -1
+        
+        if result == GTK_RESPONSE_ADD:
+            NewSeason = self.Show.getSeason( Season(str(season)) )
+            if NewSeason == None :
+                NewSeason = Season(str(season))
+            self.Show.addEpisode( Episode, NewSeason )
+            self.editShowEpisodesStore.append([ NewSeason.name, Episode.name, Episode.title, NewSeason, Episode ])
         
     def showEpisodesMenuRemove( self, widget ):
         model, row = self.editShowEpisodesView.get_selection().get_selected()
-        self.editShowEpisodesStore.remove(row)
+        if row != None :
+            self.editShowEpisodesStore.remove(row)
         
     def showAliasesMenu(self, treeview, event):
         '''
@@ -870,6 +946,9 @@ class EditShowDialog :
                 path, col, cellx, celly = pthinfo
                 treeview.grab_focus()
                 treeview.set_cursor( path, col, 0)
+                self.editShowAliasesMenu.popup( None, None, None, event.button, time)
+            else :
+                treeview.grab_focus()
                 self.editShowAliasesMenu.popup( None, None, None, event.button, time)
             return 1
         
@@ -911,7 +990,8 @@ class EditShowDialog :
         
     def showAliasesMenuRemove( self, widget ):
         model, row = self.editShowAliasesView.get_selection().get_selected()
-        self.editShowAliasesStore.remove(row)
+        if row != None :
+            self.editShowAliasesStore.remove(row)
         
     def run(self):  
         result = self.dlg.run()
