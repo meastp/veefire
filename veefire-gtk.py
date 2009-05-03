@@ -788,6 +788,8 @@ class EditShowDialog :
         
         self.url = self.wTree.get_widget("editShowGeneralURL")
         self.url.set_text(Show.url)
+        if self.Show.backend == 'imdbtvbackend' :
+            self.url.set_tooltip_text("This is the relative imdb-url, e.g tt000000 or tt12345678")
         
         self.backend = self.wTree.get_widget("editShowGeneralBackend")
         self.liststore = gtk.ListStore(str)
