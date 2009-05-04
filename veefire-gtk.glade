@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sat Mar 28 15:19:59 2009 -->
+<!--Generated with glade3 3.4.5 on Sun May  3 00:16:46 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="MainWindow">
     <property name="visible">True</property>
@@ -150,10 +150,32 @@
                       <widget class="GtkToolbar" id="showsToolbar">
                         <property name="visible">True</property>
                         <child>
+                          <widget class="GtkToolButton" id="showsNewShowButton">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">New</property>
+                            <property name="stock_id">gtk-new</property>
+                            <signal name="clicked" handler="on_showsNewShowButton_clicked"/>
+                          </widget>
+                          <packing>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkToolButton" id="showsDeleteShowButton">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Delete</property>
+                            <property name="stock_id">gtk-delete</property>
+                            <signal name="clicked" handler="on_showsDeleteShowButton_clicked"/>
+                          </widget>
+                          <packing>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
                           <widget class="GtkToolButton" id="showsEditShowsButton">
                             <property name="visible">True</property>
                             <property name="tooltip" translatable="yes">Add, Remove or Edit Shows in the Database</property>
-                            <property name="label" translatable="yes">Edit Shows</property>
+                            <property name="label" translatable="yes">Edit</property>
                             <property name="stock_id">gtk-edit</property>
                             <signal name="clicked" handler="on_showsEditShowsButton_clicked"/>
                           </widget>
@@ -166,7 +188,7 @@
                             <property name="visible">True</property>
                             <property name="extension_events">GDK_EXTENSION_EVENTS_ALL</property>
                             <property name="tooltip" translatable="yes">Update Shows in the Database</property>
-                            <property name="label" translatable="yes">Update</property>
+                            <property name="label" translatable="yes">Update All</property>
                             <property name="stock_id">gtk-refresh</property>
                             <signal name="clicked" handler="on_showsUpdateButton_clicked"/>
                           </widget>
@@ -679,61 +701,20 @@ ntfs, fat32 (Windows)</property>
                         <property name="n_rows">4</property>
                         <property name="n_columns">2</property>
                         <child>
-                          <widget class="GtkEntry" id="editShowGeneralURL">
+                          <widget class="GtkSpinButton" id="editShowGeneralDuration">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="tooltip" translatable="yes">The default file size of an episode in MB.</property>
+                            <property name="xalign">0.5</property>
+                            <property name="adjustment">30 30 100000 1 0 0</property>
+                            <property name="climb_rate">1</property>
                           </widget>
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="right_attach">2</property>
-                            <property name="top_attach">1</property>
-                            <property name="bottom_attach">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkLabel" id="label4">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">Backend</property>
-                          </widget>
-                          <packing>
-                            <property name="top_attach">2</property>
-                            <property name="bottom_attach">3</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkLabel" id="label3">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">URL</property>
-                          </widget>
-                          <packing>
-                            <property name="top_attach">1</property>
-                            <property name="bottom_attach">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkEntry" id="editShowGeneralName">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                          </widget>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="right_attach">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkLabel" id="label2">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">Name</property>
-                          </widget>
-                        </child>
-                        <child>
-                          <widget class="GtkLabel" id="label5">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">Duration</property>
-                          </widget>
-                          <packing>
                             <property name="top_attach">3</property>
                             <property name="bottom_attach">4</property>
+                            <property name="y_options">GTK_EXPAND</property>
                           </packing>
                         </child>
                         <child>
@@ -749,19 +730,61 @@ ntfs, fat32 (Windows)</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkSpinButton" id="editShowGeneralDuration">
+                          <widget class="GtkLabel" id="label5">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Duration</property>
+                          </widget>
+                          <packing>
+                            <property name="top_attach">3</property>
+                            <property name="bottom_attach">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="label2">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Name</property>
+                          </widget>
+                        </child>
+                        <child>
+                          <widget class="GtkEntry" id="editShowGeneralName">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="tooltip" translatable="yes">The default file size of an episode in MB.</property>
-                            <property name="adjustment">746 10 100000 1 10 0</property>
-                            <property name="climb_rate">1</property>
                           </widget>
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="right_attach">2</property>
-                            <property name="top_attach">3</property>
-                            <property name="bottom_attach">4</property>
-                            <property name="y_options">GTK_EXPAND</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="label3">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">URL</property>
+                          </widget>
+                          <packing>
+                            <property name="top_attach">1</property>
+                            <property name="bottom_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="label4">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Backend</property>
+                          </widget>
+                          <packing>
+                            <property name="top_attach">2</property>
+                            <property name="bottom_attach">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkEntry" id="editShowGeneralURL">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                          </widget>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="right_attach">2</property>
+                            <property name="top_attach">1</property>
+                            <property name="bottom_attach">2</property>
                           </packing>
                         </child>
                       </widget>
@@ -972,90 +995,16 @@ ntfs, fat32 (Windows)</property>
             <property name="n_columns">2</property>
             <property name="homogeneous">True</property>
             <child>
-              <widget class="GtkLabel" id="label14">
+              <widget class="GtkLabel" id="upAirdate">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;b&gt;Database Episode&lt;/b&gt;</property>
-                <property name="use_markup">True</property>
-              </widget>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="label15">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;b&gt;Updated Episode&lt;/b&gt;</property>
+                <property name="label" translatable="yes">label</property>
                 <property name="use_markup">True</property>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="dbTitle">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;i&gt;A Test Title&lt;/i&gt;</property>
-                <property name="use_markup">True</property>
-              </widget>
-              <packing>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="dbEpisode">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Episode 5</property>
-              </widget>
-              <packing>
-                <property name="top_attach">2</property>
-                <property name="bottom_attach">3</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="dbArc">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">( &lt;b&gt;Arc:&lt;/b&gt; &lt;i&gt;none&lt;/i&gt; )</property>
-                <property name="use_markup">True</property>
-              </widget>
-              <packing>
-                <property name="top_attach">3</property>
-                <property name="bottom_attach">4</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="dbAirdate">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">( &lt;b&gt;Aired:&lt;/b&gt; &lt;i&gt;16 August 2002&lt;/i&gt; )</property>
-                <property name="use_markup">True</property>
-              </widget>
-              <packing>
                 <property name="top_attach">4</property>
                 <property name="bottom_attach">5</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="upTitle">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">label</property>
-                <property name="use_markup">True</property>
-              </widget>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="upEpisode">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">label</property>
-                <property name="use_markup">True</property>
-              </widget>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">2</property>
-                <property name="bottom_attach">3</property>
               </packing>
             </child>
             <child>
@@ -1072,7 +1021,7 @@ ntfs, fat32 (Windows)</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="upAirdate">
+              <widget class="GtkLabel" id="upEpisode">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">label</property>
                 <property name="use_markup">True</property>
@@ -1080,9 +1029,83 @@ ntfs, fat32 (Windows)</property>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="upTitle">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">label</property>
+                <property name="use_markup">True</property>
+              </widget>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="dbAirdate">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">( &lt;b&gt;Aired:&lt;/b&gt; &lt;i&gt;16 August 2002&lt;/i&gt; )</property>
+                <property name="use_markup">True</property>
+              </widget>
+              <packing>
                 <property name="top_attach">4</property>
                 <property name="bottom_attach">5</property>
               </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="dbArc">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">( &lt;b&gt;Arc:&lt;/b&gt; &lt;i&gt;none&lt;/i&gt; )</property>
+                <property name="use_markup">True</property>
+              </widget>
+              <packing>
+                <property name="top_attach">3</property>
+                <property name="bottom_attach">4</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="dbEpisode">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Episode 5</property>
+              </widget>
+              <packing>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="dbTitle">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">&lt;i&gt;A Test Title&lt;/i&gt;</property>
+                <property name="use_markup">True</property>
+              </widget>
+              <packing>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="label15">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">&lt;b&gt;Updated Episode&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+              </widget>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="label14">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">&lt;b&gt;Database Episode&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+              </widget>
             </child>
           </widget>
           <packing>
@@ -1109,6 +1132,194 @@ ntfs, fat32 (Windows)</property>
                 <property name="receives_default">True</property>
                 <property name="label" translatable="yes">Keep Updated Episode</property>
                 <property name="response_id">1</property>
+              </widget>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">GTK_PACK_END</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="GtkDialog" id="addEpisodeDialog">
+    <property name="border_width">5</property>
+    <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="transient_for">MainWindow</property>
+    <property name="has_separator">False</property>
+    <child internal-child="vbox">
+      <widget class="GtkVBox" id="dialog-vbox5">
+        <property name="visible">True</property>
+        <property name="spacing">2</property>
+        <child>
+          <widget class="GtkAlignment" id="alignment4">
+            <property name="visible">True</property>
+            <property name="top_padding">10</property>
+            <property name="bottom_padding">10</property>
+            <property name="left_padding">10</property>
+            <property name="right_padding">10</property>
+            <child>
+              <widget class="GtkTable" id="table3">
+                <property name="visible">True</property>
+                <property name="n_rows">5</property>
+                <property name="n_columns">2</property>
+                <child>
+                  <widget class="GtkLabel" id="addEpisodeNumberLabel">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">&lt;b&gt;number&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="addEpisodeTitleLabel">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">&lt;b&gt;title&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="addEpisodeAirdateLabel">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">&lt;b&gt;air date&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="addEpisodeArcLabel">
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="label" translatable="yes">&lt;b&gt;arc&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkEntry" id="addEpisodeTitleEntry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="tooltip" translatable="yes">The episode title.</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkEntry" id="addEpisodeAirdateEntry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="tooltip" translatable="yes">Episode air date. e.g 16 August 2008</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkEntry" id="addEpisodeArcEntry">
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="tooltip" translatable="yes">Arc details. This is not implemented yet.</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkSpinButton" id="addEpisodeNumberSpin">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="xalign">0.5</property>
+                    <property name="adjustment">1 1 100 1 10 0</property>
+                    <property name="snap_to_ticks">True</property>
+                    <property name="numeric">True</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="addEpisodeSeasonNumberLabel">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">&lt;b&gt;season&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">4</property>
+                    <property name="bottom_attach">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkSpinButton" id="addEpisodeSeasonNumberSpin">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="xalign">0.5</property>
+                    <property name="adjustment">1 1 100 1 10 0</property>
+                    <property name="snap_to_ticks">True</property>
+                    <property name="numeric">True</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">4</property>
+                    <property name="bottom_attach">5</property>
+                  </packing>
+                </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child internal-child="action_area">
+          <widget class="GtkHButtonBox" id="dialog-action_area5">
+            <property name="visible">True</property>
+            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <child>
+              <widget class="GtkButton" id="addEpisodeCancelButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="label" translatable="yes">gtk-cancel</property>
+                <property name="use_stock">True</property>
+                <property name="response_id">-1</property>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkButton" id="addEpisodeAddButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="label" translatable="yes">gtk-add</property>
+                <property name="use_stock">True</property>
+                <property name="response_id">0</property>
               </widget>
               <packing>
                 <property name="position">1</property>
