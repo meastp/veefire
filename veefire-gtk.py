@@ -48,15 +48,11 @@ except:
 
 #When this is removed, the paths used in the program must also be modified.
 
-from tests.testproperties import Tools
+from api.fileapi import Paths
 
-Tools = Tools()
-Tools.createRootDir()
-Tools.createDatabaseFiles()
-Tools.createFilesystemXML()
-Tools.createTempFiles()
-Tools.createBackendFiles()
-Tools.createPreferencesXML()
+rootDir = os.path.dirname(os.path.abspath(__file__))
+
+Tools = Paths(rootDir)
 
 ##
 #
@@ -457,7 +453,6 @@ class VeefireGTK:
         showDialog = EditShowDialog(show, self.database)
         result = showDialog.run()
         
-
         
     def showsNewShowButtonClicked (self, widget) :
         
@@ -701,11 +696,13 @@ class ChooseEpisodeDialog :
         # Set upEpisode
         ##
         
+        newUpEpName = self.upEp.name.replace('&', '&amp')
+        
         self.upTitle = self.wTree.get_widget("upTitle")
         self.upTitle.set_label('<i>' + self.upEp.title + '</i>')
         
         self.upEpisode = self.wTree.get_widget("upEpisode")
-        self.upEpisode.set_label('Episode ' + self.upEp.name)
+        self.upEpisode.set_label('Episode ' + newUpEpName)
         
         self.upArc = self.wTree.get_widget("upArc")
         self.upArc.set_label('( <b>Arc:</b> <i>' + self.upEp.arc + '</i> )')
@@ -1030,4 +1027,3 @@ class EditShowDialog :
 if __name__ == "__main__":
         hwg = VeefireGTK()
         gtk.main()
-        Tools.removeTempFiles()

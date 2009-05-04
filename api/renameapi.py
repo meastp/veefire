@@ -237,11 +237,17 @@ class Folder :
         
     def rename(self):
         for filename in self.fileNames:
-            filename.renameFile( self.path )
+            try:
+                filename.renameFile( self.path )
+            except:
+                print "Not a valid filename"
                 
     def revert(self):
         for filename in self.fileNames:
-            filename.revertFile( self.path )
+            try:
+                filename.revertFile( self.path )
+            except:
+                print "not a valid filename"
 
 class FileName :
     """
@@ -267,8 +273,6 @@ class FileName :
         
         self.pattern2 = r'(?:[0]+)?([0-9]+)[xX](?:[0]+)?([0-9]+)'
         self.seepattern2 = re.compile( self.pattern2 )
-        
-        self.generatedFileName = None
         
         ##Determine the file's regex pattern.
         self.regexPattern = self.getPattern()
@@ -364,9 +368,13 @@ class FileName :
         seasonNumber = self.getSeason()
         episodeNumber = self.getEpisode()
         
-        NewSeason = MatchingShow.getSeason( Season( seasonNumber ) )
-        NewEpisode = NewSeason.getEpisode( Episode( episodeNumber , 'title', 'airdate' ))
-        NewSeason.episodes = [ ]
+        try :
+            NewSeason = MatchingShow.getSeason( Season( seasonNumber ) )
+            NewEpisode = NewSeason.getEpisode( Episode( episodeNumber , 'title', 'airdate' ))
+            NewSeason.episodes = [ ]
+        except AttributeError :
+            print "The episode does not exist. Update database!"
+            return None
         
         ## Episode does not exist.
         if NewEpisode == None :
@@ -434,6 +442,7 @@ class FileName :
         '''
         if self.currentFileName == None :
             self.currentFileName = self.fileName
+        
         newName = self.generatedFileName
         
         current = os.path.join( root, self.currentFileName )

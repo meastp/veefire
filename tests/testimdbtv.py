@@ -16,8 +16,10 @@
 
 #    You should have received a copy of the GNU General Public License
 #    along with veefire.  If not, see <http://www.gnu.org/licenses/>.
-
-import nose
+try:
+    import nose
+except :
+    pass
 
 from api.dbapi import Database, Season, Show, Episode
 from backends.imdbtv import Regexes, Backend
