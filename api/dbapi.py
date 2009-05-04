@@ -45,11 +45,21 @@ class Database :
         
         self.dbDir = dbDir
         
-    def loadDB ( self ) :
+    def loadDB ( self, shows=None ) :
         """
         Load shows from the 'database' directory.
+        
+        :param shows: list of valid Shows in this database
+        :type shows: list or None
         """
         self.database = []
+        
+        if shows == None and self.shows == None :
+            validShows = None
+        elif shows == None and self.shows != None :
+            validShows = self.shows
+        else :
+            validShows = shows
         
         #FIXME: Catch the right exeption. ( when database directory is empty )
         for afile in os.listdir( self.dbDir ) :
@@ -67,8 +77,8 @@ class Database :
             
             notInList = False
             ## Not very elegant? Omits Shows not in self.shows, if not None.
-            if self.shows != None :
-                for S in self.shows :
+            if validShows != None :
+                for S in validShows :
                     if S.name != show.name or S.duration != show.duration or S.backend != show.backend or S.url != show.url:
                         notInList = True
             
@@ -87,13 +97,32 @@ class Database :
                 show.addSeason( newSeason )
             
             self.addShow(show)
-
+    
+    def updateShow( self, Show ) :
+        """
+        Updade a single show from the 'database' directory.
+        
+        :param shows: Show to update
+        :type shows: :class:`api.dbapi.Show`
+        """
+        db = Database()
+        db.loadDB( Show )
+        
+        UpdatedShow = db.getShow(Show)
+        
+        self.removeShow( Show )
+        
+        self.addShow(UpdatedShow)
+        
+        return UpdatedShow
+        
+    
     def addShow ( self, InputShow ) :
         """
         Add a Show.
         
         :param InputShow: Show to add.
-        :type InputShow: api.dbapi.Show
+        :type InputShow: :class:`api.dbapi.Show`
         :returns: On success, returns Show.
         :rtype: :class:`api.dbapi.Show` or None
         """

@@ -457,11 +457,7 @@ class VeefireGTK:
         showDialog = EditShowDialog(show, self.database)
         result = showDialog.run()
         
-        #Fix treeview. Should manipulate, if necessary.
-        #self.showsStore.clear()
-        #self.database.loadDB()
-        #for Show in self.database.database :
-        #    self.showsStore.append([ Show.name, Show.backend, Show ])
+
         
     def showsNewShowButtonClicked (self, widget) :
         
@@ -496,7 +492,11 @@ class VeefireGTK:
         
         se = NewBackendInterface(Tools.databaseDir)
         se.updateDatabase()
+        #Fix treeview. Should manipulate, if necessary.
+        self.showsStore.clear()
         self.database.loadDB()
+        for Show in self.database.database :
+            self.showsStore.append([ Show.name, Show.backend, Show ])
         
 class PreferencesDialog :
     '''
