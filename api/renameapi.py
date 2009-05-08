@@ -85,7 +85,7 @@ class Rename :
         self.addFolder(RootFolder)
         for root, dirs, files in os.walk(RootFolder.path, topdown=True):
             for directory in dirs :
-                self.addFolder(Folder(os.path.join( root, directory )))
+                self.addFolder( Folder(os.path.join( root, directory )))
         
         return RootFolder
     
@@ -338,8 +338,9 @@ class FileName :
         :rtype: tuple
         """
         
-        CorrectShow = self.getMatchingShows()
-        NewShow = self.getShowDetails( filesystemDir, CorrectShow )
+        #CorrectShow = self.getMatchingShows()
+        
+        NewShow = self.getShowDetails( filesystemDir, self.CorrectShow )
         
         ## Episode does not exist.
         if NewShow == None:
