@@ -134,6 +134,10 @@ class testRename :
         rename2.addFolder(self.folder3)
         rename3.addFolder(self.folder3)
         
+        rename1.getMatchingShows()
+        rename2.getMatchingShows()
+        rename3.getMatchingShows()
+        
         assert [ fo for fo in rename1.generatePreviews('ext3') ] == [[('bb.s03e05.avi', 'Black Books - S03E05 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', "Black Books - S01E02 - Manny's First Day.avi")], [('CSI.2x12.avi', "C.S.I - S02E12 - You've Got Male.avi"), ('csiS01E11.avi', 'C.S.I - S01E11 - I-15 Murders.avi')]]
         assert [ fo for fo in rename2.generatePreviews('ntfs', '%show[%season](%title)') ] ==  [[('bb.s03e05.avi', 'Black Books[03](The Travel Writer).avi'), ('blackbooks.s01e02.avi', 'Black Books[01](Mannys First Day).avi')], [('Spaced.2x4.avi', 'Spaced[02](Help).avi'), ('Spaced.S02E03.avi', 'Spaced[02](Mettle).avi')]]
         assert [ fo for fo in rename3.generatePreviews('ext3', '%show - %seasonx%episode - %title') ] ==  [[('Spaced.2x4.avi', 'Spaced - 02x04 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - 02x03 - Mettle.avi')]]
@@ -146,6 +150,8 @@ class testRename :
         
         rename1.addFolder(self.folder1)
         rename1.addFolder(self.folder2)
+        
+        rename1.getMatchingShows()
         
         rename1.generatePreviews('ext3')
         
@@ -161,6 +167,8 @@ class testRename :
         
         rename1.addFolder(self.folder1)
         rename1.addFolder(self.folder2)
+        
+        rename1.getMatchingShows()
         
         rename1.generatePreviews('ext3')
         
@@ -215,6 +223,10 @@ class testFolder :
         self.folder2.loadFiles()
         self.folder3.loadFiles()
         
+        self.folder1.getMatchingShows()
+        self.folder2.getMatchingShows()
+        self.folder3.getMatchingShows()
+        
         assert [ fn for fn in self.folder1.generatePreviews(self.Tools.filetypesXML, 'ext3', '%show - S0%sesonE0%episode - %title') ] == [('bb.s03e05.avi', 'Black Books - S0%sesonE005 - The Travel Writer.avi'), ('blackbooks.s01e02.avi', "Black Books - S0%sesonE002 - Manny's First Day.avi")]
         assert [ fn for fn in self.folder2.generatePreviews(self.Tools.filetypesXML, 'ntfs', '%show - S0%sesonE0%episode - %title') ] == [('CSI.2x12.avi', 'C.S.I - S0%sesonE012 - Youve Got Male.avi'), ('csiS01E11.avi', 'C.S.I - S0%sesonE011 - I-15 Murders.avi')]
         assert [ fn for fn in self.folder3.generatePreviews(self.Tools.filetypesXML, 'ext3', '%show - S0%sesonE0%episode - %title') ] == [('Spaced.2x4.avi', 'Spaced - S0%sesonE004 - Help.avi'), ('Spaced.S02E03.avi', 'Spaced - S0%sesonE003 - Mettle.avi')]
@@ -222,6 +234,7 @@ class testFolder :
     def testRename(self):
         
         self.folder1.loadFiles()
+        self.folder1.getMatchingShows()
         self.folder1.generatePreviews(self.Tools.filetypesXML, 'ext3', '%show - S0%sesonE0%episode - %title')
         
         assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']
@@ -231,6 +244,7 @@ class testFolder :
     def testRevert(self):
         
         self.folder1.loadFiles()
+        self.folder1.getMatchingShows()
         self.folder1.generatePreviews(self.Tools.filetypesXML, 'ext3', '%show - S0%sesonE0%episode - %title')
         
         assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']
@@ -289,25 +303,26 @@ class testFileName :
         
     def testGeneratePreview(self):
         
-        assert [ fn.generatePreview(self.Tools.filetypesXML,
-                 'ext3', 
-                 '%show - %seasonx%episode - %title ( %arc - %airdate )'
-                 ) for fn in self.filenames ] == [
-              ('blackbooks.s01e02.avi', "Black Books - 01x02 - Manny's First Day ( none - 6 October 2000 ).avi"), 
-              ('spaced.2x03.avi', 'Spaced - 02x03 - Mettle ( none - 9 March 2001 ).avi'), 
-              ('csi.s02E13.avi', 'C.S.I - 02x13 - Identity Crisis ( none - 17 January 2002 ).avi'), 
-              ('black books - 03x02 - Six of One.avi', 'Black Books - 03x02 - Elephants and Hens ( none - 18 March 2004 ).avi'), 
-              ('Smallville.S07E10.HDTV.XviD-XOR.avi', 'Smallville - 07x10 - Bizarro ( none - dummy ).avi')]
+        result = []
+        for fn in self.filenames :
+            fn.getMatchingShows()
+            result.append( fn.generatePreview(self.Tools.filetypesXML, 'ext3', '%show - %seasonx%episode - %title ( %arc - %airdate )' ) )
+        assert result == [
+                    ('blackbooks.s01e02.avi', "Black Books - 01x02 - Manny's First Day ( none - 6 October 2000 ).avi"), 
+                    ('spaced.2x03.avi', 'Spaced - 02x03 - Mettle ( none - 9 March 2001 ).avi'), 
+                    ('csi.s02E13.avi', 'C.S.I - 02x13 - Identity Crisis ( none - 17 January 2002 ).avi'), 
+                    ('black books - 03x02 - Six of One.avi', 'Black Books - 03x02 - Elephants and Hens ( none - 18 March 2004 ).avi'), 
+                    ('Smallville.S07E10.HDTV.XviD-XOR.avi', 'Smallville - 07x10 - Bizarro ( none - dummy ).avi')]
         
-        assert [ fn.generatePreview(self.Tools.filetypesXML,
-                 'ntfs', 
-                 '%show - S%seasonE%episode - %title ( %arc - %airdate )'
-                 ) for fn in self.filenames ] == [
-              ('blackbooks.s01e02.avi', 'Black Books - S01E02 - Mannys First Day ( none - 6 October 2000 ).avi'), 
-              ('spaced.2x03.avi', 'Spaced - S02E03 - Mettle ( none - 9 March 2001 ).avi'), 
-              ('csi.s02E13.avi', 'C.S.I - S02E13 - Identity Crisis ( none - 17 January 2002 ).avi'), 
-              ('black books - 03x02 - Six of One.avi', 'Black Books - S03E02 - Elephants and Hens ( none - 18 March 2004 ).avi'), 
-              ('Smallville.S07E10.HDTV.XviD-XOR.avi', 'Smallville - S07E10 - Bizarro ( none - dummy ).avi')]
+        result = []
+        for fn in self.filenames :
+            fn.getMatchingShows()
+            result.append( fn.generatePreview(self.Tools.filetypesXML, 'ntfs', '%show - %seasonE%episode - %title ( %arc - %airdate )' ) )
+        assert result == [('blackbooks.s01e02.avi', 'Black Books - 01E02 - Mannys First Day ( none - 6 October 2000 ).avi'), 
+                            ('spaced.2x03.avi', 'Spaced - 02E03 - Mettle ( none - 9 March 2001 ).avi'), 
+                            ('csi.s02E13.avi', 'C.S.I - 02E13 - Identity Crisis ( none - 17 January 2002 ).avi'), 
+                            ('black books - 03x02 - Six of One.avi', 'Black Books - 03E02 - Elephants and Hens ( none - 18 March 2004 ).avi'),
+                            ('Smallville.S07E10.HDTV.XviD-XOR.avi', 'Smallville - 07E10 - Bizarro ( none - dummy ).avi')]
         
     def testGetShowDetails(self):
         
@@ -371,6 +386,8 @@ class testFileName :
         self.folder1.loadFiles()
         
         self.filename1 = FileName( 'blackbooks.s01e02.avi', self.database )
+        self.filename1.getMatchingShows()
+        
         self.filename1.generatePreview(self.Tools.filetypesXML, 'ext3', '%show - %seasonx%episode - %title ( %arc - %airdate )')
         
         assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']
@@ -384,6 +401,7 @@ class testFileName :
         self.folder1.loadFiles()
         
         self.filename1 = FileName( 'blackbooks.s01e02.avi', self.database )
+        self.filename1.getMatchingShows()
         self.filename1.generatePreview(self.Tools.filetypesXML, 'ext3', '%show - %seasonx%episode - %title ( %arc - %airdate )')
         
         assert os.listdir(self.folder1.path) == ['bb.s03e05.avi', 'blackbooks.s01e02.avi']

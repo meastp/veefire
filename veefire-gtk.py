@@ -48,15 +48,11 @@ except:
 
 #When this is removed, the paths used in the program must also be modified.
 
-from tests.testproperties import Tools
+from api.fileapi import Paths
 
-Tools = Tools()
-Tools.createRootDir()
-Tools.createDatabaseFiles()
-Tools.createFilesystemXML()
-Tools.createTempFiles()
-Tools.createBackendFiles()
-Tools.createPreferencesXML()
+rootDir = os.path.dirname(os.path.abspath(__file__))
+
+Tools = Paths(rootDir)
 
 ##
 #
@@ -76,6 +72,7 @@ class NewFileName(FileName):
         dialog.show_all()
         responseid = dialog.run()
         dialog.destroy()
+        
         return Shows[responseid]
 
 class NewFolder(Folder) :
@@ -91,6 +88,30 @@ class NewFolder(Folder) :
                 aFileName = NewFileName( afile, self.database )
                 self.fileNames.append( aFileName )
 
+class NewRename( Rename ):
+    '''
+    Overload the Rename class to use NewFolderName.
+    '''
+    def addFoldersRecursively(self, RootFolder) :
+        """
+        Add a Folder.
+        
+        :param InputFolder: Root folder.
+        :type InputFolder: :class:`api.renameapi.Folder`
+        :returns: On success, returns root Folder.
+        :rtype: :class:`api.renameapi.Folder` or None
+        """
+        #FIXME: If folder is added as a single directory. It cannot be added recursively afterwards.
+        if self.getFolder( RootFolder ) != None :
+            return None
+        
+        self.addFolder(RootFolder)
+        for root, dirs, files in os.walk(RootFolder.path, topdown=True):
+            for directory in dirs :
+                self.addFolder( NewFolder(os.path.join( root, directory )))
+        
+        return RootFolder
+
 class NewBackendInterface(BackendInterface):
     '''
     If there is an episode conflict, resolve it with a dialog.
@@ -103,6 +124,8 @@ class NewBackendInterface(BackendInterface):
         if result == 1 :
             return secondEpisode
         return firstEpisode
+
+
 
 class imdbtvtest(testBackend) :
     """
@@ -162,7 +185,7 @@ class VeefireGTK:
         self.database = Database(Tools.databaseDir)
         self.database.loadDB()
         
-        self.rename = Rename( Tools.databaseDir, Tools.filetypesXML )
+        self.rename = NewRename( Tools.databaseDir, Tools.filetypesXML )
         
         ##
         # Main Buttons (Disable those buttons that depends on other functions)
@@ -290,7 +313,75 @@ class VeefireGTK:
         sel.set_mode(gtk.SELECTION_SINGLE)
         
         self.showsView.show()
-       
+        
+        ##
+        #
+        # Initialize the showsTree's right-click menu
+        #
+        ##
+        
+        self.editShowMenu = self.wTree.get_widget("editShowMenu")
+        self.editShowMenuUpdate = self.wTree.get_widget("editShowMenuUpdate")
+        self.editShowMenuRemove = self.wTree.get_widget("editShowMenuRemove")
+        
+        self.showsView.connect('button_press_event', self.showMenu )
+        
+        self.editShowMenuUpdate.connect('activate', self.showMenuUpdate )
+        self.editShowMenuRemove.connect('activate', self.showMenuRemove )
+        
+        ## ## ##
+        
+    def showMenu(self, treeview, event):
+        '''
+        Right-click menu for Shows.
+        '''
+        if event.button == 3:
+            x = int(event.x)
+            y = int(event.y)
+            time = event.time
+            pthinfo = treeview.get_path_at_pos(x, y)
+            if pthinfo is not None:
+                path, col, cellx, celly = pthinfo
+                treeview.grab_focus()
+                treeview.set_cursor( path, col, 0)
+                self.editShowMenu.popup( None, None, None, event.button, time)
+            return 1
+        
+    def showMenuUpdate( self, widget ):
+        model, row = self.showsView.get_selection().get_selected()
+        
+        show = self.showsStore[row][2] # 2 is our object column.
+        
+        self.database.write()
+        
+        preferences = Preferences(Tools.preferencesXML)
+        preferences.load()
+        
+        if self.to_boolean(preferences['imdbtv-with-tests']) == True :
+            testimdbtv = imdbtvtest()
+            testimdbtv.setUp()
+            testimdbtv.testDownloadShowList()
+            testimdbtv.testGetShowDetails()
+            testimdbtv.tearDown()
+        
+        se = NewBackendInterface(Tools.databaseDir, [ show ])
+        se.updateDatabase()
+        
+        #Fix treeview. Should manipulate, if necessary.
+        self.showsStore.clear()
+        self.database.loadDB()
+        
+        for Show in self.database.database :
+            self.showsStore.append([ Show.name, Show.backend, Show ])
+        
+    def showMenuRemove( self, widget ):
+        model, row = self.showsView.get_selection().get_selected()
+        if row != None :
+            show = self.showsStore[row][2] # 2 is our object column.
+            
+            self.database.removeShow(show)
+            self.database.delete(show)
+            self.showsStore.remove(row)
         
     def to_boolean(self, string ) :
         if string == "True" or string == "true" or string == True or string == 1 :
@@ -398,7 +489,7 @@ class VeefireGTK:
         
         if result == gtk.RESPONSE_ACCEPT :
             self.previewStore.clear()
-            self.rename = Rename( Tools.databaseDir, Tools.filetypesXML )
+            self.rename = NewRename( Tools.databaseDir, Tools.filetypesXML )
             for folder in folderlist :
                 self.rename.addFoldersRecursively( NewFolder(folder) )
             self.rename.getMatchingShows()
@@ -457,7 +548,6 @@ class VeefireGTK:
         showDialog = EditShowDialog(show, self.database)
         result = showDialog.run()
         
-
         
     def showsNewShowButtonClicked (self, widget) :
         
@@ -701,11 +791,13 @@ class ChooseEpisodeDialog :
         # Set upEpisode
         ##
         
+        newUpEpName = self.upEp.name.replace('&', '&amp')
+        
         self.upTitle = self.wTree.get_widget("upTitle")
         self.upTitle.set_label('<i>' + self.upEp.title + '</i>')
         
         self.upEpisode = self.wTree.get_widget("upEpisode")
-        self.upEpisode.set_label('Episode ' + self.upEp.name)
+        self.upEpisode.set_label('Episode ' + newUpEpName)
         
         self.upArc = self.wTree.get_widget("upArc")
         self.upArc.set_label('( <b>Arc:</b> <i>' + self.upEp.arc + '</i> )')
@@ -1030,4 +1122,3 @@ class EditShowDialog :
 if __name__ == "__main__":
         hwg = VeefireGTK()
         gtk.main()
-        Tools.removeTempFiles()
