@@ -21,8 +21,8 @@ import nose
 import copy
 import os
 
-from api.dbapi import Database, Season, Show, Episode
-from api.backendapi import Backends, BackendInterface
+from veefire.api.dbapi import Database, Season, Show, Episode
+from veefire.api.backendapi import Backends, BackendInterface
 from testproperties import Tools
 
 class testBackends :

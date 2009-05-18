@@ -12,7 +12,7 @@ Examples
 
 .. doctest ::
     
-    >>> from api.dbapi import Show, Episode, Season, Database
+    >>> from veefire.api.dbapi import Show, Episode, Season, Database
     >>> # import Tools to create a fake test directory.
     >>> # Remember to set the root path variable in tests/testproperties.py if you're not on Windows or Mac.
     >>> from tests.testproperties import Tools
@@ -29,7 +29,7 @@ Examples
                    Episode: Cool Change
                    Episode: Crate 'n' Burial
                    Episode: Pledging Mr. Johnson
-                   Episode: Friends &#38; Lovers
+                   Episode: Friends & Lovers
                    Episode: Who Are You?
                    Episode: Blood Drops
                    Episode: Anonymous

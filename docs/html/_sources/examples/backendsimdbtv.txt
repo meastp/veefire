@@ -11,8 +11,8 @@ Examples
 
 .. doctest ::
     
-    >>> from api.dbapi import Show, Episode, Season, Database
-    >>> from backends.imdbtv import Backend
+    >>> from veefire.api.dbapi import Show, Episode, Season, Database
+    >>> from veefire.backends.imdbtv import Backend
     >>> Showlist = [ Show( "Black Books", "30", "imdbtvbackend", "tt0262150" ) ,
     ... Show( "Spaced", "60", "imdbtvbackend", "tt0187664" ) ]
     >>> backend = Backend()

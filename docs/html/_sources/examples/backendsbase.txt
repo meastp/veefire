@@ -12,7 +12,7 @@ Examples
 
 .. doctest ::
     
-    >>> from api.dbapi import Show, Episode, Season, Database
+    >>> from veefire.api.dbapi import Show, Episode, Season, Database
     >>> from backends.base import BaseBackend
     >>> Showlist = [ Show( "Black Books", "30", "BaseBackend", "tt0262150" ) ,
     ... Show( "The IT Crowd", "30", "BaseBackend", "tt0487831" ) ,

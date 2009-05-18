@@ -12,7 +12,7 @@ Examples
 
 .. doctest ::
     
-    >>> from api.backendapi import BackendInterface
+    >>> from veefire.api.backendapi import BackendInterface
     >>> # import Tools to create a fake test directory.
     >>> # Remember to set the root path variable in tests/testproperties.py if you're not on Windows or Mac.
     >>> from tests.testproperties import Tools
@@ -39,7 +39,7 @@ Examples
 
 .. doctest::
     
-    >>> from api.backendapi import Backends
+    >>> from veefire.api.backendapi import Backends
     >>> # import Tools to create a fake test directory.
     >>> # Remember to set the root path variable in tests/testproperties.py if you're not on Windows or Mac.
     >>> from tests.testproperties import Tools
