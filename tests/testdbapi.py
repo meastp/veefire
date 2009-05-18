@@ -20,8 +20,8 @@
 import nose
 import os
 
-from api.dbapi import Database, Show, Season, Episode
-from api.dbapi import Alias
+from veefire.api.dbapi import Database, Show, Season, Episode
+from veefire.api.dbapi import Alias
 from testproperties import Tools
 
 class testDatabase :

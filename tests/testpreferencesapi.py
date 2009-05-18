@@ -18,7 +18,7 @@
 #    along with veefire.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from api.preferencesapi import Preferences
+from veefire.api.preferencesapi import Preferences
 from testproperties import Tools
 
 class testPreferences :

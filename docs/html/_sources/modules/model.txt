@@ -1,7 +1,7 @@
-:mod:`api.dbapi` -- Database and Filesystem
-================================================
+:mod:`veefire.api.dbapi` -- Database and Filesystem
+====================================================
 
-..  automodule:: api.dbapi
+..  automodule:: veefire.api.dbapi
 ..  autoclass::     Database
                     :members:
 
@@ -17,6 +17,22 @@
 ..  autoclass::     Episode
                     :members:
 
+.. include::
+    ../examples/apidbapi.rst
+
+:mod:`veefire.api.renameapi` -- File, Folder and Rename
+========================================================
+
+..  automodule:: veefire.api.renameapi
+..  autoclass::     FileName
+                    :members:
+
+..  autoclass::     Folder
+                    :members:
+
+..  autoclass::     Rename
+                    :members:
+
 ..  autoclass::     Filesystems
                     :members:
 
@@ -27,38 +43,22 @@
                     :members:
 
 .. include::
-    ../examples/apidbapi.rst
-
-:mod:`api.renameapi` -- File, Folder and Rename
-================================================
-
-..  automodule:: api.renameapi
-..  autoclass::     FileName
-                    :members:
-
-..  autoclass::     Folder
-                    :members:
-
-..  autoclass::     Rename
-                    :members:
-
-.. include::
     ../examples/apirenameapi.rst
 
-:mod:`api.preferencesapi` -- Preferences
-================================================
+:mod:`veefire.api.preferencesapi` -- Preferences
+=================================================
 
-..  automodule:: api.preferencesapi
+..  automodule:: veefire.api.preferencesapi
 ..  autoclass::     Preferences
                     :members:
 
 .. include::
     ../examples/preferencesapi.rst
 
-:mod:`api.backendapi` -- Backends and BackendInterface
-==========================================================
+:mod:`veefire.api.backendapi` -- Backends and BackendInterface
+===============================================================
 
-..  automodule:: api.backendapi
+..  automodule:: veefire.api.backendapi
 ..  autoclass::     Backends
                     :members:
 
@@ -68,20 +68,20 @@
 .. include::
     ../examples/apibackendapi.rst
 
-:mod:`backends.base` -- Backend Superclass
+:mod:`veefire.backends.base` -- Backend Superclass
 ==========================================================
 
-..  automodule:: backends.base
+..  automodule:: veefire.backends.base
 ..  autoclass::     BaseBackend
                     :members:
 
 .. include::
     ../examples/backendsbase.rst
 
-:mod:`backends.imdbtv` -- Backend to imdb.com's tv section
-============================================================
+:mod:`veefire.backends.imdbtv` -- Backend to imdb.com's tv section
+===================================================================
 
-..  automodule:: backends.imdbtv
+..  automodule:: veefire.backends.imdbtv
 ..  autoclass::     Backend
                     :members:
 

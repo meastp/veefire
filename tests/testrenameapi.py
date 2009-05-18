@@ -20,8 +20,8 @@
 import nose
 import os
 
-from api.dbapi import Database, Show, Season, Episode, Alias
-from api.renameapi import FileName, Folder, Rename, Filesystem, Filesystems, InvChar
+from veefire.api.dbapi import Database, Show, Season, Episode, Alias
+from veefire.api.renameapi import FileName, Folder, Rename, Filesystem, Filesystems, InvChar
 from testproperties import Tools
 
 class testRename :

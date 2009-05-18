@@ -12,7 +12,7 @@ Examples
 
 .. doctest ::
     
-    >>> from api.preferencesapi import Preferences
+    >>> from veefire.api.preferencesapi import Preferences
     >>> # import Tools to create a fake test directory.
     >>> # Remember to set the root path variable in tests/testproperties.py if you're not on Windows or Mac.
     >>> from tests.testproperties import Tools

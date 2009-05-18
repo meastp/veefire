@@ -21,8 +21,8 @@ try:
 except :
     pass
 
-from api.dbapi import Database, Season, Show, Episode
-from backends.imdbtv import Regexes, Backend
+from veefire.api.dbapi import Database, Season, Show, Episode
+from veefire.backends.imdbtv import Regexes, Backend
 from testproperties import Tools
 
 class testBackend :

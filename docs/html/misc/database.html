@@ -21,7 +21,7 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="top" title="veefire v1.0 documentation" href="../index.html" />
     <link rel="next" title="Filesystems in veefire" href="filesystems.html" />
-    <link rel="prev" title="api.dbapi &#8211; Database and Filesystem" href="../modules/model.html" />
+    <link rel="prev" title="veefire.api.dbapi &#8211; Database and Filesystem" href="../modules/model.html" />
   </head>
   <body>
     <div class="related">
@@ -37,7 +37,7 @@
           <a href="filesystems.html" title="Filesystems in veefire"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../modules/model.html" title="api.dbapi &#8211; Database and Filesystem"
+          <a href="../modules/model.html" title="veefire.api.dbapi &#8211; Database and Filesystem"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">veefire v1.0 documentation</a> &raquo;</li>
       </ul>
@@ -50,20 +50,20 @@
   
   <div class="section">
 <h1 id="show-database"><span id="database-xml-file"></span>Show Database<a class="headerlink" href="#show-database" title="Permalink to this headline">¶</a></h1>
-<p>The Show database is in xml format, with one file per show. It is retrieved into Python and converted to <a title="" class="reference" href="../modules/model.html#module-api.dbapi"><tt class="xref docutils literal"><span class="pre">api.dbapi</span></tt></a> objects
-with <tt class="xref docutils literal"><span class="pre">xml.etree.ElementTree</span></tt> in <a title="api.dbapi.Database" class="reference" href="../modules/model.html#api.dbapi.Database"><tt class="xref docutils literal"><span class="pre">api.dbapi.Database</span></tt></a>.</p>
+<p>The Show database is in xml format, with one file per show. It is retrieved into Python and converted to <tt class="xref docutils literal"><span class="pre">api.dbapi</span></tt> objects
+with <tt class="xref docutils literal"><span class="pre">xml.etree.ElementTree</span></tt> in <tt class="xref docutils literal"><span class="pre">api.dbapi.Database</span></tt>.</p>
 <p><strong>Structure - the Database logic:</strong></p>
 <blockquote>
 <div class="line-block">
 <div class="line"><em>&lt;tvshow&gt;</em> <em>root</em></div>
-<div class="line"><em>&lt;showproperties&gt;</em> <a title="api.dbapi.Show" class="reference" href="../modules/model.html#api.dbapi.Show"><tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt></a> ( name, backend, relative url, filesystem, duration )</div>
+<div class="line"><em>&lt;showproperties&gt;</em> <tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt> ( name, backend, relative url, filesystem, duration )</div>
 <div class="line"><em>&lt;fileproperties&gt;</em></div>
 <div class="line-block">
-<div class="line"><em>&lt;alias&gt;</em> <a title="api.dbapi.Alias" class="reference" href="../modules/model.html#api.dbapi.Alias"><tt class="xref docutils literal"><span class="pre">api.dbapi.Alias</span></tt></a> ( value )</div>
+<div class="line"><em>&lt;alias&gt;</em> <tt class="xref docutils literal"><span class="pre">api.dbapi.Alias</span></tt> ( value )</div>
 </div>
-<div class="line"><em>&lt;season&gt;</em> <a title="api.dbapi.Season" class="reference" href="../modules/model.html#api.dbapi.Season"><tt class="xref docutils literal"><span class="pre">api.dbapi.Season</span></tt></a> ( number )</div>
+<div class="line"><em>&lt;season&gt;</em> <tt class="xref docutils literal"><span class="pre">api.dbapi.Season</span></tt> ( number )</div>
 <div class="line-block">
-<div class="line"><em>&lt;episode&gt;</em> <a title="api.dbapi.Episode" class="reference" href="../modules/model.html#api.dbapi.Episode"><tt class="xref docutils literal"><span class="pre">api.dbapi.Episode</span></tt></a> ( number, title, airdate, arc )</div>
+<div class="line"><em>&lt;episode&gt;</em> <tt class="xref docutils literal"><span class="pre">api.dbapi.Episode</span></tt> ( number, title, airdate, arc )</div>
 </div>
 </div>
 </blockquote>
@@ -103,7 +103,7 @@ with <tt class="xref docutils literal"><span class="pre">xml.etree.ElementTree</
 </pre></div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The relative url depends on the backend used. In the example, it is <a title="" class="reference" href="../modules/model.html#module-backends.imdbtv"><tt class="xref docutils literal"><span class="pre">backends.imdbtv</span></tt></a></p>
+<p class="last">The relative url depends on the backend used. In the example, it is <tt class="xref docutils literal"><span class="pre">backends.imdbtv</span></tt></p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -118,7 +118,7 @@ with <tt class="xref docutils literal"><span class="pre">xml.etree.ElementTree</
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
             <h4>Previous topic</h4>
-            <p class="topless"><a href="../modules/model.html" title="previous chapter"><tt class="docutils literal docutils literal"><span class="pre">api.dbapi</span></tt> &#8211; Database and Filesystem</a></p>
+            <p class="topless"><a href="../modules/model.html" title="previous chapter"><tt class="docutils literal docutils literal"><span class="pre">veefire.api.dbapi</span></tt> &#8211; Database and Filesystem</a></p>
             <h4>Next topic</h4>
             <p class="topless"><a href="filesystems.html" title="next chapter">Filesystems in veefire</a></p>
             <h3>This Page</h3>
@@ -148,14 +148,14 @@ with <tt class="xref docutils literal"><span class="pre">xml.etree.ElementTree</
           <a href="filesystems.html" title="Filesystems in veefire"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../modules/model.html" title="api.dbapi &#8211; Database and Filesystem"
+          <a href="../modules/model.html" title="veefire.api.dbapi &#8211; Database and Filesystem"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">veefire v1.0 documentation</a> &raquo;</li>
       </ul>
     </div>
     <div class="footer">
       &copy; Copyright 2008, Mats Taraldsvik.
-      Last updated on Mar 05, 2009.
+      Last updated on May 18, 2009.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
     </div>
   </body>

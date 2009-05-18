@@ -16,9 +16,9 @@ Examples
 .. doctest ::
     
     >>> import os
-    >>> from api.renameapi import Rename, Folder
-    >>> from api.renameapi import FileName as AbstractFileName
-    >>> from api.dbapi import Show, Episode, Season, Database
+    >>> from veefire.api.renameapi import Rename, Folder
+    >>> from veefire.api.renameapi import FileName as AbstractFileName
+    >>> from veefire.api.dbapi import Show, Episode, Season, Database
     >>> # import Tools to create a fake test directory.
     >>> # Remember to set the root path variable in tests/testproperties.py if you're not on Windows or Mac.
     >>> from tests.testproperties import Tools
@@ -126,7 +126,7 @@ Test Directory
 
 .. doctest ::
     
-    >>> from api.renameapi import Filesystems, Filesystem
+    >>> from veefire.api.renameapi import Filesystems, Filesystem
     >>> # import Tools to create a fake test directory.
     >>> # Remember to set the root path variable in tests/testproperties.py if you're not on Windows or Mac.
     >>> from tests.testproperties import Tools

@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>api.dbapi &#8211; Database and Filesystem &mdash; veefire v1.0 documentation</title>
+    <title>veefire.api.dbapi &#8211; Database and Filesystem &mdash; veefire v1.0 documentation</title>
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -49,11 +49,11 @@
             
   
   <div class="section">
-<h1 id="module-api.dbapi"><tt class="xref docutils literal"><span class="pre">api.dbapi</span></tt> &#8211; Database and Filesystem<a class="headerlink" href="#module-api.dbapi" title="Permalink to this headline">¶</a></h1>
+<h1 id="module-veefire.api.dbapi"><tt class="xref docutils literal"><span class="pre">veefire.api.dbapi</span></tt> &#8211; Database and Filesystem<a class="headerlink" href="#module-veefire.api.dbapi" title="Permalink to this headline">¶</a></h1>
 <p>Contains classes for the show database and filesystems.</p>
 <dl class="class">
-<dt id="api.dbapi.Database">
-<!--[api.dbapi.Database]-->class <tt class="descclassname">api.dbapi.</tt><tt class="descname">Database</tt><big>(</big><em>dbDir=None</em>, <em>shows=None</em><big>)</big><a class="headerlink" href="#api.dbapi.Database" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Database">
+<!--[veefire.api.dbapi.Database]-->class <tt class="descclassname">veefire.api.dbapi.</tt><tt class="descname">Database</tt><big>(</big><em>dbDir=None</em>, <em>shows=None</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Database" title="Permalink to this definition">¶</a></dt>
 <dd><p>Database contains all shows, and provides methods for manipulating them.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -68,22 +68,25 @@
 </tbody>
 </table>
 <dl class="method">
-<dt id="api.dbapi.Database.addShow">
-<!--[api.dbapi.Database.addShow]--><tt class="descname">addShow</tt><big>(</big><em>InputShow</em><big>)</big><a class="headerlink" href="#api.dbapi.Database.addShow" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Database.addShow">
+<!--[veefire.api.dbapi.Database.addShow]--><tt class="descname">addShow</tt><big>(</big><em>InputShow</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Database.addShow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a Show.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>InputShow</em> (api.dbapi.Show) &#8211; Show to add.</li>
+<li><em>InputShow</em> (api.dbapi.Show
+
+/home/meastp/Development/Launchpad/veefire/features/proper-paths/veefire/api/dbapi.py:docstring of Database.addShow:5: (INFO/1) No role entry for &#8220;class&#8221; in module &#8220;docutils.parsers.rst.languages.en&#8221;.
+Trying &#8220;class&#8221; as canonical role name.) &#8211; Show to add.</li>
 </ul>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Show.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Show" class="reference" href="#api.dbapi.Show"><tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -91,8 +94,31 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="api.dbapi.Database.getShow">
-<!--[api.dbapi.Database.getShow]--><tt class="descname">getShow</tt><big>(</big><em>InputShow</em><big>)</big><a class="headerlink" href="#api.dbapi.Database.getShow" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Database.delete">
+<!--[veefire.api.dbapi.Database.delete]--><tt class="descname">delete</tt><big>(</big><em>Show</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Database.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a show from disk.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>Show</em> (api.dbapi.Show) &#8211; The show to be deleted.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Show. Else, returns None.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="veefire.api.dbapi.Database.getShow">
+<!--[veefire.api.dbapi.Database.getShow]--><tt class="descname">getShow</tt><big>(</big><em>InputShow</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Database.getShow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a Show.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -106,7 +132,7 @@
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Show.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Show" class="reference" href="#api.dbapi.Show"><tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -114,18 +140,30 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="api.dbapi.Database.loadDB">
-<!--[api.dbapi.Database.loadDB]--><tt class="descname">loadDB</tt><big>(</big><big>)</big><a class="headerlink" href="#api.dbapi.Database.loadDB" title="Permalink to this definition">¶</a></dt>
-<dd>Load shows from the &#8216;database&#8217; directory.</dd></dl>
+<dt id="veefire.api.dbapi.Database.loadDB">
+<!--[veefire.api.dbapi.Database.loadDB]--><tt class="descname">loadDB</tt><big>(</big><em>shows=None</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Database.loadDB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load shows from the &#8216;database&#8217; directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>shows</em> (list or None) &#8211; list of valid Shows in this database</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
-<dt id="api.dbapi.Database.printDb">
-<!--[api.dbapi.Database.printDb]--><tt class="descname">printDb</tt><big>(</big><big>)</big><a class="headerlink" href="#api.dbapi.Database.printDb" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Database.printDb">
+<!--[veefire.api.dbapi.Database.printDb]--><tt class="descname">printDb</tt><big>(</big><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Database.printDb" title="Permalink to this definition">¶</a></dt>
 <dd>Print the Database&#8217;s contents.</dd></dl>
 
 <dl class="method">
-<dt id="api.dbapi.Database.removeShow">
-<!--[api.dbapi.Database.removeShow]--><tt class="descname">removeShow</tt><big>(</big><em>InputShow</em><big>)</big><a class="headerlink" href="#api.dbapi.Database.removeShow" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Database.removeShow">
+<!--[veefire.api.dbapi.Database.removeShow]--><tt class="descname">removeShow</tt><big>(</big><em>InputShow</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Database.removeShow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a Show.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -139,7 +177,7 @@
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Show.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Show" class="reference" href="#api.dbapi.Show"><tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -147,8 +185,25 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="api.dbapi.Database.write">
-<!--[api.dbapi.Database.write]--><tt class="descname">write</tt><big>(</big><em>verbose=False</em><big>)</big><a class="headerlink" href="#api.dbapi.Database.write" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Database.updateShow">
+<!--[veefire.api.dbapi.Database.updateShow]--><tt class="descname">updateShow</tt><big>(</big><em>Show</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Database.updateShow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updade a single show from the &#8216;database&#8217; directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>shows</em> (api.dbapi.Show) &#8211; Show to update</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="veefire.api.dbapi.Database.write">
+<!--[veefire.api.dbapi.Database.write]--><tt class="descname">write</tt><big>(</big><em>verbose=False</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Database.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the Database (XML) to the &#8216;database&#8217; folder.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -166,8 +221,8 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="api.dbapi.Alias">
-<!--[api.dbapi.Alias]-->class <tt class="descclassname">api.dbapi.</tt><tt class="descname">Alias</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#api.dbapi.Alias" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Alias">
+<!--[veefire.api.dbapi.Alias]-->class <tt class="descclassname">veefire.api.dbapi.</tt><tt class="descname">Alias</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Alias" title="Permalink to this definition">¶</a></dt>
 <dd><p>An Alias.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -183,8 +238,8 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="api.dbapi.Show">
-<!--[api.dbapi.Show]-->class <tt class="descclassname">api.dbapi.</tt><tt class="descname">Show</tt><big>(</big><em>name</em>, <em>duration</em>, <em>backend</em>, <em>url</em><big>)</big><a class="headerlink" href="#api.dbapi.Show" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Show">
+<!--[veefire.api.dbapi.Show]-->class <tt class="descclassname">veefire.api.dbapi.</tt><tt class="descname">Show</tt><big>(</big><em>name</em>, <em>duration</em>, <em>backend</em>, <em>url</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Show" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Show. Contains Seasons, Aliases and a Filesystem.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -202,8 +257,8 @@
 </tbody>
 </table>
 <dl class="method">
-<dt id="api.dbapi.Show.addAlias">
-<!--[api.dbapi.Show.addAlias]--><tt class="descname">addAlias</tt><big>(</big><em>InputAlias</em><big>)</big><a class="headerlink" href="#api.dbapi.Show.addAlias" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Show.addAlias">
+<!--[veefire.api.dbapi.Show.addAlias]--><tt class="descname">addAlias</tt><big>(</big><em>InputAlias</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Show.addAlias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add an alias.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -217,7 +272,7 @@
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Alias.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Alias" class="reference" href="#api.dbapi.Alias"><tt class="xref docutils literal"><span class="pre">api.dbapi.Alias</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Alias</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -225,8 +280,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="api.dbapi.Show.addEpisode">
-<!--[api.dbapi.Show.addEpisode]--><tt class="descname">addEpisode</tt><big>(</big><em>InputEpisode</em>, <em>InputSeason</em><big>)</big><a class="headerlink" href="#api.dbapi.Show.addEpisode" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Show.addEpisode">
+<!--[veefire.api.dbapi.Show.addEpisode]--><tt class="descname">addEpisode</tt><big>(</big><em>InputEpisode</em>, <em>InputSeason</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Show.addEpisode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add an Episode to a Season.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -241,7 +296,7 @@
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Returns Episode if Season exists, else returns Season</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Episode" class="reference" href="#api.dbapi.Episode"><tt class="xref docutils literal"><span class="pre">api.dbapi.Episode</span></tt></a> or <cite>api.dbapi.Season</cite></p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Episode</span></tt> or <cite>api.dbapi.Season</cite></p>
 </td>
 </tr>
 </tbody>
@@ -249,8 +304,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="api.dbapi.Show.addSeason">
-<!--[api.dbapi.Show.addSeason]--><tt class="descname">addSeason</tt><big>(</big><em>InputSeason</em><big>)</big><a class="headerlink" href="#api.dbapi.Show.addSeason" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Show.addSeason">
+<!--[veefire.api.dbapi.Show.addSeason]--><tt class="descname">addSeason</tt><big>(</big><em>InputSeason</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Show.addSeason" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a Season to the Show.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -264,7 +319,7 @@
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Season.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Season" class="reference" href="#api.dbapi.Season"><tt class="xref docutils literal"><span class="pre">api.dbapi.Season</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Season</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -272,13 +327,13 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="api.dbapi.Show.clearEpisodes">
-<!--[api.dbapi.Show.clearEpisodes]--><tt class="descname">clearEpisodes</tt><big>(</big><big>)</big><a class="headerlink" href="#api.dbapi.Show.clearEpisodes" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Show.clearEpisodes">
+<!--[veefire.api.dbapi.Show.clearEpisodes]--><tt class="descname">clearEpisodes</tt><big>(</big><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Show.clearEpisodes" title="Permalink to this definition">¶</a></dt>
 <dd>Remove all Seasons and Episodes.</dd></dl>
 
 <dl class="method">
-<dt id="api.dbapi.Show.getAlias">
-<!--[api.dbapi.Show.getAlias]--><tt class="descname">getAlias</tt><big>(</big><em>InputAlias</em><big>)</big><a class="headerlink" href="#api.dbapi.Show.getAlias" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Show.getAlias">
+<!--[veefire.api.dbapi.Show.getAlias]--><tt class="descname">getAlias</tt><big>(</big><em>InputAlias</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Show.getAlias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an Alias.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -292,7 +347,7 @@
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Alias.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Alias" class="reference" href="#api.dbapi.Alias"><tt class="xref docutils literal"><span class="pre">api.dbapi.Alias</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Alias</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -300,8 +355,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="api.dbapi.Show.getSeason">
-<!--[api.dbapi.Show.getSeason]--><tt class="descname">getSeason</tt><big>(</big><em>InputSeason</em><big>)</big><a class="headerlink" href="#api.dbapi.Show.getSeason" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Show.getSeason">
+<!--[veefire.api.dbapi.Show.getSeason]--><tt class="descname">getSeason</tt><big>(</big><em>InputSeason</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Show.getSeason" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a Season.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -315,7 +370,7 @@
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Season.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Season" class="reference" href="#api.dbapi.Season"><tt class="xref docutils literal"><span class="pre">api.dbapi.Season</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Season</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -323,13 +378,13 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="api.dbapi.Show.printShow">
-<!--[api.dbapi.Show.printShow]--><tt class="descname">printShow</tt><big>(</big><big>)</big><a class="headerlink" href="#api.dbapi.Show.printShow" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Show.printShow">
+<!--[veefire.api.dbapi.Show.printShow]--><tt class="descname">printShow</tt><big>(</big><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Show.printShow" title="Permalink to this definition">¶</a></dt>
 <dd>Print contents of Show.</dd></dl>
 
 <dl class="method">
-<dt id="api.dbapi.Show.removeAlias">
-<!--[api.dbapi.Show.removeAlias]--><tt class="descname">removeAlias</tt><big>(</big><em>InputAlias</em><big>)</big><a class="headerlink" href="#api.dbapi.Show.removeAlias" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Show.removeAlias">
+<!--[veefire.api.dbapi.Show.removeAlias]--><tt class="descname">removeAlias</tt><big>(</big><em>InputAlias</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Show.removeAlias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove an Alias</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -343,7 +398,7 @@
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Alias.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Alias" class="reference" href="#api.dbapi.Alias"><tt class="xref docutils literal"><span class="pre">api.dbapi.Alias</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Alias</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -351,8 +406,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="api.dbapi.Show.removeSeason">
-<!--[api.dbapi.Show.removeSeason]--><tt class="descname">removeSeason</tt><big>(</big><em>InputSeason</em><big>)</big><a class="headerlink" href="#api.dbapi.Show.removeSeason" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Show.removeSeason">
+<!--[veefire.api.dbapi.Show.removeSeason]--><tt class="descname">removeSeason</tt><big>(</big><em>InputSeason</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Show.removeSeason" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a Season.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -366,7 +421,7 @@
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Season.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Season" class="reference" href="#api.dbapi.Season"><tt class="xref docutils literal"><span class="pre">api.dbapi.Season</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Season</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -376,8 +431,8 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="api.dbapi.Season">
-<!--[api.dbapi.Season]-->class <tt class="descclassname">api.dbapi.</tt><tt class="descname">Season</tt><big>(</big><em>SeasonName</em><big>)</big><a class="headerlink" href="#api.dbapi.Season" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Season">
+<!--[veefire.api.dbapi.Season]-->class <tt class="descclassname">veefire.api.dbapi.</tt><tt class="descname">Season</tt><big>(</big><em>SeasonName</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Season" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Season. Contains Episodes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -391,8 +446,8 @@
 </tbody>
 </table>
 <dl class="method">
-<dt id="api.dbapi.Season.addEpisode">
-<!--[api.dbapi.Season.addEpisode]--><tt class="descname">addEpisode</tt><big>(</big><em>InputEpisode</em><big>)</big><a class="headerlink" href="#api.dbapi.Season.addEpisode" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Season.addEpisode">
+<!--[veefire.api.dbapi.Season.addEpisode]--><tt class="descname">addEpisode</tt><big>(</big><em>InputEpisode</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Season.addEpisode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add an Episode.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -406,7 +461,7 @@
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Episode.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Episode" class="reference" href="#api.dbapi.Episode"><tt class="xref docutils literal"><span class="pre">api.dbapi.Episode</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Episode</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -414,8 +469,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="api.dbapi.Season.getEpisode">
-<!--[api.dbapi.Season.getEpisode]--><tt class="descname">getEpisode</tt><big>(</big><em>InputEpisode</em><big>)</big><a class="headerlink" href="#api.dbapi.Season.getEpisode" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Season.getEpisode">
+<!--[veefire.api.dbapi.Season.getEpisode]--><tt class="descname">getEpisode</tt><big>(</big><em>InputEpisode</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Season.getEpisode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an Episode.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -429,7 +484,7 @@
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Episode.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Episode" class="reference" href="#api.dbapi.Episode"><tt class="xref docutils literal"><span class="pre">api.dbapi.Episode</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Episode</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -437,8 +492,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="api.dbapi.Season.removeEpisode">
-<!--[api.dbapi.Season.removeEpisode]--><tt class="descname">removeEpisode</tt><big>(</big><em>InputEpisode</em><big>)</big><a class="headerlink" href="#api.dbapi.Season.removeEpisode" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Season.removeEpisode">
+<!--[veefire.api.dbapi.Season.removeEpisode]--><tt class="descname">removeEpisode</tt><big>(</big><em>InputEpisode</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Season.removeEpisode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove an Episode.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -452,7 +507,7 @@
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Episode.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Episode" class="reference" href="#api.dbapi.Episode"><tt class="xref docutils literal"><span class="pre">api.dbapi.Episode</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Episode</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -462,8 +517,8 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="api.dbapi.Episode">
-<!--[api.dbapi.Episode]-->class <tt class="descclassname">api.dbapi.</tt><tt class="descname">Episode</tt><big>(</big><em>episodeName</em>, <em>episodeTitle</em>, <em>episodeAirDate</em>, <em>episodeArc='none'</em><big>)</big><a class="headerlink" href="#api.dbapi.Episode" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.dbapi.Episode">
+<!--[veefire.api.dbapi.Episode]-->class <tt class="descclassname">veefire.api.dbapi.</tt><tt class="descname">Episode</tt><big>(</big><em>episodeName</em>, <em>episodeTitle</em>, <em>episodeAirDate</em>, <em>episodeArc='none'</em><big>)</big><a class="headerlink" href="#veefire.api.dbapi.Episode" title="Permalink to this definition">¶</a></dt>
 <dd><p>An Episode.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -481,15 +536,6 @@
 </table>
 </dd></dl>
 
-<div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/gtk-interface/docs/source/modules/model.rst</tt>, line 20)</p>
-autodoc can&#8217;t import/find class &#8216;Filesystems&#8217;, it reported error: &#8220;&#8216;module&#8217; object has no attribute &#8216;Filesystems&#8217;&#8221;,please check your spelling and sys.path</div>
-<div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/gtk-interface/docs/source/modules/model.rst</tt>, line 23)</p>
-autodoc can&#8217;t import/find class &#8216;Filesystem&#8217;, it reported error: &#8220;&#8216;module&#8217; object has no attribute &#8216;Filesystem&#8217;&#8221;,please check your spelling and sys.path</div>
-<div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/home/meastp/Development/Launchpad/veefire/features/gtk-interface/docs/source/modules/model.rst</tt>, line 26)</p>
-autodoc can&#8217;t import/find class &#8216;InvChar&#8217;, it reported error: &#8220;&#8216;module&#8217; object has no attribute &#8216;InvChar&#8217;&#8221;,please check your spelling and sys.path</div>
 <div class="section">
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
@@ -502,7 +548,7 @@ autodoc can&#8217;t import/find class &#8216;InvChar&#8217;, it reported error: 
 <p><strong>Example:</strong></p>
 <blockquote>
 Load the current database files into Python objects, and print a nice formatted overview of it.  In this example, there is a database directory with the xml file in <a class="reference" href="../misc/database.html#database-xml-file"><em>Show Database</em></a>.</blockquote>
-<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.dbapi</span> <span class="k">import</span> <span class="n">Show</span><span class="p">,</span> <span class="n">Episode</span><span class="p">,</span> <span class="n">Season</span><span class="p">,</span> <span class="n">Database</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">veefire.api.dbapi</span> <span class="k">import</span> <span class="n">Show</span><span class="p">,</span> <span class="n">Episode</span><span class="p">,</span> <span class="n">Season</span><span class="p">,</span> <span class="n">Database</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
@@ -605,11 +651,11 @@ Load the current database files into Python objects, and print a nice formatted 
 </div>
 </div>
 <div class="section">
-<h1 id="module-api.renameapi"><tt class="xref docutils literal"><span class="pre">api.renameapi</span></tt> &#8211; File, Folder and Rename<a class="headerlink" href="#module-api.renameapi" title="Permalink to this headline">¶</a></h1>
+<h1 id="module-veefire.api.renameapi"><tt class="xref docutils literal"><span class="pre">veefire.api.renameapi</span></tt> &#8211; File, Folder and Rename<a class="headerlink" href="#module-veefire.api.renameapi" title="Permalink to this headline">¶</a></h1>
 <p>Contains classes for renaming files, using <tt class="xref docutils literal"><span class="pre">backends</span></tt>.</p>
 <dl class="class">
-<dt id="api.renameapi.FileName">
-<!--[api.renameapi.FileName]-->class <tt class="descclassname">api.renameapi.</tt><tt class="descname">FileName</tt><big>(</big><em>fileName</em>, <em>Database</em>, <em>invalidphrases=None</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.FileName">
+<!--[veefire.api.renameapi.FileName]-->class <tt class="descclassname">veefire.api.renameapi.</tt><tt class="descname">FileName</tt><big>(</big><em>fileName</em>, <em>Database</em>, <em>invalidphrases=None</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.FileName" title="Permalink to this definition">¶</a></dt>
 <dd><p>A File.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -625,8 +671,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </tbody>
 </table>
 <dl class="method">
-<dt id="api.renameapi.FileName.generateFileName">
-<!--[api.renameapi.FileName.generateFileName]--><tt class="descname">generateFileName</tt><big>(</big><em>Show</em>, <em>fileSystemDir</em>, <em>fileSystem</em>, <em>Style</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.generateFileName" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.FileName.generateFileName">
+<!--[veefire.api.renameapi.FileName.generateFileName]--><tt class="descname">generateFileName</tt><big>(</big><em>Show</em>, <em>fileSystemDir</em>, <em>fileSystem</em>, <em>Style</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.FileName.generateFileName" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate and return a file name.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -645,8 +691,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
-<dt id="api.renameapi.FileName.generatePreview">
-<!--[api.renameapi.FileName.generatePreview]--><tt class="descname">generatePreview</tt><big>(</big><em>filesystemDir</em>, <em>fileSystem</em>, <em>Style</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.generatePreview" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.FileName.generatePreview">
+<!--[veefire.api.renameapi.FileName.generatePreview]--><tt class="descname">generatePreview</tt><big>(</big><em>filesystemDir</em>, <em>fileSystem</em>, <em>Style</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.FileName.generatePreview" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return current file name and new file name in a tuple.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -670,8 +716,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
-<dt id="api.renameapi.FileName.getEpisode">
-<!--[api.renameapi.FileName.getEpisode]--><tt class="descname">getEpisode</tt><big>(</big><big>)</big><a class="headerlink" href="#api.renameapi.FileName.getEpisode" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.FileName.getEpisode">
+<!--[veefire.api.renameapi.FileName.getEpisode]--><tt class="descname">getEpisode</tt><big>(</big><big>)</big><a class="headerlink" href="#veefire.api.renameapi.FileName.getEpisode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return episode number.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -686,8 +732,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
-<dt id="api.renameapi.FileName.getMatchingShows">
-<!--[api.renameapi.FileName.getMatchingShows]--><tt class="descname">getMatchingShows</tt><big>(</big><big>)</big><a class="headerlink" href="#api.renameapi.FileName.getMatchingShows" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.FileName.getMatchingShows">
+<!--[veefire.api.renameapi.FileName.getMatchingShows]--><tt class="descname">getMatchingShows</tt><big>(</big><big>)</big><a class="headerlink" href="#veefire.api.renameapi.FileName.getMatchingShows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get Possible show matches for this file name.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -702,8 +748,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
-<dt id="api.renameapi.FileName.getPattern">
-<!--[api.renameapi.FileName.getPattern]--><tt class="descname">getPattern</tt><big>(</big><big>)</big><a class="headerlink" href="#api.renameapi.FileName.getPattern" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.FileName.getPattern">
+<!--[veefire.api.renameapi.FileName.getPattern]--><tt class="descname">getPattern</tt><big>(</big><big>)</big><a class="headerlink" href="#veefire.api.renameapi.FileName.getPattern" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return regex pattern.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -718,8 +764,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
-<dt id="api.renameapi.FileName.getSeason">
-<!--[api.renameapi.FileName.getSeason]--><tt class="descname">getSeason</tt><big>(</big><big>)</big><a class="headerlink" href="#api.renameapi.FileName.getSeason" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.FileName.getSeason">
+<!--[veefire.api.renameapi.FileName.getSeason]--><tt class="descname">getSeason</tt><big>(</big><big>)</big><a class="headerlink" href="#veefire.api.renameapi.FileName.getSeason" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return season number.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -734,8 +780,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
-<dt id="api.renameapi.FileName.getShowDetails">
-<!--[api.renameapi.FileName.getShowDetails]--><tt class="descname">getShowDetails</tt><big>(</big><em>filesystemDir</em>, <em>MatchingShow</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.getShowDetails" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.FileName.getShowDetails">
+<!--[veefire.api.renameapi.FileName.getShowDetails]--><tt class="descname">getShowDetails</tt><big>(</big><em>filesystemDir</em>, <em>MatchingShow</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.FileName.getShowDetails" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves Show details.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -752,8 +798,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
-<dt id="api.renameapi.FileName.renameFile">
-<!--[api.renameapi.FileName.renameFile]--><tt class="descname">renameFile</tt><big>(</big><em>root</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.renameFile" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.FileName.renameFile">
+<!--[veefire.api.renameapi.FileName.renameFile]--><tt class="descname">renameFile</tt><big>(</big><em>root</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.FileName.renameFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rename file according to generated file name.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -775,8 +821,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
-<dt id="api.renameapi.FileName.revertFile">
-<!--[api.renameapi.FileName.revertFile]--><tt class="descname">revertFile</tt><big>(</big><em>root</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.revertFile" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.FileName.revertFile">
+<!--[veefire.api.renameapi.FileName.revertFile]--><tt class="descname">revertFile</tt><big>(</big><em>root</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.FileName.revertFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Revert file name.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -792,8 +838,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
-<dt id="api.renameapi.FileName.setCorrectShow">
-<!--[api.renameapi.FileName.setCorrectShow]--><tt class="descname">setCorrectShow</tt><big>(</big><em>Shows</em><big>)</big><a class="headerlink" href="#api.renameapi.FileName.setCorrectShow" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.FileName.setCorrectShow">
+<!--[veefire.api.renameapi.FileName.setCorrectShow]--><tt class="descname">setCorrectShow</tt><big>(</big><em>Shows</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.FileName.setCorrectShow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Choose correct show for this file name.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -811,7 +857,7 @@ Load the current database files into Python objects, and print a nice formatted 
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the correct, chosen Show object for this file name</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Show" class="reference" href="#api.dbapi.Show"><tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt></a></p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt></p>
 </td>
 </tr>
 </tbody>
@@ -821,8 +867,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="class">
-<dt id="api.renameapi.Folder">
-<!--[api.renameapi.Folder]-->class <tt class="descclassname">api.renameapi.</tt><tt class="descname">Folder</tt><big>(</big><em>path</em>, <em>dbDir=None</em>, <em>shows=None</em><big>)</big><a class="headerlink" href="#api.renameapi.Folder" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.Folder">
+<!--[veefire.api.renameapi.Folder]-->class <tt class="descclassname">veefire.api.renameapi.</tt><tt class="descname">Folder</tt><big>(</big><em>path</em>, <em>dbDir=None</em>, <em>shows=None</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Folder. Contains FileNames.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -838,8 +884,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </tbody>
 </table>
 <dl class="method">
-<dt id="api.renameapi.Folder.generatePreviews">
-<!--[api.renameapi.Folder.generatePreviews]--><tt class="descname">generatePreviews</tt><big>(</big><em>filesystemDir</em>, <em>fileSystem</em>, <em>Style</em><big>)</big><a class="headerlink" href="#api.renameapi.Folder.generatePreviews" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.Folder.generatePreviews">
+<!--[veefire.api.renameapi.Folder.generatePreviews]--><tt class="descname">generatePreviews</tt><big>(</big><em>filesystemDir</em>, <em>fileSystem</em>, <em>Style</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Folder.generatePreviews" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate previews for every FileName.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -863,8 +909,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
-<dt id="api.renameapi.Folder.getMatchingShows">
-<!--[api.renameapi.Folder.getMatchingShows]--><tt class="descname">getMatchingShows</tt><big>(</big><big>)</big><a class="headerlink" href="#api.renameapi.Folder.getMatchingShows" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.Folder.getMatchingShows">
+<!--[veefire.api.renameapi.Folder.getMatchingShows]--><tt class="descname">getMatchingShows</tt><big>(</big><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Folder.getMatchingShows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get Possible show matches for every FileName.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -881,8 +927,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="class">
-<dt id="api.renameapi.Rename">
-<!--[api.renameapi.Rename]-->class <tt class="descclassname">api.renameapi.</tt><tt class="descname">Rename</tt><big>(</big><em>dbDir</em>, <em>filesystemDir</em><big>)</big><a class="headerlink" href="#api.renameapi.Rename" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.Rename">
+<!--[veefire.api.renameapi.Rename]-->class <tt class="descclassname">veefire.api.renameapi.</tt><tt class="descname">Rename</tt><big>(</big><em>dbDir</em>, <em>filesystemDir</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Rename" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rename files. Contains Folders.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -898,8 +944,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </tbody>
 </table>
 <dl class="method">
-<dt id="api.renameapi.Rename.addFolder">
-<!--[api.renameapi.Rename.addFolder]--><tt class="descname">addFolder</tt><big>(</big><em>InputFolder</em><big>)</big><a class="headerlink" href="#api.renameapi.Rename.addFolder" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.Rename.addFolder">
+<!--[veefire.api.renameapi.Rename.addFolder]--><tt class="descname">addFolder</tt><big>(</big><em>InputFolder</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Rename.addFolder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a Folder.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -913,7 +959,7 @@ Load the current database files into Python objects, and print a nice formatted 
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Folder.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.renameapi.Folder" class="reference" href="#api.renameapi.Folder"><tt class="xref docutils literal"><span class="pre">api.renameapi.Folder</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.renameapi.Folder</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -921,8 +967,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
-<dt id="api.renameapi.Rename.addFoldersRecursively">
-<!--[api.renameapi.Rename.addFoldersRecursively]--><tt class="descname">addFoldersRecursively</tt><big>(</big><em>RootFolder</em><big>)</big><a class="headerlink" href="#api.renameapi.Rename.addFoldersRecursively" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.Rename.addFoldersRecursively">
+<!--[veefire.api.renameapi.Rename.addFoldersRecursively]--><tt class="descname">addFoldersRecursively</tt><big>(</big><em>RootFolder</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Rename.addFoldersRecursively" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a Folder.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -936,7 +982,7 @@ Load the current database files into Python objects, and print a nice formatted 
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns root Folder.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.renameapi.Folder" class="reference" href="#api.renameapi.Folder"><tt class="xref docutils literal"><span class="pre">api.renameapi.Folder</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.renameapi.Folder</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -944,8 +990,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
-<dt id="api.renameapi.Rename.generatePreviews">
-<!--[api.renameapi.Rename.generatePreviews]--><tt class="descname">generatePreviews</tt><big>(</big><em>fileSystem</em>, <em>Style='%show - S%seasonE%episode - %title'</em><big>)</big><a class="headerlink" href="#api.renameapi.Rename.generatePreviews" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.Rename.generatePreviews">
+<!--[veefire.api.renameapi.Rename.generatePreviews]--><tt class="descname">generatePreviews</tt><big>(</big><em>fileSystem</em>, <em>Style='%show - S%seasonE%episode - %title'</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Rename.generatePreviews" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate previews for every Folder-&gt;FileName.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -968,8 +1014,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
-<dt id="api.renameapi.Rename.getFolder">
-<!--[api.renameapi.Rename.getFolder]--><tt class="descname">getFolder</tt><big>(</big><em>InputFolder</em><big>)</big><a class="headerlink" href="#api.renameapi.Rename.getFolder" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.Rename.getFolder">
+<!--[veefire.api.renameapi.Rename.getFolder]--><tt class="descname">getFolder</tt><big>(</big><em>InputFolder</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Rename.getFolder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a Folder.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -983,7 +1029,7 @@ Load the current database files into Python objects, and print a nice formatted 
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Folder.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.renameapi.Folder" class="reference" href="#api.renameapi.Folder"><tt class="xref docutils literal"><span class="pre">api.renameapi.Folder</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.renameapi.Folder</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -991,8 +1037,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
-<dt id="api.renameapi.Rename.getMatchingShows">
-<!--[api.renameapi.Rename.getMatchingShows]--><tt class="descname">getMatchingShows</tt><big>(</big><big>)</big><a class="headerlink" href="#api.renameapi.Rename.getMatchingShows" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.Rename.getMatchingShows">
+<!--[veefire.api.renameapi.Rename.getMatchingShows]--><tt class="descname">getMatchingShows</tt><big>(</big><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Rename.getMatchingShows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get Possible show matches for every FileName in Folder.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1007,8 +1053,8 @@ Load the current database files into Python objects, and print a nice formatted 
 </dd></dl>
 
 <dl class="method">
-<dt id="api.renameapi.Rename.removeFolder">
-<!--[api.renameapi.Rename.removeFolder]--><tt class="descname">removeFolder</tt><big>(</big><em>InputFolder</em><big>)</big><a class="headerlink" href="#api.renameapi.Rename.removeFolder" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.renameapi.Rename.removeFolder">
+<!--[veefire.api.renameapi.Rename.removeFolder]--><tt class="descname">removeFolder</tt><big>(</big><em>InputFolder</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Rename.removeFolder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a Folder.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1022,13 +1068,238 @@ Load the current database files into Python objects, and print a nice formatted 
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Folder.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.renameapi.Folder" class="reference" href="#api.renameapi.Folder"><tt class="xref docutils literal"><span class="pre">api.renameapi.Folder</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.renameapi.Folder</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="class">
+<dt id="veefire.api.renameapi.Filesystems">
+<!--[veefire.api.renameapi.Filesystems]-->class <tt class="descclassname">veefire.api.renameapi.</tt><tt class="descname">Filesystems</tt><big>(</big><em>filesystemsDir=None</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Filesystems" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filesystems. Methods for Filesystem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>filesystemDir</em> (string) &#8211; Path to filetypes.xml</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="veefire.api.renameapi.Filesystems.addFilesystem">
+<!--[veefire.api.renameapi.Filesystems.addFilesystem]--><tt class="descname">addFilesystem</tt><big>(</big><em>InputFilesystem</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Filesystems.addFilesystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a Filesystem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>InputFilesystem</em> (api.dbapi.Filesystem) &#8211; Filesystem to add</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Filesystem.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Filesystem</span></tt> or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="veefire.api.renameapi.Filesystems.getFilesystem">
+<!--[veefire.api.renameapi.Filesystems.getFilesystem]--><tt class="descname">getFilesystem</tt><big>(</big><em>InputFilesystem</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Filesystems.getFilesystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Filesystem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>InputFilesystem</em> (api.dbapi.Filesystem) &#8211; Filesystem to return. Name needs to be equal</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Filesystem.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Filesystem</span></tt> or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="veefire.api.renameapi.Filesystems.loadFilesystems">
+<!--[veefire.api.renameapi.Filesystems.loadFilesystems]--><tt class="descname">loadFilesystems</tt><big>(</big><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Filesystems.loadFilesystems" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return current registered filesystems</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of Filesystem objects from the filetypes.xml file.</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="veefire.api.renameapi.Filesystems.removeFilesystem">
+<!--[veefire.api.renameapi.Filesystems.removeFilesystem]--><tt class="descname">removeFilesystem</tt><big>(</big><em>InputFilesystem</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Filesystems.removeFilesystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a Filesystem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>InputFilesystem</em> (api.dbapi.Filesystem) &#8211; Filesystem to remove</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Filesystem.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Filesystem</span></tt> or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="veefire.api.renameapi.Filesystem">
+<!--[veefire.api.renameapi.Filesystem]-->class <tt class="descclassname">veefire.api.renameapi.</tt><tt class="descname">Filesystem</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Filesystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Filesystem. Contains InvChars.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>name</em> (string) &#8211; Name of filesystem</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="veefire.api.renameapi.Filesystem.addChar">
+<!--[veefire.api.renameapi.Filesystem.addChar]--><tt class="descname">addChar</tt><big>(</big><em>InvChar</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Filesystem.addChar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an invalid character.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>InvChar</em> (api.dbapi.InvChar) &#8211; Invalid character to add</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Invalid character.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.InvChar</span></tt> or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="veefire.api.renameapi.Filesystem.getChar">
+<!--[veefire.api.renameapi.Filesystem.getChar]--><tt class="descname">getChar</tt><big>(</big><em>InvChar</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Filesystem.getChar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an invalid character.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>InvChar</em> (api.dbapi.InvChar) &#8211; Invalid character to return. char and replacement needs to be equal</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Invalid character.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.InvChar</span></tt> or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="veefire.api.renameapi.Filesystem.removeChar">
+<!--[veefire.api.renameapi.Filesystem.removeChar]--><tt class="descname">removeChar</tt><big>(</big><em>InvChar</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Filesystem.removeChar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an invalid character.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>InvChar</em> (api.dbapi.InvChar) &#8211; Invalid character to remove</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">On success, returns Invalid character.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.InvChar</span></tt> or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="veefire.api.renameapi.Filesystem.validateString">
+<!--[veefire.api.renameapi.Filesystem.validateString]--><tt class="descname">validateString</tt><big>(</big><em>String</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.Filesystem.validateString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return valid string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>String</em> (string) &#8211; The string to validate against this filesystem</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="veefire.api.renameapi.InvChar">
+<!--[veefire.api.renameapi.InvChar]-->class <tt class="descclassname">veefire.api.renameapi.</tt><tt class="descname">InvChar</tt><big>(</big><em>descr</em>, <em>char</em>, <em>replacement</em><big>)</big><a class="headerlink" href="#veefire.api.renameapi.InvChar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invalid character.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>descr</em> (string) &#8211; Name of this invalid character</li>
+<li><em>char</em> &#8211; The unicode of this character, as four integers, e.g 0023</li>
+<li><em>char</em> &#8211; string</li>
+<li><em>replacement</em> &#8211; the text or character replacing the invalid character (char)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <div class="section">
@@ -1049,9 +1320,9 @@ Load the current database files into Python objects, and print a nice formatted 
 </div>
 </blockquote>
 <div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.renameapi</span> <span class="k">import</span> <span class="n">Rename</span><span class="p">,</span> <span class="n">Folder</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.renameapi</span> <span class="k">import</span> <span class="n">FileName</span> <span class="k">as</span> <span class="n">AbstractFileName</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.dbapi</span> <span class="k">import</span> <span class="n">Show</span><span class="p">,</span> <span class="n">Episode</span><span class="p">,</span> <span class="n">Season</span><span class="p">,</span> <span class="n">Database</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">veefire.api.renameapi</span> <span class="k">import</span> <span class="n">Rename</span><span class="p">,</span> <span class="n">Folder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">veefire.api.renameapi</span> <span class="k">import</span> <span class="n">FileName</span> <span class="k">as</span> <span class="n">AbstractFileName</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">veefire.api.dbapi</span> <span class="k">import</span> <span class="n">Show</span><span class="p">,</span> <span class="n">Episode</span><span class="p">,</span> <span class="n">Season</span><span class="p">,</span> <span class="n">Database</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
@@ -1157,7 +1428,7 @@ Load the current database files into Python objects, and print a nice formatted 
 <p><strong>Example:</strong></p>
 <blockquote>
 Get Filesystem object by name.  The filetypes.xml is explained in <a class="reference" href="../misc/filesystems.html#filetypes-xml"><em>Filesystems in veefire</em></a>.</blockquote>
-<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.renameapi</span> <span class="k">import</span> <span class="n">Filesystems</span><span class="p">,</span> <span class="n">Filesystem</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">veefire.api.renameapi</span> <span class="k">import</span> <span class="n">Filesystems</span><span class="p">,</span> <span class="n">Filesystem</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
@@ -1176,11 +1447,11 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 </div>
 </div>
 <div class="section">
-<h1 id="module-api.preferencesapi"><tt class="xref docutils literal"><span class="pre">api.preferencesapi</span></tt> &#8211; Preferences<a class="headerlink" href="#module-api.preferencesapi" title="Permalink to this headline">¶</a></h1>
+<h1 id="module-veefire.api.preferencesapi"><tt class="xref docutils literal"><span class="pre">veefire.api.preferencesapi</span></tt> &#8211; Preferences<a class="headerlink" href="#module-veefire.api.preferencesapi" title="Permalink to this headline">¶</a></h1>
 <p>Contains classes for the Preferences.</p>
 <dl class="class">
-<dt id="api.preferencesapi.Preferences">
-<!--[api.preferencesapi.Preferences]-->class <tt class="descclassname">api.preferencesapi.</tt><tt class="descname">Preferences</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#api.preferencesapi.Preferences" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.preferencesapi.Preferences">
+<!--[veefire.api.preferencesapi.Preferences]-->class <tt class="descclassname">veefire.api.preferencesapi.</tt><tt class="descname">Preferences</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#veefire.api.preferencesapi.Preferences" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1194,8 +1465,8 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 </tbody>
 </table>
 <dl class="method">
-<dt id="api.preferencesapi.Preferences.addOption">
-<!--[api.preferencesapi.Preferences.addOption]--><tt class="descname">addOption</tt><big>(</big><em>key</em>, <em>value</em><big>)</big><a class="headerlink" href="#api.preferencesapi.Preferences.addOption" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.preferencesapi.Preferences.addOption">
+<!--[veefire.api.preferencesapi.Preferences.addOption]--><tt class="descname">addOption</tt><big>(</big><em>key</em>, <em>value</em><big>)</big><a class="headerlink" href="#veefire.api.preferencesapi.Preferences.addOption" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add option value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1215,8 +1486,8 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 </dd></dl>
 
 <dl class="method">
-<dt id="api.preferencesapi.Preferences.getOptions">
-<!--[api.preferencesapi.Preferences.getOptions]--><tt class="descname">getOptions</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#api.preferencesapi.Preferences.getOptions" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.preferencesapi.Preferences.getOptions">
+<!--[veefire.api.preferencesapi.Preferences.getOptions]--><tt class="descname">getOptions</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#veefire.api.preferencesapi.Preferences.getOptions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get option value(s).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1235,8 +1506,8 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 </dd></dl>
 
 <dl class="method">
-<dt id="api.preferencesapi.Preferences.load">
-<!--[api.preferencesapi.Preferences.load]--><tt class="descname">load</tt><big>(</big><big>)</big><a class="headerlink" href="#api.preferencesapi.Preferences.load" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.preferencesapi.Preferences.load">
+<!--[veefire.api.preferencesapi.Preferences.load]--><tt class="descname">load</tt><big>(</big><big>)</big><a class="headerlink" href="#veefire.api.preferencesapi.Preferences.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads the Preferencesfile into the dict.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1252,8 +1523,8 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 </dd></dl>
 
 <dl class="method">
-<dt id="api.preferencesapi.Preferences.removeOption">
-<!--[api.preferencesapi.Preferences.removeOption]--><tt class="descname">removeOption</tt><big>(</big><em>key</em>, <em>value</em><big>)</big><a class="headerlink" href="#api.preferencesapi.Preferences.removeOption" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.preferencesapi.Preferences.removeOption">
+<!--[veefire.api.preferencesapi.Preferences.removeOption]--><tt class="descname">removeOption</tt><big>(</big><em>key</em>, <em>value</em><big>)</big><a class="headerlink" href="#veefire.api.preferencesapi.Preferences.removeOption" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove option value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1273,8 +1544,8 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 </dd></dl>
 
 <dl class="method">
-<dt id="api.preferencesapi.Preferences.save">
-<!--[api.preferencesapi.Preferences.save]--><tt class="descname">save</tt><big>(</big><big>)</big><a class="headerlink" href="#api.preferencesapi.Preferences.save" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.preferencesapi.Preferences.save">
+<!--[veefire.api.preferencesapi.Preferences.save]--><tt class="descname">save</tt><big>(</big><big>)</big><a class="headerlink" href="#veefire.api.preferencesapi.Preferences.save" title="Permalink to this definition">¶</a></dt>
 <dd>Saves the dict to the Preferencesfile.</dd></dl>
 
 </dd></dl>
@@ -1291,7 +1562,7 @@ Get Filesystem object by name.  The filetypes.xml is explained in <a class="refe
 <p><strong>Example:</strong></p>
 <blockquote>
 Manipulate the preferences.xml file ( <a class="reference" href="../misc/preferences.html#preferences-xml"><em>Preferences in veefire</em></a> ).</blockquote>
-<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.preferencesapi</span> <span class="k">import</span> <span class="n">Preferences</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">veefire.api.preferencesapi</span> <span class="k">import</span> <span class="n">Preferences</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
@@ -1321,15 +1592,15 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 </div>
 </div>
 <div class="section">
-<h1 id="module-api.backendapi"><tt class="xref docutils literal"><span class="pre">api.backendapi</span></tt> &#8211; Backends and BackendInterface<a class="headerlink" href="#module-api.backendapi" title="Permalink to this headline">¶</a></h1>
+<h1 id="module-veefire.api.backendapi"><tt class="xref docutils literal"><span class="pre">veefire.api.backendapi</span></tt> &#8211; Backends and BackendInterface<a class="headerlink" href="#module-veefire.api.backendapi" title="Permalink to this headline">¶</a></h1>
 <p>Contains classes for interfacing with the backends.</p>
 <dl class="class">
-<dt id="api.backendapi.Backends">
-<!--[api.backendapi.Backends]-->class <tt class="descclassname">api.backendapi.</tt><tt class="descname">Backends</tt><a class="headerlink" href="#api.backendapi.Backends" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.backendapi.Backends">
+<!--[veefire.api.backendapi.Backends]-->class <tt class="descclassname">veefire.api.backendapi.</tt><tt class="descname">Backends</tt><a class="headerlink" href="#veefire.api.backendapi.Backends" title="Permalink to this definition">¶</a></dt>
 <dd><p>Common methods for backends.</p>
 <dl class="method">
-<dt id="api.backendapi.Backends.getBackends">
-<!--[api.backendapi.Backends.getBackends]--><tt class="descname">getBackends</tt><big>(</big><em>BackendDir</em><big>)</big><a class="headerlink" href="#api.backendapi.Backends.getBackends" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.backendapi.Backends.getBackends">
+<!--[veefire.api.backendapi.Backends.getBackends]--><tt class="descname">getBackends</tt><big>(</big><em>BackendDir</em><big>)</big><a class="headerlink" href="#veefire.api.backendapi.Backends.getBackends" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get registered backends.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1353,8 +1624,8 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 </dd></dl>
 
 <dl class="class">
-<dt id="api.backendapi.BackendInterface">
-<!--[api.backendapi.BackendInterface]-->class <tt class="descclassname">api.backendapi.</tt><tt class="descname">BackendInterface</tt><big>(</big><em>dbDir=None</em>, <em>shows=None</em><big>)</big><a class="headerlink" href="#api.backendapi.BackendInterface" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.backendapi.BackendInterface">
+<!--[veefire.api.backendapi.BackendInterface]-->class <tt class="descclassname">veefire.api.backendapi.</tt><tt class="descname">BackendInterface</tt><big>(</big><em>dbDir=None</em>, <em>shows=None</em><big>)</big><a class="headerlink" href="#veefire.api.backendapi.BackendInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Common methods to interface with the backends.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1369,8 +1640,8 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 </tbody>
 </table>
 <dl class="method">
-<dt id="api.backendapi.BackendInterface.addNewShow">
-<!--[api.backendapi.BackendInterface.addNewShow]--><tt class="descname">addNewShow</tt><big>(</big><em>Show</em><big>)</big><a class="headerlink" href="#api.backendapi.BackendInterface.addNewShow" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.backendapi.BackendInterface.addNewShow">
+<!--[veefire.api.backendapi.BackendInterface.addNewShow]--><tt class="descname">addNewShow</tt><big>(</big><em>Show</em><big>)</big><a class="headerlink" href="#veefire.api.backendapi.BackendInterface.addNewShow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add show to database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1381,7 +1652,7 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 </ul>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Show" class="reference" href="#api.dbapi.Show"><tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -1389,8 +1660,8 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 </dd></dl>
 
 <dl class="method">
-<dt id="api.backendapi.BackendInterface.compareDetails">
-<!--[api.backendapi.BackendInterface.compareDetails]--><tt class="descname">compareDetails</tt><big>(</big><em>currentShow</em>, <em>newShow</em><big>)</big><a class="headerlink" href="#api.backendapi.BackendInterface.compareDetails" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.backendapi.BackendInterface.compareDetails">
+<!--[veefire.api.backendapi.BackendInterface.compareDetails]--><tt class="descname">compareDetails</tt><big>(</big><em>currentShow</em>, <em>newShow</em><big>)</big><a class="headerlink" href="#veefire.api.backendapi.BackendInterface.compareDetails" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares two Shows for differences.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1405,7 +1676,7 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Updated show.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Show" class="reference" href="#api.dbapi.Show"><tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt></a></p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Show</span></tt></p>
 </td>
 </tr>
 </tbody>
@@ -1413,8 +1684,8 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 </dd></dl>
 
 <dl class="method">
-<dt id="api.backendapi.BackendInterface.compareEpisodes">
-<!--[api.backendapi.BackendInterface.compareEpisodes]--><tt class="descname">compareEpisodes</tt><big>(</big><em>currentEpisode</em>, <em>newEpisode</em><big>)</big><a class="headerlink" href="#api.backendapi.BackendInterface.compareEpisodes" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.backendapi.BackendInterface.compareEpisodes">
+<!--[veefire.api.backendapi.BackendInterface.compareEpisodes]--><tt class="descname">compareEpisodes</tt><big>(</big><em>currentEpisode</em>, <em>newEpisode</em><big>)</big><a class="headerlink" href="#veefire.api.backendapi.BackendInterface.compareEpisodes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares two Episodes for differences.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1429,7 +1700,7 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Updated episode or None, if there are no differences.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Season" class="reference" href="#api.dbapi.Season"><tt class="xref docutils literal"><span class="pre">api.dbapi.Season</span></tt></a> or None</p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Season</span></tt> or None</p>
 </td>
 </tr>
 </tbody>
@@ -1437,8 +1708,8 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 </dd></dl>
 
 <dl class="method">
-<dt id="api.backendapi.BackendInterface.compareSeasons">
-<!--[api.backendapi.BackendInterface.compareSeasons]--><tt class="descname">compareSeasons</tt><big>(</big><em>currentSeason</em>, <em>newSeason</em><big>)</big><a class="headerlink" href="#api.backendapi.BackendInterface.compareSeasons" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.backendapi.BackendInterface.compareSeasons">
+<!--[veefire.api.backendapi.BackendInterface.compareSeasons]--><tt class="descname">compareSeasons</tt><big>(</big><em>currentSeason</em>, <em>newSeason</em><big>)</big><a class="headerlink" href="#veefire.api.backendapi.BackendInterface.compareSeasons" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares two Seasons for differences.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1453,7 +1724,7 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Updated season.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Season" class="reference" href="#api.dbapi.Season"><tt class="xref docutils literal"><span class="pre">api.dbapi.Season</span></tt></a></p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Season</span></tt></p>
 </td>
 </tr>
 </tbody>
@@ -1461,8 +1732,8 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 </dd></dl>
 
 <dl class="method">
-<dt id="api.backendapi.BackendInterface.fillUpdateDB">
-<!--[api.backendapi.BackendInterface.fillUpdateDB]--><tt class="descname">fillUpdateDB</tt><big>(</big><big>)</big><a class="headerlink" href="#api.backendapi.BackendInterface.fillUpdateDB" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.backendapi.BackendInterface.fillUpdateDB">
+<!--[veefire.api.backendapi.BackendInterface.fillUpdateDB]--><tt class="descname">fillUpdateDB</tt><big>(</big><big>)</big><a class="headerlink" href="#veefire.api.backendapi.BackendInterface.fillUpdateDB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copies the Shows from the database to a temporary database, for determining what shows to update.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1475,8 +1746,8 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 </dd></dl>
 
 <dl class="method">
-<dt id="api.backendapi.BackendInterface.incrementalUpdate">
-<!--[api.backendapi.BackendInterface.incrementalUpdate]--><tt class="descname">incrementalUpdate</tt><big>(</big><big>)</big><a class="headerlink" href="#api.backendapi.BackendInterface.incrementalUpdate" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.backendapi.BackendInterface.incrementalUpdate">
+<!--[veefire.api.backendapi.BackendInterface.incrementalUpdate]--><tt class="descname">incrementalUpdate</tt><big>(</big><big>)</big><a class="headerlink" href="#veefire.api.backendapi.BackendInterface.incrementalUpdate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates Database incrementally, not overwriting unless allowed.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1489,8 +1760,8 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 </dd></dl>
 
 <dl class="method">
-<dt id="api.backendapi.BackendInterface.solveEpisodeConflicts">
-<!--[api.backendapi.BackendInterface.solveEpisodeConflicts]--><tt class="descname">solveEpisodeConflicts</tt><big>(</big><em>firstEpisode</em>, <em>secondEpisode</em><big>)</big><a class="headerlink" href="#api.backendapi.BackendInterface.solveEpisodeConflicts" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.backendapi.BackendInterface.solveEpisodeConflicts">
+<!--[veefire.api.backendapi.BackendInterface.solveEpisodeConflicts]--><tt class="descname">solveEpisodeConflicts</tt><big>(</big><em>firstEpisode</em>, <em>secondEpisode</em><big>)</big><a class="headerlink" href="#veefire.api.backendapi.BackendInterface.solveEpisodeConflicts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Choose which episode details to keep.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -1506,7 +1777,7 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 </ul>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Episode" class="reference" href="#api.dbapi.Episode"><tt class="xref docutils literal"><span class="pre">api.dbapi.Episode</span></tt></a></p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Episode</span></tt></p>
 </td>
 </tr>
 </tbody>
@@ -1514,8 +1785,8 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 </dd></dl>
 
 <dl class="method">
-<dt id="api.backendapi.BackendInterface.updateDatabase">
-<!--[api.backendapi.BackendInterface.updateDatabase]--><tt class="descname">updateDatabase</tt><big>(</big><big>)</big><a class="headerlink" href="#api.backendapi.BackendInterface.updateDatabase" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.api.backendapi.BackendInterface.updateDatabase">
+<!--[veefire.api.backendapi.BackendInterface.updateDatabase]--><tt class="descname">updateDatabase</tt><big>(</big><big>)</big><a class="headerlink" href="#veefire.api.backendapi.BackendInterface.updateDatabase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1541,7 +1812,7 @@ Manipulate the preferences.xml file ( <a class="reference" href="../misc/prefere
 <p><strong>Example:</strong></p>
 <blockquote>
 Update the Database, using the backends to retrieve information. In this example, there is a database directory with the xml file in <a class="reference" href="../misc/database.html#database-xml-file"><em>Show Database</em></a>.</blockquote>
-<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.backendapi</span> <span class="k">import</span> <span class="n">BackendInterface</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">veefire.api.backendapi</span> <span class="k">import</span> <span class="n">BackendInterface</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
@@ -1564,7 +1835,7 @@ Update the Database, using the backends to retrieve information. In this example
 <p><strong>Example:</strong></p>
 <blockquote>
 Get backend names.</blockquote>
-<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.backendapi</span> <span class="k">import</span> <span class="n">Backends</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">veefire.api.backendapi</span> <span class="k">import</span> <span class="n">Backends</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># import Tools to create a fake test directory.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Remember to set the root path variable in tests/testproperties.py if you&#39;re not on Windows or Mac.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">tests.testproperties</span> <span class="k">import</span> <span class="n">Tools</span>
@@ -1580,15 +1851,15 @@ Get backend names.</blockquote>
 </div>
 </div>
 <div class="section">
-<h1 id="module-backends.base"><tt class="xref docutils literal"><span class="pre">backends.base</span></tt> &#8211; Backend Superclass<a class="headerlink" href="#module-backends.base" title="Permalink to this headline">¶</a></h1>
+<h1 id="module-veefire.backends.base"><tt class="xref docutils literal"><span class="pre">veefire.backends.base</span></tt> &#8211; Backend Superclass<a class="headerlink" href="#module-veefire.backends.base" title="Permalink to this headline">¶</a></h1>
 <p>Contains the base class for constructing backends.</p>
 <dl class="class">
-<dt id="backends.base.BaseBackend">
-<!--[backends.base.BaseBackend]-->class <tt class="descclassname">backends.base.</tt><tt class="descname">BaseBackend</tt><a class="headerlink" href="#backends.base.BaseBackend" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.backends.base.BaseBackend">
+<!--[veefire.backends.base.BaseBackend]-->class <tt class="descclassname">veefire.backends.base.</tt><tt class="descname">BaseBackend</tt><a class="headerlink" href="#veefire.backends.base.BaseBackend" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for backends. All backends must inherit this.</p>
 <dl class="method">
-<dt id="backends.base.BaseBackend.updateShows">
-<!--[backends.base.BaseBackend.updateShows]--><tt class="descname">updateShows</tt><big>(</big><em>Shows</em><big>)</big><a class="headerlink" href="#backends.base.BaseBackend.updateShows" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.backends.base.BaseBackend.updateShows">
+<!--[veefire.backends.base.BaseBackend.updateShows]--><tt class="descname">updateShows</tt><big>(</big><em>Shows</em><big>)</big><a class="headerlink" href="#veefire.backends.base.BaseBackend.updateShows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update Shows through a Backend.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -1606,7 +1877,7 @@ Get backend names.</blockquote>
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Database of Show objects</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Database" class="reference" href="#api.dbapi.Database"><tt class="xref docutils literal"><span class="pre">api.dbapi.Database</span></tt></a></p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Database</span></tt></p>
 </td>
 </tr>
 </tbody>
@@ -1627,7 +1898,7 @@ Get backend names.</blockquote>
 <p><strong>Example:</strong></p>
 <blockquote>
 A backend must be able to get data based on Show objects.</blockquote>
-<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.dbapi</span> <span class="k">import</span> <span class="n">Show</span><span class="p">,</span> <span class="n">Episode</span><span class="p">,</span> <span class="n">Season</span><span class="p">,</span> <span class="n">Database</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">veefire.api.dbapi</span> <span class="k">import</span> <span class="n">Show</span><span class="p">,</span> <span class="n">Episode</span><span class="p">,</span> <span class="n">Season</span><span class="p">,</span> <span class="n">Database</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">backends.base</span> <span class="k">import</span> <span class="n">BaseBackend</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Showlist</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Black Books&quot;</span><span class="p">,</span> <span class="s">&quot;30&quot;</span><span class="p">,</span> <span class="s">&quot;BaseBackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0262150&quot;</span> <span class="p">)</span> <span class="p">,</span>
 <span class="gp">... </span><span class="n">Show</span><span class="p">(</span> <span class="s">&quot;The IT Crowd&quot;</span><span class="p">,</span> <span class="s">&quot;30&quot;</span><span class="p">,</span> <span class="s">&quot;BaseBackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0487831&quot;</span> <span class="p">)</span> <span class="p">,</span>
@@ -1647,15 +1918,15 @@ A backend must be able to get data based on Show objects.</blockquote>
 </div>
 </div>
 <div class="section">
-<h1 id="module-backends.imdbtv"><tt class="xref docutils literal"><span class="pre">backends.imdbtv</span></tt> &#8211; Backend to imdb.com&#8217;s tv section<a class="headerlink" href="#module-backends.imdbtv" title="Permalink to this headline">¶</a></h1>
+<h1 id="module-veefire.backends.imdbtv"><tt class="xref docutils literal"><span class="pre">veefire.backends.imdbtv</span></tt> &#8211; Backend to imdb.com&#8217;s tv section<a class="headerlink" href="#module-veefire.backends.imdbtv" title="Permalink to this headline">¶</a></h1>
 <p>Contains the backend class for imdbtv&#8217;s tv section</p>
 <dl class="class">
-<dt id="backends.imdbtv.Backend">
-<!--[backends.imdbtv.Backend]-->class <tt class="descclassname">backends.imdbtv.</tt><tt class="descname">Backend</tt><a class="headerlink" href="#backends.imdbtv.Backend" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.backends.imdbtv.Backend">
+<!--[veefire.backends.imdbtv.Backend]-->class <tt class="descclassname">veefire.backends.imdbtv.</tt><tt class="descname">Backend</tt><a class="headerlink" href="#veefire.backends.imdbtv.Backend" title="Permalink to this definition">¶</a></dt>
 <dd><p>Backend to fetch data from imdb.com&#8217;s tv section ( imdbtv ). Uses BeautifulSoup library for parsing html.</p>
 <dl class="method">
-<dt id="backends.imdbtv.Backend.downloadShowList">
-<!--[backends.imdbtv.Backend.downloadShowList]--><tt class="descname">downloadShowList</tt><big>(</big><em>Shows</em><big>)</big><a class="headerlink" href="#backends.imdbtv.Backend.downloadShowList" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.backends.imdbtv.Backend.downloadShowList">
+<!--[veefire.backends.imdbtv.Backend.downloadShowList]--><tt class="descname">downloadShowList</tt><big>(</big><em>Shows</em><big>)</big><a class="headerlink" href="#veefire.backends.imdbtv.Backend.downloadShowList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download a list of Show object&#8217;s episodes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1677,8 +1948,8 @@ A backend must be able to get data based on Show objects.</blockquote>
 </dd></dl>
 
 <dl class="method">
-<dt id="backends.imdbtv.Backend.getShowDetails">
-<!--[backends.imdbtv.Backend.getShowDetails]--><tt class="descname">getShowDetails</tt><big>(</big><em>showandcontentdict</em><big>)</big><a class="headerlink" href="#backends.imdbtv.Backend.getShowDetails" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.backends.imdbtv.Backend.getShowDetails">
+<!--[veefire.backends.imdbtv.Backend.getShowDetails]--><tt class="descname">getShowDetails</tt><big>(</big><em>showandcontentdict</em><big>)</big><a class="headerlink" href="#veefire.backends.imdbtv.Backend.getShowDetails" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download a list of Show object&#8217;s episodes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1692,7 +1963,7 @@ A backend must be able to get data based on Show objects.</blockquote>
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Database with api.dbapi.Show objects</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Database" class="reference" href="#api.dbapi.Database"><tt class="xref docutils literal"><span class="pre">api.dbapi.Database</span></tt></a></p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Database</span></tt></p>
 </td>
 </tr>
 </tbody>
@@ -1700,8 +1971,8 @@ A backend must be able to get data based on Show objects.</blockquote>
 </dd></dl>
 
 <dl class="method">
-<dt id="backends.imdbtv.Backend.updateShows">
-<!--[backends.imdbtv.Backend.updateShows]--><tt class="descname">updateShows</tt><big>(</big><em>Shows</em><big>)</big><a class="headerlink" href="#backends.imdbtv.Backend.updateShows" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.backends.imdbtv.Backend.updateShows">
+<!--[veefire.backends.imdbtv.Backend.updateShows]--><tt class="descname">updateShows</tt><big>(</big><em>Shows</em><big>)</big><a class="headerlink" href="#veefire.backends.imdbtv.Backend.updateShows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update Shows through a Backend.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1715,7 +1986,7 @@ A backend must be able to get data based on Show objects.</blockquote>
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Database of Show objects</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a title="api.dbapi.Database" class="reference" href="#api.dbapi.Database"><tt class="xref docutils literal"><span class="pre">api.dbapi.Database</span></tt></a></p>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref docutils literal"><span class="pre">api.dbapi.Database</span></tt></p>
 </td>
 </tr>
 </tbody>
@@ -1725,12 +1996,12 @@ A backend must be able to get data based on Show objects.</blockquote>
 </dd></dl>
 
 <dl class="class">
-<dt id="backends.imdbtv.Regexes">
-<!--[backends.imdbtv.Regexes]-->class <tt class="descclassname">backends.imdbtv.</tt><tt class="descname">Regexes</tt><a class="headerlink" href="#backends.imdbtv.Regexes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Regular expressions for <a title="backends.imdbtv.Backend" class="reference" href="#backends.imdbtv.Backend"><tt class="xref docutils literal"><span class="pre">backends.imdbtv.Backend</span></tt></a>.</p>
+<dt id="veefire.backends.imdbtv.Regexes">
+<!--[veefire.backends.imdbtv.Regexes]-->class <tt class="descclassname">veefire.backends.imdbtv.</tt><tt class="descname">Regexes</tt><a class="headerlink" href="#veefire.backends.imdbtv.Regexes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Regular expressions for <tt class="xref docutils literal"><span class="pre">backends.imdbtv.Backend</span></tt>.</p>
 <dl class="method">
-<dt id="backends.imdbtv.Regexes.extractAirDate">
-<!--[backends.imdbtv.Regexes.extractAirDate]--><tt class="descname">extractAirDate</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#backends.imdbtv.Regexes.extractAirDate" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.backends.imdbtv.Regexes.extractAirDate">
+<!--[veefire.backends.imdbtv.Regexes.extractAirDate]--><tt class="descname">extractAirDate</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#veefire.backends.imdbtv.Regexes.extractAirDate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract the air date from an Episode string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1743,8 +2014,8 @@ A backend must be able to get data based on Show objects.</blockquote>
 </dd></dl>
 
 <dl class="method">
-<dt id="backends.imdbtv.Regexes.extractEpSeTitle">
-<!--[backends.imdbtv.Regexes.extractEpSeTitle]--><tt class="descname">extractEpSeTitle</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#backends.imdbtv.Regexes.extractEpSeTitle" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.backends.imdbtv.Regexes.extractEpSeTitle">
+<!--[veefire.backends.imdbtv.Regexes.extractEpSeTitle]--><tt class="descname">extractEpSeTitle</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#veefire.backends.imdbtv.Regexes.extractEpSeTitle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract the episode and season number and title from an Episode string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1757,8 +2028,22 @@ A backend must be able to get data based on Show objects.</blockquote>
 </dd></dl>
 
 <dl class="method">
-<dt id="backends.imdbtv.Regexes.removeTags">
-<!--[backends.imdbtv.Regexes.removeTags]--><tt class="descname">removeTags</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#backends.imdbtv.Regexes.removeTags" title="Permalink to this definition">¶</a></dt>
+<dt id="veefire.backends.imdbtv.Regexes.removeEntities">
+<!--[veefire.backends.imdbtv.Regexes.removeEntities]--><tt class="descname">removeEntities</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#veefire.backends.imdbtv.Regexes.removeEntities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes XML entities from a string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="veefire.backends.imdbtv.Regexes.removeTags">
+<!--[veefire.backends.imdbtv.Regexes.removeTags]--><tt class="descname">removeTags</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#veefire.backends.imdbtv.Regexes.removeTags" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove sorrounding html/xml tags from a string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1783,8 +2068,8 @@ A backend must be able to get data based on Show objects.</blockquote>
 </div>
 <p><strong>Example:</strong>:</p>
 <pre>Update shows against imdbtv.</pre>
-<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">api.dbapi</span> <span class="k">import</span> <span class="n">Show</span><span class="p">,</span> <span class="n">Episode</span><span class="p">,</span> <span class="n">Season</span><span class="p">,</span> <span class="n">Database</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">backends.imdbtv</span> <span class="k">import</span> <span class="n">Backend</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">veefire.api.dbapi</span> <span class="k">import</span> <span class="n">Show</span><span class="p">,</span> <span class="n">Episode</span><span class="p">,</span> <span class="n">Season</span><span class="p">,</span> <span class="n">Database</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">veefire.backends.imdbtv</span> <span class="k">import</span> <span class="n">Backend</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Showlist</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Black Books&quot;</span><span class="p">,</span> <span class="s">&quot;30&quot;</span><span class="p">,</span> <span class="s">&quot;imdbtvbackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0262150&quot;</span> <span class="p">)</span> <span class="p">,</span>
 <span class="gp">... </span><span class="n">Show</span><span class="p">(</span> <span class="s">&quot;Spaced&quot;</span><span class="p">,</span> <span class="s">&quot;60&quot;</span><span class="p">,</span> <span class="s">&quot;imdbtvbackend&quot;</span><span class="p">,</span> <span class="s">&quot;tt0187664&quot;</span> <span class="p">)</span> <span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">backend</span> <span class="o">=</span> <span class="n">Backend</span><span class="p">()</span>
@@ -1854,28 +2139,28 @@ A backend must be able to get data based on Show objects.</blockquote>
         <div class="sphinxsidebarwrapper">
             <h3>Table Of Contents</h3>
             <ul>
-<li><a class="reference" href=""><tt class="docutils literal"><span class="pre">api.dbapi</span></tt> &#8211; Database and Filesystem</a><ul>
+<li><a class="reference" href=""><tt class="docutils literal"><span class="pre">veefire.api.dbapi</span></tt> &#8211; Database and Filesystem</a><ul>
 <li><a class="reference" href="#examples">Examples</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#module-api.renameapi"><tt class="docutils literal"><span class="pre">api.renameapi</span></tt> &#8211; File, Folder and Rename</a><ul>
+<li><a class="reference" href="#module-veefire.api.renameapi"><tt class="docutils literal"><span class="pre">veefire.api.renameapi</span></tt> &#8211; File, Folder and Rename</a><ul>
 <li><a class="reference" href="#id1">Examples</a></li>
 <li><a class="reference" href="#id2">Test Directory</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#module-api.preferencesapi"><tt class="docutils literal"><span class="pre">api.preferencesapi</span></tt> &#8211; Preferences</a><ul>
+<li><a class="reference" href="#module-veefire.api.preferencesapi"><tt class="docutils literal"><span class="pre">veefire.api.preferencesapi</span></tt> &#8211; Preferences</a><ul>
 <li><a class="reference" href="#id3">Examples</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#module-api.backendapi"><tt class="docutils literal"><span class="pre">api.backendapi</span></tt> &#8211; Backends and BackendInterface</a><ul>
+<li><a class="reference" href="#module-veefire.api.backendapi"><tt class="docutils literal"><span class="pre">veefire.api.backendapi</span></tt> &#8211; Backends and BackendInterface</a><ul>
 <li><a class="reference" href="#id4">Examples</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#module-backends.base"><tt class="docutils literal"><span class="pre">backends.base</span></tt> &#8211; Backend Superclass</a><ul>
+<li><a class="reference" href="#module-veefire.backends.base"><tt class="docutils literal"><span class="pre">veefire.backends.base</span></tt> &#8211; Backend Superclass</a><ul>
 <li><a class="reference" href="#id5">Examples</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#module-backends.imdbtv"><tt class="docutils literal"><span class="pre">backends.imdbtv</span></tt> &#8211; Backend to imdb.com&#8217;s tv section</a><ul>
+<li><a class="reference" href="#module-veefire.backends.imdbtv"><tt class="docutils literal"><span class="pre">veefire.backends.imdbtv</span></tt> &#8211; Backend to imdb.com&#8217;s tv section</a><ul>
 <li><a class="reference" href="#id6">Examples</a></li>
 </ul>
 </li>
@@ -1919,7 +2204,7 @@ A backend must be able to get data based on Show objects.</blockquote>
     </div>
     <div class="footer">
       &copy; Copyright 2008, Mats Taraldsvik.
-      Last updated on Mar 27, 2009.
+      Last updated on May 18, 2009.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
     </div>
   </body>
