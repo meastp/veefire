@@ -1,0 +1,9 @@
+include setup.py
+include LICENSE
+include __init__.py
+include veefire/filetypes.xml veefire/preferences.xml
+include veefire/veefire-gtk.glade veefire/veefire-gtk.py
+include veefire/veefire-cli.py
+recursive-include veefire/api *.py
+recursive-include veefire/backends *.py
+recursive-include veefire/database *.show

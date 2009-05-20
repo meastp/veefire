@@ -1,0 +1,17 @@
+
+
+veefire depends on :
+    
+    * BeautifulSoup - for the included imdbtv backend only.
+    
+    additional dependencies for developers :
+        
+        * python-nose - for the unit tests.
+            
+            run `nosetests` in the veefire root folder to run tests.
+        
+        * sphinx - for documentation.
+        
+            run `sphinx-build docs/source docs/html` in the veefire root folder to build/update documentation.
+            
+            run `sphinx-build -b doctest docs/source docs/html` in the veefire root folder to run the example doctests.
