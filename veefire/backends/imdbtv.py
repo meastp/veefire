@@ -193,19 +193,34 @@ class CleanupTools :
                               "&#x3E;" : ">"   }
     def removeEntities(self, string) :
         return self.htmlEntities[string.group(1)]
-        
 
-if __name__ == '__main__':
-    
-    Showlist = [ Show( "Black Books", "30", "ext3" , "imdbtvbackend", "tt0262150" ) ]#,
-#                 Show( "The IT Crowd", "30", "ext3" , "imdbtvbackend", "tt0487831" ) ,
-#                 Show( "Life on Mars", "60", "ext3" , "imdbtvbackend", "tt0478942" ) ,
-#                 Show( "Chuck", "60", "ext3" , "imdbtvbackend", "tt0934814" ) ,
-#                 Show( "M*A*S*H", "60", "ext3" , "imdbtvbackend", "tt0068098" ),
-#                 Show( "My Name Is Earl", "30", "ext3" , "imdbtvbackend", "tt0460091" ) ]
-    
-    backend = Backend()
-    
-    DB = backend.updateShows( Showlist )
-    
-    DB.printDb()
+class TestBackend() :
+    '''
+    Unit test for :class:`backends.imdbtv.Backend`.
+    '''
+    def __init__(self) :
+        self.backend = Backend()
+        
+        validShows1 = [ Show(  "Spaced", "60", "imdbtvbackend", "tt0187664" ) ]
+        self.database1 = Database(Tools.databaseDir, validShows1)
+        self.database1.loadDB()
+        
+        validShows2 = [ Show(  "Black Books", "30", "imdbtvbackend", "tt0262150" ) ]
+        self.database2 = Database(Tools.databaseDir, validShows2)
+        self.database2.loadDB()
+        
+    def testDownloadShowList(self):
+        
+        content = self.backend.downloadShowList(self.database1.database)
+        assert [ show.name for show in content.keys() ] == ['Spaced']
+        
+        content = self.backend.downloadShowList(self.database2.database)
+        assert [ show.name for show in content.keys() ] == ['Black Books']
+        
+    def testGetShowDetails(self):
+        
+        updateDB1 = self.backend.getShowDetails( self.backend.downloadShowList(self.database1.database))
+        assert [ (show.name, season.name, episode.name, episode.title ) for show in updateDB1.database for season in show.seasons for episode in season.episodes ] == [('Spaced', '1', '1', 'Beginnings'), ('Spaced', '1', '2', 'Gatherings'), ('Spaced', '1', '3', 'Art'), ('Spaced', '1', '4', 'Battles'), ('Spaced', '1', '5', 'Chaos'), ('Spaced', '1', '6', 'Epiphanies'), ('Spaced', '1', '7', 'Ends'), ('Spaced', '2', '1', 'Back'), ('Spaced', '2', '2', 'Change'), ('Spaced', '2', '3', 'Mettle'), ('Spaced', '2', '4', 'Help'), ('Spaced', '2', '5', 'Gone'), ('Spaced', '2', '6', 'Dissolution'), ('Spaced', '2', '7', 'Testkonflikt')]
+        
+        updateDB2 = self.backend.getShowDetails( self.backend.downloadShowList(self.database2.database))
+        assert [ (show.name, season.name, episode.name, episode.title ) for show in updateDB2.database for season in show.seasons for episode in season.episodes ] == [('Black Books', '1', '1', 'Cooking the Books'), ('Black Books', '1', '2', "Manny's First Day"), ('Black Books', '1', '3', 'The Grapes of Wrath'), ('Black Books', '1', '4', 'The Blackout'), ('Black Books', '1', '5', 'The Big Lock-Out'), ('Black Books', '1', '6', "He's Leaving Home"), ('Black Books', '2', '1', 'The Entertainer'), ('Black Books', '2', '2', 'Fever'), ('Black Books', '2', '3', 'The Fixer'), ('Black Books', '2', '4', 'Blood'), ('Black Books', '2', '5', 'Hello Sun'), ('Black Books', '2', '6', 'A Nice Change'), ('Black Books', '3', '1', 'Manny Come Home'), ('Black Books', '3', '2', 'Elephants and Hens'), ('Black Books', '3', '3', 'Moo-Ma and Moo-Pa'), ('Black Books', '3', '4', 'A Little Flutter'), ('Black Books', '3', '5', 'The Travel Writer'), ('Black Books', '3', '6', 'Party')]
