@@ -26,8 +26,7 @@ from api.backendapi import Backends, BackendInterface
 from api.renameapi import Rename, Folder, FileName, Filesystems
 from api.preferencesapi import Preferences
 
-from tests.testimdbtv import testBackend
-from backends.imdbtv import Backend
+from backends.imdbtv import Backend, TestBackend as imdbtvtest
 
 try:
     import pygtk
@@ -124,26 +123,6 @@ class NewBackendInterface(BackendInterface):
         if result == 1 :
             return secondEpisode
         return firstEpisode
-
-
-
-class imdbtvtest(testBackend) :
-    """
-    Test imdbtvbackend
-    """
-    def setUp(self) :
-        self.backend = Backend()
-        
-        validShows1 = [ Show(  "Spaced", "60", "imdbtvbackend", "tt0187664" ) ]
-        self.database1 = Database(Tools.databaseDir, validShows1)
-        self.database1.loadDB()
-        
-        validShows2 = [ Show(  "Black Books", "30", "imdbtvbackend", "tt0262150" ) ]
-        self.database2 = Database(Tools.databaseDir, validShows2)
-        self.database2.loadDB()
-        
-    def tearDown(self):
-        pass
 
 ##
 #
@@ -280,10 +259,8 @@ class VeefireGTK:
             
             if self.to_boolean(preferences['imdbtv-with-tests']) == True :
                 testimdbtv = imdbtvtest()
-                testimdbtv.setUp()
                 testimdbtv.testDownloadShowList()
                 testimdbtv.testGetShowDetails()
-                testimdbtv.tearDown()
             
             se = NewBackendInterface(Tools.databaseDir)
             se.updateDatabase()
@@ -359,10 +336,8 @@ class VeefireGTK:
         
         if self.to_boolean(preferences['imdbtv-with-tests']) == True :
             testimdbtv = imdbtvtest()
-            testimdbtv.setUp()
             testimdbtv.testDownloadShowList()
             testimdbtv.testGetShowDetails()
-            testimdbtv.tearDown()
         
         se = NewBackendInterface(Tools.databaseDir, [ show ])
         se.updateDatabase()
@@ -575,10 +550,8 @@ class VeefireGTK:
         preferences.load()
         if self.to_boolean(preferences['imdbtv-with-tests']) == True :
             testimdbtv = imdbtvtest()
-            testimdbtv.setUp()
             testimdbtv.testDownloadShowList()
             testimdbtv.testGetShowDetails()
-            testimdbtv.tearDown()
         
         se = NewBackendInterface(Tools.databaseDir)
         se.updateDatabase()
