@@ -25,7 +25,7 @@ Contains classes for interfacing with the backends.
 '''
 
 from dbapi import Database, Show, Season, Episode
-from veefire.backends.imdbtv import Backend as imdbtvbackend
+from backends.imdbtv import Backend as imdbtvbackend
 import os
 import sys
 import copy

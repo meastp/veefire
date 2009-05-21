@@ -26,7 +26,7 @@ Contains the backend class for imdbtv's tv section
 '''
 
 from base import BaseBackend
-from veefire.api.dbapi import Show, Episode, Season, Database
+from api.dbapi import Show, Episode, Season, Database
 import BeautifulSoup
 import re
 import httplib
