@@ -249,13 +249,11 @@ class VeefireGTK:
                                         gtk.BUTTONS_OK,  
                                         None)
             hbox = gtk.HBox()  
-            hbox.pack_start(gtk.Label("The Database will be updated."), False, 5, 5)  
+            hbox.pack_start(gtk.Label("The Database is updating. ( The program may appear to freeze during this process. )"), False, 5, 5)  
             dialog.vbox.pack_end(hbox, True, True, 0)
             dialog.show_all()
             
-            dialog.run()  
-            dialog.destroy()
-              
+            dialog.run()
             
             if self.to_boolean(preferences['imdbtv-with-tests']) == True :
                 testimdbtv = imdbtvtest()
@@ -265,6 +263,8 @@ class VeefireGTK:
             se = NewBackendInterface(Tools.databaseDir)
             se.updateDatabase()
             self.database.loadDB()
+            
+            dialog.destroy()
         
         
         for Show in self.database.database :
@@ -334,6 +334,19 @@ class VeefireGTK:
         preferences = Preferences(Tools.preferencesXML)
         preferences.load()
         
+        #update warning
+        dialog = gtk.MessageDialog( None,
+                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,  
+                                    gtk.MESSAGE_QUESTION,  
+                                    gtk.BUTTONS_OK,  
+                                    None)
+        hbox = gtk.HBox()  
+        hbox.pack_start(gtk.Label("The Database is updating. ( The program may appear to freeze during this process. )"), False, 5, 5)  
+        dialog.vbox.pack_end(hbox, True, True, 0)
+        dialog.show_all()
+        
+        dialog.run()
+        
         if self.to_boolean(preferences['imdbtv-with-tests']) == True :
             testimdbtv = imdbtvtest()
             testimdbtv.testDownloadShowList()
@@ -341,6 +354,8 @@ class VeefireGTK:
         
         se = NewBackendInterface(Tools.databaseDir, [ show ])
         se.updateDatabase()
+        
+        dialog.destroy()
         
         #Fix treeview. Should manipulate, if necessary.
         self.showsStore.clear()
@@ -548,6 +563,19 @@ class VeefireGTK:
         self.database.write()
         preferences = Preferences(Tools.preferencesXML)
         preferences.load()
+        
+        #update warning
+        dialog = gtk.MessageDialog( None,
+                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,  
+                                    gtk.MESSAGE_QUESTION,  
+                                    gtk.BUTTONS_OK,  
+                                    None)
+        hbox = gtk.HBox()  
+        hbox.pack_start(gtk.Label("The Database is updating. ( The program may appear to freeze during this process. )"), False, 5, 5)  
+        dialog.vbox.pack_end(hbox, True, True, 0)
+        dialog.show_all()
+        dialog.run() 
+        
         if self.to_boolean(preferences['imdbtv-with-tests']) == True :
             testimdbtv = imdbtvtest()
             testimdbtv.testDownloadShowList()
@@ -555,6 +583,9 @@ class VeefireGTK:
         
         se = NewBackendInterface(Tools.databaseDir)
         se.updateDatabase()
+         
+        dialog.destroy()
+        
         #Fix treeview. Should manipulate, if necessary.
         self.showsStore.clear()
         self.database.loadDB()
