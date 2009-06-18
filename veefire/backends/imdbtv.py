@@ -193,7 +193,7 @@ class CleanupTools :
                               "&#x3E;" : ">"   }
     def removeEntities(self, string) :
         return self.htmlEntities[string.group(1)]
-
+        
 class TestBackend() :
     '''
     Unit test for :class:`backends.imdbtv.Backend`.
