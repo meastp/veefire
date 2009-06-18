@@ -4,6 +4,10 @@ veefire depends on :
     
     * BeautifulSoup - for the included imdbtv backend only.
     
+    ( Ubuntu : python-beautifulsoup )
+    
+    If you don't have it packaged for your distro, e.g Mac, Windows - download BeautifulSoup.py to your root directory.
+    
     additional dependencies for developers :
         
         * python-nose - for the unit tests.
