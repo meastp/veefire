@@ -1,6 +1,6 @@
 <root>
   <preferences>
-    <naming-style value="%show - S%seasonE%episode - %title" />
+    <naming-style value="%show.%seasonx%episode.%title" />
     <confirm-on-rename value="True" />
     <update-on-startup value="False" />
     <imdbtv-with-tests value="False" />

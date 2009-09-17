@@ -613,10 +613,10 @@ class PreferencesDialog :
             return False
         
     def changeNamingStyleLabel(self, widget ) :
-        self.namingStyleComboBoxEntry = self.wTree.get_widget("naming-styleEntry")
+        self.namingStyleComboBoxEntry = self.wTree.get_widget("naming-styleComboBoxEntry")
         self.namingStyleLabel = self.wTree.get_widget("naming-styleLabel")
         
-        Style = self.namingStyleComboBoxEntry.get_text()
+        Style = self.namingStyleComboBoxEntry.get_active_text()
         
         fileName = FileName( 'dummyName', 'dummyDB')
         fileName.fileSuffix = '' # generateFileName needs this attribute to be set.
@@ -654,15 +654,17 @@ class PreferencesDialog :
             else :
                 self.namingStyleListstore.append([ style ])
         
-        self.namingStyleEntry = self.wTree.get_widget("naming-styleEntry")
-        self.namingStyleEntry.set_text( self.namingStyleListstore[0][0] )
+#        self.namingStyleEntry = self.wTree.get_widget("naming-styleEntry")
+#        self.namingStyleEntry.set_text( self.namingStyleListstore[0][0] )
+        
+        self.namingStyleComboBoxEntry.set_active(0)
         
         self.namingStyleComboBoxEntry.connect('changed', self.changeNamingStyleLabel )
         
         # set example to current preference.
         self.namingStyleLabel = self.wTree.get_widget("naming-styleLabel")
         
-        Style = self.namingStyleEntry.get_text()
+        Style = self.namingStyleComboBoxEntry.get_active_text()
         
         fileName = FileName( 'dummyName', 'dummyDB')
         fileName.fileSuffix = '' # generateFileName needs this attribute to be set.
@@ -718,7 +720,8 @@ class PreferencesDialog :
         # Get General
         ##
         
-        namingStyle = self.namingStyleEntry.get_text()
+        
+        namingStyle = self.namingStyleComboBoxEntry.get_active_text()
         if namingStyle != self.namingStyleListstore[0][0] :
             self.preferences['naming-style'] = namingStyle
         

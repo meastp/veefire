@@ -1,4 +1,13 @@
 
+INSTALL and RUN
+
+install dependencies ( beautifulsoup )
+
+extract the tarball
+
+run veefire-gtk or -cli
+
+optionally, you can do python setup.py install.
 
 veefire depends on :
     

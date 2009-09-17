@@ -663,7 +663,7 @@ ntfs, fat32 (Windows)</property>
             <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="button2">
-                <property name="label" translatable="yes">gtk-cancel</property>
+                <property name="label" translatable="yes">gtk-revert-to-saved</property>
                 <property name="response_id">-1</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
