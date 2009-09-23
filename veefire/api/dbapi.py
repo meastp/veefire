@@ -288,6 +288,9 @@ class Show :
         :returns: On success, returns Alias.
         :rtype: :class:`api.dbapi.Alias` or None
         """
+        ## Aliases are lowercase.
+        InputAlias.name = InputAlias.name.lower()
+        
         if self.getAlias( InputAlias ) != None :
             return None
         else : 
@@ -305,6 +308,7 @@ class Show :
         """
         ## Aliases are lowercase.
         InputAlias.name = InputAlias.name.lower()
+        
         for Alias in self.alias :
             #print Alias
             #print Alias.name
@@ -324,6 +328,9 @@ class Show :
         :returns: On success, returns Alias.
         :rtype: :class:`api.dbapi.Alias` or None
         """
+        ## Aliases are lowercase.
+        InputAlias.name = InputAlias.name.lower()
+        
         Alias = self.getAlias( InputAlias )
         if Alias == None :
             return None

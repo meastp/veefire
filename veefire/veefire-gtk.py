@@ -544,11 +544,16 @@ class VeefireGTK:
         show = Show('', '30', '', '')
         
         showDialog = EditShowDialog(show, self.database)
+        
         result = showDialog.run()
         
-        self.database.addShow(show)
-        self.database.write()
-        self.showsStore.append([ show.name, show.backend, show ])
+        GTK_RESPONSE_ADD = 0
+        GTK_RESPONSE_REVERT = -1
+        
+        if result == GTK_RESPONSE_ADD :
+            self.database.addShow(show)
+            self.database.write()
+            self.showsStore.append([ show.name, show.backend, show ])
         
     def showsDeleteShowButtonClicked (self, widget) :
         
@@ -1080,14 +1085,21 @@ class EditShowDialog :
         dialog.destroy()  
         
         exists = False
-        alias = Alias(text)
-        #result = self.Show.addAlias( alias )
-        for row in self.editShowAliasesStore :
-            if row[0] == alias.name :
-                exists = True
         
-        if exists == False :
-            self.editShowAliasesStore.append( [ alias.name, alias ] )
+        if text != '' and text != ' ' :
+            
+            alias = Alias(text)
+            
+            ## Aliases are lowercase.
+            alias.name = alias.name.lower()
+            
+            #result = self.Show.addAlias( alias )
+            for row in self.editShowAliasesStore :
+                if row[0] == alias.name :
+                    exists = True
+            
+            if exists == False :
+                self.editShowAliasesStore.append( [ alias.name, alias ] )
         
     def showAliasesMenuRemove( self, widget ):
         model, row = self.editShowAliasesView.get_selection().get_selected()

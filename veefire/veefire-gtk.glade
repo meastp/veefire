@@ -855,6 +855,9 @@ ntfs, fat32 (Windows)</property>
                           <widget class="GtkTreeView" id="editShowAliasesView">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="tooltip" translatable="yes">Aliases are used to determine the show by filename.
+
+All aliases are converted and stored in lowercase.</property>
                           </widget>
                         </child>
                       </widget>
