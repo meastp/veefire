@@ -345,6 +345,8 @@ class Show :
             return None
         else : 
             self.seasons.append( InputSeason )
+            sort_key = lambda s : int(s.name)
+            self.seasons.sort(key=sort_key)
             return InputSeason
         
     def getSeason ( self, InputSeason ) :

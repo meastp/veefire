@@ -25,7 +25,7 @@ Contains classes for interfacing with the backends.
 '''
 
 from dbapi import Database, Show, Season, Episode
-from backends.imdbtv import Backend as imdbtvbackend
+from veefire.backends.imdbtv import Backend as imdbtvbackend
 import os
 import sys
 import copy
@@ -101,6 +101,7 @@ class BackendInterface :
         """
         self.updateDB = copy.deepcopy( self.currentDB )
         
+        
         backends = dict()
         
         ## Group every Show into the backend used.
@@ -124,6 +125,7 @@ class BackendInterface :
                 show = self.updateDB.getShow( Show )
                 for Season in Show.seasons :
                     show.addSeason( Season )
+        
         
         return self.incrementalUpdate()
         
